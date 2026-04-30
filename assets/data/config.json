@@ -1,0 +1,14 @@
+{
+  "trip_title": "釜山之旅",
+  "date_range": {
+    "start": "2026-06-06",
+    "end": "2026-06-10"
+  },
+  "nights": 4,
+  "days": 5,
+  "mode": "大眾交通",
+  "members": ["Kerwin", "Franceca", "Lotto", "Latte", "Hao", "Ming"],
+  "default_currency": "KRW",
+  "language": "zh-TW",
+  "data_version": "v1.0"
+}

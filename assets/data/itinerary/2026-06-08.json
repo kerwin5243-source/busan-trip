@@ -1,0 +1,129 @@
+[
+  {
+    "date": "06/08",
+    "day": "一",
+    "loc": "海雲台 · 廣安里",
+    "hotel_id": "H1",
+    "photos": [],
+    "items": [
+      {
+        "id": "0608_01",
+        "time": "09:30",
+        "title": "海雲台海水浴場（해운대해수욕장）",
+        "tag": "sight",
+        "subtag": "海灘",
+        "desc": "韓國最著名的海灘，白沙細浪，都市感十足",
+        "detail": "周邊亮點：\n• 동백섬（冬柏島）：步行繞島散步約 30 分鐘\n• 海雲台市場：海鮮和小吃\n• 누리마루 APEC 하우스：免費參觀的海岬建築",
+        "addr": "釜山廣域市 海雲台區 海雲台海邊路264",
+        "mapcode": "",
+        "parking": "",
+        "hours": "全日開放",
+        "price": "",
+        "stay": "2–3 hr",
+        "guide": [
+          "早上人少，建議早去拍照",
+          "6月是入夏前，天氣好且沒有暑假人潮",
+          "沿岸有咖啡廳，適合看海喝咖啡"
+        ],
+        "avoid": [],
+        "links": [],
+        "menu": [],
+        "reservations": [],
+        "highlight": true
+      },
+      {
+        "id": "0608_02",
+        "time": "12:00",
+        "title": "午餐：海雲台市場（해운대시장）",
+        "tag": "food",
+        "subtag": "市場",
+        "desc": "在地市場，有各種韓式小吃和海鮮",
+        "detail": "必吃：\n• 씨앗호떡 種子煎餅\n• 납작만두 扁餃子\n• 어묵 魚板",
+        "addr": "釜山廣域市 海雲台區 海雲台路 市場一帶",
+        "mapcode": "",
+        "parking": "",
+        "hours": "09:00–20:00",
+        "price": "約 ₩10,000–15,000 / 人",
+        "stay": "1.5 hr",
+        "guide": [],
+        "avoid": [],
+        "links": [],
+        "menu": [],
+        "reservations": []
+      },
+      {
+        "id": "0608_03",
+        "time": "14:30",
+        "title": "海雲台 → 廣安里",
+        "tag": "route",
+        "subtag": "",
+        "desc": "",
+        "detail": "",
+        "addr": "",
+        "mapcode": "",
+        "parking": "",
+        "hours": "",
+        "price": "",
+        "stay": "20 min",
+        "guide": [],
+        "avoid": [],
+        "links": [],
+        "menu": [],
+        "reservations": [],
+        "route": {
+          "mode": "transit",
+          "from": "海雲台",
+          "to": "廣安里",
+          "minutes": 20
+        }
+      },
+      {
+        "id": "0608_04",
+        "time": "15:00",
+        "title": "廣安里海水浴場（광안리해수욕장）",
+        "tag": "sight",
+        "subtag": "海灘",
+        "desc": "廣安大橋夜景是釜山代表景色，咖啡廳林立",
+        "detail": "推薦：\n• 沿廣安里海邊路的咖啡廳下午茶\n• 等待日落後廣安大橋亮燈",
+        "addr": "釜山廣域市 水營區 廣安海邊路219",
+        "mapcode": "",
+        "parking": "",
+        "hours": "全日",
+        "price": "",
+        "stay": "3 hr（下午到夜晚）",
+        "guide": [
+          "廣安大橋夜景是釜山最著名夜景之一",
+          "周邊有很多網紅咖啡廳，建議先訂位或早去"
+        ],
+        "avoid": [],
+        "links": [],
+        "menu": [],
+        "reservations": [],
+        "highlight": true
+      },
+      {
+        "id": "0608_05",
+        "time": "19:00",
+        "title": "晚餐：廣安里海鮮或燒肉",
+        "tag": "food",
+        "subtag": "韓食",
+        "desc": "一邊看廣安大橋夜景一邊用餐",
+        "detail": "",
+        "addr": "廣安里 海邊路一帶",
+        "mapcode": "",
+        "parking": "",
+        "hours": "",
+        "price": "",
+        "stay": "1.5 hr",
+        "guide": [
+          "推薦三合（삼합）：醃肉配海鮮的釜山特色吃法",
+          "廣安里有很多露天座位的餐廳，晚上吹海風超愜意"
+        ],
+        "avoid": [],
+        "links": [],
+        "menu": [],
+        "reservations": []
+      }
+    ]
+  }
+]
