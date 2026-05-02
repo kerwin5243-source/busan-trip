@@ -48,9 +48,11 @@ ios/Runner/GeneratedPluginRegistrant.*
 *.swp
 .DS_Store
 .atom/
+.build/
 .buildlog/
 .history
 .svn/
+.swiftpm/
 migrate_working_dir/
 
 # VS Code

@@ -77,7 +77,10 @@ class TripNotifier extends StateNotifier<TripState> {
           final json = jsonDecode(saved) as Map<String, dynamic>;
           days[date] = ItineraryDay.fromJson(json, date);
           continue;
-        } catch (_) {}
+        } catch (_) {
+          // Corrupted data — clear and fall through to asset
+          await prefs.remove('$_prefsPrefix$date');
+        }
       }
 
       // 2. Fall back to asset

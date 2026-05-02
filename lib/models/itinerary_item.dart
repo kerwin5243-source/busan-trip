@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 enum ItemTag { transport, food, sight, hotel, shop, route, other }
 
 extension ItemTagExt on ItemTag {
@@ -134,7 +132,7 @@ class ItineraryItem {
 
   factory ItineraryItem.fromJson(Map<String, dynamic> json) {
     return ItineraryItem(
-      id: json['id'] ?? UniqueKey().toString(),
+      id: json['id'] ?? DateTime.now().microsecondsSinceEpoch.toString(),
       time: json['time'] ?? '',
       title: json['title'] ?? '',
       tag: ItemTagExt.fromString(json['tag'] ?? 'other'),
@@ -304,9 +302,3 @@ class ItineraryDay {
       );
 }
 
-// Needed for UniqueKey in factory — but in Dart we use uuid or timestamp
-class UniqueKey {
-  @override
-  String toString() =>
-      DateTime.now().microsecondsSinceEpoch.toString();
-}

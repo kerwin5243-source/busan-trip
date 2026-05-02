@@ -6,6 +6,7 @@ class TripConfig {
   final int days;
   final String mode;
   final List<String> members;
+  final List<String> districts;
   final String defaultCurrency;
   final String language;
 
@@ -17,6 +18,7 @@ class TripConfig {
     required this.days,
     required this.mode,
     required this.members,
+    this.districts = const [],
     required this.defaultCurrency,
     required this.language,
   });
@@ -31,6 +33,7 @@ class TripConfig {
       days: json['days'] ?? 0,
       mode: json['mode'] ?? '',
       members: List<String>.from(json['members'] ?? []),
+      districts: List<String>.from(json['districts'] ?? []),
       defaultCurrency: json['default_currency'] ?? 'KRW',
       language: json['language'] ?? 'zh-TW',
     );

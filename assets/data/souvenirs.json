@@ -1,0 +1,39 @@
+[
+  {
+    "region": "釜山伴手禮",
+    "items": [
+      { "name": "HITE 啤酒（手提箱裝）", "img": "" },
+      { "name": "韓國泡麵禮盒", "img": "" },
+      { "name": "海苔禮盒", "img": "" },
+      { "name": "韓式辣醬（CJ 고추장）", "img": "" },
+      { "name": "芝士年糕條（즉석떡볶이）", "img": "" }
+    ]
+  },
+  {
+    "region": "機場免稅",
+    "items": [
+      { "name": "韓國護膚品（COSRX / 一葉子）", "img": "" },
+      { "name": "樂天巧克力派禮盒", "img": "" },
+      { "name": "濟州蜂蜜柚子茶", "img": "" },
+      { "name": "人參糖禮盒", "img": "" }
+    ]
+  },
+  {
+    "region": "Olive Young 藥妝",
+    "items": [
+      { "name": "MEDIHEAL 面膜", "img": "" },
+      { "name": "ROUND LAB 防曬", "img": "" },
+      { "name": "Abib 鯊魚霜", "img": "" },
+      { "name": "VT CICA 虎克霜", "img": "" },
+      { "name": "魚腥草水噴霧", "img": "" }
+    ]
+  },
+  {
+    "region": "國際市場 / 罐頭市場",
+    "items": [
+      { "name": "韓國零食大禮包", "img": "" },
+      { "name": "幹明太魚（北魚乾）", "img": "" },
+      { "name": "蝦餅 / 海鮮餅乾", "img": "" }
+    ]
+  }
+]
