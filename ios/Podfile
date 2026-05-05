@@ -40,4 +40,25 @@ post_install do |installer|
   installer.pods_project.targets.each do |target|
     flutter_additional_ios_build_settings(target)
   end
+
+  # Fix: objective_c.framework invalid signature on iOS 26 physical devices
+  # Re-signs all embedded frameworks using the app's own identity after embedding.
+  main_project = Xcodeproj::Project.open(
+    File.join(File.dirname(__FILE__), 'Runner.xcodeproj')
+  )
+  main_project.targets.each do |target|
+    next unless target.name == 'Runner'
+    next if target.shell_script_build_phases.any? { |p| p.name == 'Resign Frameworks iOS26' }
+
+    phase = target.new_shell_script_build_phase('Resign Frameworks iOS26')
+    phase.shell_script = 'find "${CODESIGNING_FOLDER_PATH}/Frameworks" ' \
+      '-name "*.framework" -o -name "*.dylib" 2>/dev/null | ' \
+      'while read f; do ' \
+      '  /usr/bin/codesign --force --sign "${EXPANDED_CODE_SIGN_IDENTITY}" ' \
+      '  --timestamp=none "$f" 2>/dev/null || true; ' \
+      'done'
+    # Run after "Embed Frameworks" phase
+    phase.run_only_for_deployment_postprocessing = '0'
+  end
+  main_project.save
 end

@@ -201,6 +201,7 @@
 				9705A1C41CF9048500538489 /* Embed Frameworks */,
 				3B06AD1E1E4923F5004D2608 /* Thin Binary */,
 				D619ECA379A48B60CB97F5FF /* [CP] Embed Pods Frameworks */,
+				9D37215A4E23763064F5E2D3 /* Resign Frameworks iOS26 */,
 			);
 			buildRules = (
 			);
@@ -346,6 +347,24 @@
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
+		};
+		9D37215A4E23763064F5E2D3 /* Resign Frameworks iOS26 */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Resign Frameworks iOS26";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "find \"${CODESIGNING_FOLDER_PATH}/Frameworks\" -name \"*.framework\" -o -name \"*.dylib\" 2>/dev/null | while read f; do   /usr/bin/codesign --force --sign \"${EXPANDED_CODE_SIGN_IDENTITY}\"   --timestamp=none \"$f\" 2>/dev/null || true; done";
 		};
 		D619ECA379A48B60CB97F5FF /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
