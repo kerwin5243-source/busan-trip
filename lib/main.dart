@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'screens/home_screen.dart';
 import 'theme/app_theme.dart';
+import 'providers/theme_provider.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -42,16 +43,19 @@ void main() {
   runApp(const ProviderScope(child: BusanTripApp()));
 }
 
-class BusanTripApp extends StatelessWidget {
+class BusanTripApp extends ConsumerWidget {
   const BusanTripApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: '釜山之旅',
-      debugShowCheckedModeBanner: false,
-      theme: AppTheme.light,
-      home: const HomeScreen(),
+  Widget build(BuildContext context, WidgetRef ref) {
+    final theme = ref.watch(themeProvider);
+    C.setCurrent(theme);
+    return ThemeBridge(
+      child: MaterialApp(
+        title: '釜山之旅',
+        debugShowCheckedModeBanner: false,
+        home: const HomeScreen(),
+      ),
     );
   }
 }

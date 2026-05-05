@@ -17,6 +17,7 @@ import 'info_screen.dart';
 import 'souvenir_screen.dart';
 import 'money_screen.dart';
 import 'prep_screen.dart';
+import 'settings_screen.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -70,7 +71,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
               // Tab content — IndexedStack keeps all tabs alive for instant switching
               Expanded(
                 child: state.loading
-                    ? const Center(
+                    ? Center(
                         child: CircularProgressIndicator(
                             color: C.accent, strokeWidth: 2))
                     : IndexedStack(
@@ -154,7 +155,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                     border: Border.all(
                         color: C.accent.withValues(alpha: 0.3)),
                   ),
-                  child: const Icon(Icons.keyboard_arrow_up_rounded,
+                  child: Icon(Icons.keyboard_arrow_up_rounded,
                       color: C.accent, size: 22),
                 ),
               ),
@@ -224,15 +225,18 @@ class _CompactHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.fromLTRB(16, topPad + 10, 16, 10),
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         color: C.bgBody,
-        border: Border(
+        border: const Border(
           bottom: BorderSide(color: Color(0x14000000), width: 0.75),
         ),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
+      child: Stack(
+        alignment: Alignment.center,
         children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
           // ── Title: "月半家族釜山之旅" centered ───────────────
           Text(
             config?.tripTitle ?? '月半家族釜山之旅',
@@ -282,6 +286,29 @@ class _CompactHeader extends StatelessWidget {
                       fw: FontWeight.w600,
                       color: C.ink2.withValues(alpha: 0.6))),
             ],
+          ),
+        ],
+          ),
+          // ── Settings gear icon (top-right) ────────────
+          Positioned(
+            right: 0,
+            top: 0,
+            child: GestureDetector(
+              onTap: () {
+                HapticFeedback.selectionClick();
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (_) => const SettingsScreen()),
+                );
+              },
+              child: Container(
+                padding: const EdgeInsets.all(6),
+                child: Icon(
+                  Icons.settings_outlined,
+                  size: 20,
+                  color: C.ink2.withValues(alpha: 0.5),
+                ),
+              ),
+            ),
           ),
         ],
       ),
@@ -352,7 +379,7 @@ class _ItineraryPageState extends State<_ItineraryPage> {
   @override
   Widget build(BuildContext context) {
     if (widget.state.loading) {
-      return const Center(child: CircularProgressIndicator(color: C.accent));
+      return Center(child: CircularProgressIndicator(color: C.accent));
     }
 
     final currentDate = widget.selectedIndex < widget.dates.length

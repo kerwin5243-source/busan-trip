@@ -731,7 +731,7 @@ class _PersonalDetail extends StatelessWidget {
             const Spacer(),
             GestureDetector(
               onTap: () {},
-              child: const Icon(Icons.close_rounded,
+              child: Icon(Icons.close_rounded,
                   size: 16, color: C.ink2),
             ),
           ]),

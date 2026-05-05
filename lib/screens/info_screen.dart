@@ -280,7 +280,7 @@ class _HotelCardState extends State<_HotelCard> {
                         color: C.accent.withValues(alpha: 0.12),
                         borderRadius: BorderRadius.circular(12),
                       ),
-                      child: const Icon(Icons.hotel_rounded,
+                      child: Icon(Icons.hotel_rounded,
                           size: 22, color: C.accent),
                     ),
                     const SizedBox(width: 14),
@@ -394,7 +394,7 @@ class _HotelDetail extends StatelessWidget {
                     padding: const EdgeInsets.only(top: 5, right: 6),
                     child: Container(
                       width: 4, height: 4,
-                      decoration: const BoxDecoration(
+                      decoration: BoxDecoration(
                           color: C.ink2, shape: BoxShape.circle),
                     ),
                   ),
@@ -485,7 +485,7 @@ class _MapBtn extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Icon(Icons.map_rounded, size: 16, color: C.primary),
+          Icon(Icons.map_rounded, size: 16, color: C.primary),
           const SizedBox(width: 6),
           Text('Google Maps 導航',
               style: TStyle.sans(13,
@@ -505,7 +505,7 @@ class _Loading extends StatelessWidget {
       child: Padding(
         padding: EdgeInsets.all(24),
         child: CircularProgressIndicator(
-            color: C.accent, strokeWidth: 2),
+            strokeWidth: 2),
       ),
     );
   }

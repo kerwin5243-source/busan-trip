@@ -337,7 +337,7 @@ class _MetaBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         border: Border.symmetric(
           horizontal: BorderSide(color: C.divider, width: 0.75),
         ),
@@ -478,7 +478,7 @@ class _BulletText extends StatelessWidget {
             child: Container(
               width: 5,
               height: 5,
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                   color: C.ink2, shape: BoxShape.circle),
             ),
           ),
@@ -649,7 +649,7 @@ class _LinkChip extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Icon(Icons.open_in_new_rounded,
+          Icon(Icons.open_in_new_rounded,
               size: 12, color: C.accent),
           const SizedBox(width: 5),
           Text(
@@ -681,7 +681,7 @@ class _MapButton extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Icon(Icons.map_rounded, size: 18, color: C.primary),
+          Icon(Icons.map_rounded, size: 18, color: C.primary),
           const SizedBox(width: 8),
           Text('Google Maps 導航',
               style: TStyle.sans(15, fw: FontWeight.w900, color: C.primary)),

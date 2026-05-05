@@ -117,9 +117,9 @@ class _SouvenirScreenState extends ConsumerState<SouvenirScreen> {
           padding:
               EdgeInsets.only(bottom: MediaQuery.of(ctx).viewInsets.bottom),
           child: Container(
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               color: C.bgBody,
-              borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
             ),
             padding: const EdgeInsets.fromLTRB(20, 14, 20, 30),
             child: Column(
@@ -297,7 +297,7 @@ class _SouvenirScreenState extends ConsumerState<SouvenirScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Icon(Icons.add_rounded,
+                      Icon(Icons.add_rounded,
                           size: 18, color: C.accent),
                       const SizedBox(width: 8),
                       Text('新增代購項目',
@@ -454,7 +454,7 @@ class _SouvenirScreenState extends ConsumerState<SouvenirScreen> {
                           _SouvenirRegion(data: r as Map<String, dynamic>))
                       .toList(),
                 ),
-                loading: () => const Center(child: CircularProgressIndicator(color: C.accent, strokeWidth: 2)),
+                loading: () => Center(child: CircularProgressIndicator(color: C.accent, strokeWidth: 2)),
                 error: (_, __) => const SizedBox.shrink(),
               ),
             ]),
@@ -522,7 +522,7 @@ class _SouvenirField extends StatelessWidget {
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(color: C.accent, width: 1.5),
+              borderSide: BorderSide(color: C.accent, width: 1.5),
             ),
           ),
         ),
@@ -576,7 +576,7 @@ class _SouvenirRegion extends StatelessWidget {
                 Container(
                   width: 6,
                   height: 6,
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                     color: C.accent,
                     shape: BoxShape.circle,
                   ),

@@ -1,48 +1,64 @@
+// ════════════════════════════════════════════════════════════════
+// 動態主題 helper
+// C.* 靜態存取會跟著 ThemeBridge 同步更新的主題換色
+// ════════════════════════════════════════════════════════════════
+
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../models/itinerary_item.dart';
+import '../providers/theme_provider.dart';
+import 'app_themes.dart';
 
-// ─── Color System (matching Shikoku PWA) ─────────────────────────────────────
+// 重新匯出,讓其他檔案 import 'app_theme.dart' 即可拿到 AppThemes / AppThemeData
+export 'app_themes.dart';
+
+// ─── Dynamic Color System ─────────────────────────────────────────────────────
+/// 全域可變 holder — 由 ThemeBridge 在 build 時更新 _current
+/// 舊有 widget 用 `C.primary` 等靜態存取時會讀到目前選定主題。
 class C {
-  static const bgBody    = Color(0xFFF6F3EE); // 米白背景
-  static const bgCard    = Color(0xB8FFFFFF); // 半透明白卡片 (72%)
-  static const ink       = Color(0xFF1E1E1E); // 主文字
-  static const ink2      = Color(0xFF6F6A62); // 次文字
-  static const divider   = Color(0xFFE9E1D6); // 分割線
-  static const primary   = Color(0xFF2B2723); // 深灰棕
-  static const accent    = Color(0xFFB08A5B); // 金棕強調
+  static AppThemeData _current = AppThemes.defaultBeige;
+  static void setCurrent(AppThemeData t) => _current = t;
 
-  // Tag 顏色
-  static const tagFood      = Color(0xFFD28A3A);
-  static const tagSight     = Color(0xFF2F8F5B);
-  static const tagTransport = Color(0xFF3D6EA9);
-  static const tagHotel     = Color(0xFF7A4FA8);
-  static const tagShop      = Color(0xFFE1C820);
-  static const tagOther     = Color(0xFFB9B2AA);
+  static Color get bgBody  => _current.bgBody;
+  static Color get bgCard  => _current.bgCard;
+  static Color get ink     => _current.ink;
+  static Color get ink2    => _current.ink2;
+  static Color get divider => _current.divider;
+  static Color get primary => _current.primary;
+  static Color get accent  => _current.accent;
+  static Color get accentSoft => _current.accent.withValues(alpha: 0.14);
 
-  // Shadows
-  static const shadowSoft = [
+  static Color tagColor(ItemTag tag) => _current.tagColor(tag);
+
+  // Shadow helpers (non-const since they may vary per theme in the future)
+  static List<BoxShadow> get shadowSoft => const [
     BoxShadow(color: Color(0x14000000), blurRadius: 26, offset: Offset(0, 10)),
   ];
-  static const shadowCard = [
+  static List<BoxShadow> get shadowCard => const [
     BoxShadow(color: Color(0x12000000), blurRadius: 30, offset: Offset(0, 14)),
   ];
-  static const shadowNav = [
+  static List<BoxShadow> get shadowNav => const [
     BoxShadow(color: Color(0x1F000000), blurRadius: 50, offset: Offset(0, 16)),
   ];
 }
 
-// ─── Tag helpers ─────────────────────────────────────────────────────────────
-Color tagColor(ItemTag tag) {
-  switch (tag) {
-    case ItemTag.transport: return C.tagTransport;
-    case ItemTag.food:      return C.tagFood;
-    case ItemTag.sight:     return C.tagSight;
-    case ItemTag.hotel:     return C.tagHotel;
-    case ItemTag.shop:      return C.tagShop;
-    default:                return C.tagOther;
+/// Wrapper widget — 監聽 themeProvider 並同步到 C.* 靜態欄位
+class ThemeBridge extends ConsumerWidget {
+  final Widget child;
+  const ThemeBridge({super.key, required this.child});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final t = ref.watch(themeProvider);
+    C.setCurrent(t);
+    return child;
   }
 }
+
+// ─── Tag helpers ─────────────────────────────────────────────────────────────
+/// Backward-compatible standalone tagColor (delegates to C)
+Color tagColor(ItemTag tag) => C.tagColor(tag);
 
 String tagLabel(ItemTag tag) {
   switch (tag) {
@@ -57,24 +73,26 @@ String tagLabel(ItemTag tag) {
 
 // ─── TextStyles ───────────────────────────────────────────────────────────────
 class TStyle {
-  // Noto Serif TC — 標題
+  // Title font — uses current theme's serif/display font
   static TextStyle serifTitle(double size, {Color? color}) =>
-      GoogleFonts.notoSerifTc(
+      GoogleFonts.getFont(
+        C._current.fontTitleFamily,
         fontSize: size,
         fontWeight: FontWeight.w900,
         color: color ?? C.ink,
         height: 1.15,
       );
 
-  // Noto Sans TC — 正文
+  // Body font — uses current theme's sans font
   static TextStyle sans(double size, {FontWeight fw = FontWeight.w400, Color? color}) =>
-      GoogleFonts.notoSansTc(
+      GoogleFonts.getFont(
+        C._current.fontSansFamily,
         fontSize: size,
         fontWeight: fw,
         color: color ?? C.ink,
       );
 
-  // Roboto Mono — 時間
+  // Monospace — always Roboto Mono
   static TextStyle mono(double size, {Color? color}) =>
       GoogleFonts.robotoMono(
         fontSize: size,
@@ -89,7 +107,7 @@ class AppTheme {
     return ThemeData(
       useMaterial3: true,
       scaffoldBackgroundColor: C.bgBody,
-      colorScheme: const ColorScheme.light(
+      colorScheme: ColorScheme.light(
         primary: C.primary,
         secondary: C.accent,
         surface: C.bgBody,

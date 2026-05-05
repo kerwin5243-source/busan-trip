@@ -215,9 +215,9 @@ class _PrepScreenState extends ConsumerState<PrepScreen> {
         padding: EdgeInsets.only(
             bottom: MediaQuery.of(ctx).viewInsets.bottom),
         child: Container(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             color: C.bgBody,
-            borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
           ),
           padding: const EdgeInsets.fromLTRB(20, 14, 20, 30),
           child: Column(
@@ -325,7 +325,7 @@ class _PrepScreenState extends ConsumerState<PrepScreen> {
                       ),
                       child: Row(
                         children: [
-                          const Icon(Icons.add_rounded,
+                          Icon(Icons.add_rounded,
                               size: 14, color: C.accent),
                           const SizedBox(width: 3),
                           Text('新增',
@@ -524,7 +524,7 @@ class _PrepScreenState extends ConsumerState<PrepScreen> {
                     ],
                   );
                 },
-                loading: () => const Center(
+                loading: () => Center(
                     child: CircularProgressIndicator(
                         color: C.accent, strokeWidth: 2)),
                 error: (_, __) => const SizedBox.shrink(),
@@ -581,7 +581,7 @@ class _SheetField extends StatelessWidget {
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(color: C.accent, width: 1.5),
+              borderSide: BorderSide(color: C.accent, width: 1.5),
             ),
           ),
         ),
