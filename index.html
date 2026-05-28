@@ -229,7 +229,7 @@ body{padding-bottom:calc(72px + env(safe-area-inset-bottom))}
 /* ── Info ── */
 .flight-dir{font-size:.7rem;font-weight:900;color:var(--ink2);letter-spacing:.1em;margin-bottom:5px}
 .ft{display:flex;align-items:center;gap:10px}
-.ftime{font-family:var(--serif);font-size:1.65rem;font-weight:900;color:var(--pri)}
+.ftime{font-family:var(--mono);font-size:1.65rem;font-weight:700;color:var(--pri)}
 .farrow{flex:1;text-align:center;color:var(--acc);font-size:1rem}
 .fcity{font-size:.75rem;color:var(--ink2);margin-top:2px}
 .fmeta{font-size:.78rem;color:var(--ink2);margin-top:8px;display:flex;gap:8px;flex-wrap:wrap}
@@ -245,18 +245,23 @@ body{padding-bottom:calc(72px + env(safe-area-inset-bottom))}
 .acc-body.open{display:block}
 
 /* ── Souvenir ── */
-.shop-item{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid rgba(233,225,214,.7)}
+.shop-item{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid rgba(233,225,214,.7)}
 .shop-item:last-child{border-bottom:none}
 .scheck{width:22px;height:22px;border-radius:6px;border:1.5px solid rgba(233,225,214,1);background:#fff;flex-shrink:0;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.15s}
 .scheck.done{background:var(--acc);border-color:var(--acc)}
 .scheck.done::after{content:"✓";color:#fff;font-size:.72rem;font-weight:900}
-.sname{flex:1;font-weight:700;font-size:.9rem}
+.sbody{flex:1;min-width:0}
+.sname{font-weight:700;font-size:.9rem}
 .sname.done{text-decoration:line-through;color:var(--ink2)}
+.sprice{font-family:var(--mono);font-size:.76rem;color:var(--ink2);margin-top:1px}
+.sqty{display:flex;align-items:center;gap:5px;flex-shrink:0}
+.sqty-btn{width:26px;height:26px;border-radius:8px;border:1.5px solid rgba(233,225,214,1);background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.9rem;font-weight:900;color:var(--pri);flex-shrink:0;transition:.15s}
+.sqty-btn:active{background:rgba(176,138,91,.12)}
+.sqty-num{font-family:var(--mono);font-size:.82rem;font-weight:700;min-width:16px;text-align:center}
+.sedit{color:#B08A5B;cursor:pointer;padding:4px;font-size:.85rem}
 .sdel{color:#ccc;cursor:pointer;padding:4px;font-size:.9rem}
-.add-row{display:flex;gap:8px;margin-top:10px}
 .add-inp{flex:1;background:rgba(242,242,247,.95);border:none;border-radius:12px;padding:10px 14px;font-size:.9rem;font-family:var(--sans);color:var(--ink);outline:none}
 .add-inp::placeholder{color:var(--ink2);opacity:.6}
-.add-btn{padding:10px 16px;background:var(--acc);color:#fff;border:none;border-radius:12px;font-weight:900;font-size:.88rem;font-family:var(--sans);cursor:pointer}
 .rec-cats{display:flex;flex-direction:column;gap:12px}
 .cat-label{font-weight:900;font-size:.87rem;color:var(--pri);margin-bottom:6px}
 .cat-chips{display:flex;flex-wrap:wrap;gap:6px}
@@ -264,8 +269,8 @@ body{padding-bottom:calc(72px + env(safe-area-inset-bottom))}
 .rchip:active{transform:scale(.96);background:rgba(176,138,91,.1)}
 
 /* ── Prep todos ── */
-.todo-li{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid rgba(233,225,214,.7)}
-.todo-li:last-child{border-bottom:none}
+.todo-li{display:flex;align-items:flex-start;gap:10px;padding:10px 8px;border-radius:12px;margin-bottom:4px;transition:background .15s}
+.todo-li.done-item{background:rgba(52,199,89,.07)}
 .tcheck{width:22px;height:22px;border-radius:50%;border:1.5px solid rgba(233,225,214,1);background:#fff;flex-shrink:0;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.15s;margin-top:1px}
 .tcheck.done{background:#34C759;border-color:#34C759}
 .tcheck.done::after{content:"✓";color:#fff;font-size:.72rem;font-weight:900}
@@ -354,14 +359,13 @@ body{padding-bottom:calc(72px + env(safe-area-inset-bottom))}
 
 <!-- 伴手禮 -->
 <div id="pg-souv" class="page">
-  <div class="sec"><i class="fa-solid fa-bag-shopping"></i>代購清單</div>
+  <div style="display:flex;align-items:center;margin-bottom:11px">
+    <div class="sec" style="margin:0;flex:1"><i class="fa-solid fa-bag-shopping"></i>代購清單</div>
+    <button onclick="openSouvSheet()" style="padding:5px 12px;border:none;border-radius:999px;background:rgba(176,138,91,.12);color:var(--acc);font-weight:900;font-size:.82rem;font-family:var(--sans);cursor:pointer"><i class="fa-solid fa-plus"></i> 新增</button>
+  </div>
   <div class="utabs" id="souvTabs"></div>
   <div class="card" id="souvList">
-    <div id="shopItems"></div>
-    <div class="add-row">
-      <input class="add-inp" id="shopInp" placeholder="新增代購項目…" maxlength="40">
-      <button class="add-btn" onclick="addShopItem()"><i class="fa-solid fa-plus"></i></button>
-    </div>
+    <div id="shopItems"><div class="empty" style="padding:10px 0">尚無項目</div></div>
   </div>
   <div class="sec mt12"><i class="fa-solid fa-gift"></i>伴手禮推薦</div>
   <div class="card">
@@ -489,6 +493,19 @@ body{padding-bottom:calc(72px + env(safe-area-inset-bottom))}
     <div id="editHouseA" class="hrow" style="margin-bottom:6px"></div>
     <div id="editHouseB" class="hrow" style="margin-bottom:14px"></div>
     <button class="btn-add" onclick="saveEditExp()">儲存</button>
+  </div>
+</div>
+
+<!-- ══════════════ SOUVENIR ADD/EDIT SHEET ══════════════ -->
+<div class="overlay" id="souvOverlay" onclick="closeSouvSheet(event)">
+  <div class="sheet">
+    <div class="handle"></div>
+    <div style="font-family:var(--serif);font-size:1.1rem;font-weight:900;margin-bottom:14px" id="souvSheetTitle">新增代購項目</div>
+    <div class="flabel">品名</div>
+    <input class="add-inp" id="souvNameInp" placeholder="例：海苔禮盒、蜂蜜奶油薯片" maxlength="40" style="width:100%;margin-bottom:10px">
+    <div class="flabel">單價（₩ 韓幣，可略）</div>
+    <input class="add-inp" id="souvPriceInp" placeholder="例：12000" type="number" inputmode="numeric" style="width:100%;margin-bottom:16px">
+    <button class="btn-add" onclick="saveSouv()" id="souvSaveBtn">新增</button>
   </div>
 </div>
 
@@ -856,22 +873,29 @@ async function loadInfo(){
 
 function renderFlight(f){
   const o = f.outbound, i = f.inbound;
+  const leg = (leg, icon) => `
+    <div class="ft">
+      <div>
+        <div class="ftime">${leg.depart_time}</div>
+        <div class="fcity">${leg.from.city} (${leg.from.code})${leg.from.terminal?' · '+leg.from.terminal:''}</div>
+      </div>
+      <div class="farrow"><i class="fa-solid ${icon}"></i></div>
+      <div style="text-align:right">
+        <div class="ftime">${leg.arrive_time}</div>
+        <div class="fcity">${leg.to.city} (${leg.to.code})${leg.to.terminal?' · '+leg.to.terminal:''}</div>
+      </div>
+    </div>
+    <div class="fmeta">
+      <span class="fbadge">${leg.date}</span>
+      <span class="fbadge">${leg.aircraft}</span>
+      <span class="fbadge"><i class="fa-solid fa-suitcase" style="margin-right:3px"></i>${leg.baggage.checked} · ${leg.baggage.pieces}件</span>
+    </div>`;
   document.getElementById('flightCard').innerHTML = `
-    <div class="flight-dir">▲ 去程 · ${f.carrier} ${o.flight_no}</div>
-    <div class="ft">
-      <div><div class="ftime">${o.depart_time}</div><div class="fcity">${o.from.city} (${o.from.code}) · ${o.from.terminal}</div></div>
-      <div class="farrow"><i class="fa-solid fa-plane"></i></div>
-      <div style="text-align:right"><div class="ftime">${o.arrive_time}</div><div class="fcity">${o.to.city} (${o.to.code})</div></div>
-    </div>
-    <div class="fmeta"><span class="fbadge">${o.date}</span><span class="fbadge">${o.aircraft}</span><span class="fbadge"><i class="fa-solid fa-suitcase"></i> ${o.baggage.checked} × ${o.baggage.pieces}</span></div>
+    <div class="flight-dir"><i class="fa-solid fa-plane-departure" style="margin-right:5px"></i>去程 · ${f.carrier} ${o.flight_no}</div>
+    ${leg(o,'fa-plane-departure')}
     <div class="hdivider"></div>
-    <div class="flight-dir">▼ 回程 · ${f.carrier} ${i.flight_no}</div>
-    <div class="ft">
-      <div><div class="ftime">${i.depart_time}</div><div class="fcity">${i.from.city} (${i.from.code}) · ${i.from.terminal}</div></div>
-      <div class="farrow"><i class="fa-solid fa-plane fa-flip-horizontal"></i></div>
-      <div style="text-align:right"><div class="ftime">${i.arrive_time}</div><div class="fcity">${i.to.city} (${i.to.code}) · ${i.to.terminal}</div></div>
-    </div>
-    <div class="fmeta"><span class="fbadge">${i.date}</span><span class="fbadge">${i.aircraft}</span><span class="fbadge"><i class="fa-solid fa-suitcase"></i> ${i.baggage.checked} × ${i.baggage.pieces}</span></div>
+    <div class="flight-dir"><i class="fa-solid fa-plane-arrival" style="margin-right:5px"></i>回程 · ${f.carrier} ${i.flight_no}</div>
+    ${leg(i,'fa-plane-arrival')}
   `;
 }
 
@@ -879,24 +903,40 @@ function renderHotels(list){
   document.getElementById('hotelCard').innerHTML = list.map(h=>`
     <div class="card">
       <div class="acc-toggle" onclick="this.nextElementSibling.classList.toggle('open')">
-        <div>
-          <div style="font-weight:900;font-size:1rem">${h.name}</div>
-          <div style="font-size:.78rem;color:var(--ink2);margin-top:3px">${h.stay.from} ～ ${h.stay.to} · ${h.nights}晚</div>
+        <div style="flex:1;min-width:0">
+          <div style="font-weight:900;font-size:1rem">${h.name_zh||h.name}</div>
+          <div style="font-size:.76rem;color:var(--ink2);margin-top:2px">${h.stay.from} ～ ${h.stay.to} · ${h.nights}晚</div>
         </div>
-        <i class="fa-solid fa-chevron-down" style="color:var(--ink2)"></i>
+        <i class="fa-solid fa-chevron-down" style="color:var(--ink2);flex-shrink:0;margin-left:8px"></i>
       </div>
       <div class="acc-body">
         <div class="hdivider"></div>
-        <div class="hrow2"><span class="hlabel">入住</span><span class="hval">CI ${h.checkin} / CO ${h.checkout}</span></div>
-        <div class="hrow2"><span class="hlabel">地址</span><span class="hval">${h.address_zh}</span></div>
-        <div class="hrow2"><span class="hlabel">電話</span><span class="hval">${h.phone}</span></div>
+        <div class="hrow2"><span class="hlabel">入退住</span><span class="hval">CI ${h.checkin} ／ CO ${h.checkout}</span></div>
+        ${h.booking_ref?`<div class="hrow2"><span class="hlabel">訂單編號</span><span class="hval" style="font-family:var(--mono);font-size:.82rem">${h.booking_ref}</span></div>`:''}
+        <div class="hrow2">
+          <span class="hlabel">地址</span>
+          <span class="hval">
+            <div style="margin-bottom:2px">${h.address_zh}</div>
+            <div style="font-size:.78rem;color:var(--ink2)">${h.address}</div>
+          </span>
+          <button class="detail-copy" onclick="copyText('${h.address.replace(/'/g,"\\'")}')">複製</button>
+        </div>
+        <div class="hrow2">
+          <span class="hlabel">電話</span>
+          <span class="hval">${h.phone}</span>
+          <button class="detail-copy" onclick="copyText('${h.phone}')">複製</button>
+        </div>
         ${h.desc?`<div style="font-size:.82rem;color:var(--ink2);margin-top:8px;line-height:1.6">${h.desc}</div>`:''}
         <div style="margin-top:10px">${h.facilities.map(f=>`<span class="fac-chip">${f}</span>`).join('')}</div>
-        <div style="margin-top:8px;font-size:.8rem;font-weight:700;color:var(--ink2)">注意事項</div>
-        <div style="margin-top:4px">${h.notices.map(n=>`<div style="font-size:.79rem;color:var(--ink2);padding:2px 0">• ${n}</div>`).join('')}</div>
-        <div style="margin-top:8px;font-size:.8rem;font-weight:700;color:var(--ink2)">周邊</div>
-        <div style="margin-top:4px">${h.nearby.map(n=>`<div style="font-size:.79rem;color:var(--ink2);padding:2px 0">📍 ${n}</div>`).join('')}</div>
-        ${h.mapcode?`<a href="https://maps.google.com?q=${h.mapcode}" target="_blank" style="display:inline-flex;align-items:center;gap:6px;margin-top:12px;padding:8px 14px;border-radius:12px;background:rgba(176,138,91,.12);color:#7D5B34;font-size:.82rem;font-weight:800;text-decoration:none"><i class="fa-solid fa-map-location-dot"></i>在地圖中開啟</a>`:''}
+        <div style="margin-top:12px;font-size:.8rem;font-weight:700;color:var(--ink2);margin-bottom:5px">注意事項</div>
+        ${h.notices.map(n=>`<div style="display:flex;gap:6px;font-size:.79rem;color:var(--ink2);padding:2px 0"><span style="color:var(--acc);flex-shrink:0">·</span>${n}</div>`).join('')}
+        ${(h.nearby||[]).length?`<div style="margin-top:10px;font-size:.8rem;font-weight:700;color:var(--ink2);margin-bottom:5px">周邊</div>
+        ${h.nearby.map(n=>`<div style="font-size:.79rem;color:var(--ink2);padding:2px 0">📍 ${n}</div>`).join('')}`:''}
+        ${h.mapcode?`<a href="https://www.google.com/maps/search/?api=1&query=${h.mapcode}" target="_blank" class="maps-btn" style="margin-top:14px;margin-bottom:0">
+          <div class="mb-icon"><i class="fa-solid fa-map-location-dot"></i></div>
+          <div><div class="mb-t">在地圖中開啟</div><div class="mb-s">${h.address_zh}</div></div>
+          <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:.78rem;color:rgba(52,168,83,.7)"></i>
+        </a>`:''}
       </div>
     </div>
   `).join('');
@@ -936,20 +976,62 @@ function renderSouvList(){
   el.innerHTML = items.map((it,i)=>`
     <div class="shop-item">
       <div class="scheck${it.done?' done':''}" onclick="toggleShop(${i})"></div>
-      <span class="sname${it.done?' done':''}">${it.name}</span>
+      <div class="sbody">
+        <div class="sname${it.done?' done':''}">${it.name}</div>
+        ${it.price?`<div class="sprice">₩${Number(it.price).toLocaleString()} × ${it.qty||1} = ₩${(Number(it.price)*(it.qty||1)).toLocaleString()}</div>`:''}
+      </div>
+      <div class="sqty">
+        <div class="sqty-btn" onclick="changeQty(${i},-1)">−</div>
+        <span class="sqty-num">${it.qty||1}</span>
+        <div class="sqty-btn" onclick="changeQty(${i},1)">＋</div>
+      </div>
+      <span class="sedit" onclick="openSouvSheet(${i})"><i class="fa-solid fa-pen-to-square"></i></span>
       <span class="sdel" onclick="delShop(${i})"><i class="fa-solid fa-xmark"></i></span>
     </div>
   `).join('');
 }
 
-function addShopItem(){
-  const inp = document.getElementById('shopInp');
-  const name = inp.value.trim();
+let editSouvIdx = null;
+
+function openSouvSheet(idx){
+  editSouvIdx = (idx===undefined) ? null : idx;
+  const isEdit = editSouvIdx !== null;
+  document.getElementById('souvSheetTitle').textContent = isEdit ? '編輯代購項目' : '新增代購項目';
+  document.getElementById('souvSaveBtn').textContent = isEdit ? '儲存' : '新增';
+  if(isEdit){
+    const it = getShop(souvUser)[idx]||{};
+    document.getElementById('souvNameInp').value = it.name||'';
+    document.getElementById('souvPriceInp').value = it.price||'';
+  } else {
+    document.getElementById('souvNameInp').value = '';
+    document.getElementById('souvPriceInp').value = '';
+  }
+  document.getElementById('souvOverlay').classList.add('open');
+  setTimeout(()=>document.getElementById('souvNameInp').focus(),200);
+}
+
+function closeSouvSheet(e){ if(e.target===document.getElementById('souvOverlay')) document.getElementById('souvOverlay').classList.remove('open'); }
+
+function saveSouv(){
+  const name = document.getElementById('souvNameInp').value.trim();
   if(!name) return;
+  const price = document.getElementById('souvPriceInp').value.trim();
   const items = getShop(souvUser);
-  items.push({name,done:false});
+  if(editSouvIdx !== null){
+    items[editSouvIdx] = {...items[editSouvIdx], name, price: price?Number(price):0};
+  } else {
+    items.push({name, done:false, price:price?Number(price):0, qty:1});
+  }
   setShop(souvUser,items);
-  inp.value='';
+  document.getElementById('souvOverlay').classList.remove('open');
+  renderSouvList();
+}
+
+function changeQty(idx, delta){
+  const items = getShop(souvUser);
+  const cur = items[idx].qty||1;
+  items[idx].qty = Math.max(1, cur+delta);
+  setShop(souvUser,items);
   renderSouvList();
 }
 
@@ -970,10 +1052,9 @@ function delShop(idx){
 function addRecToShop(name){
   const items = getShop(souvUser);
   if(items.find(i=>i.name===name)) return;
-  items.push({name,done:false});
+  items.push({name,done:false,price:0,qty:1});
   setShop(souvUser,items);
   renderSouvList();
-  // flash feedback
   event.target.style.background='rgba(176,138,91,.2)';
   setTimeout(()=>{ if(event.target) event.target.style.background=''; },400);
 }
@@ -988,8 +1069,6 @@ function renderRecs(){
     </div>
   `).join('');
 }
-
-document.getElementById('shopInp').addEventListener('keydown',e=>{ if(e.key==='Enter') addShopItem() });
 
 // ════════════════════════════════════════
 // MONEY
@@ -1341,7 +1420,7 @@ function renderTodos(){
   const el = document.getElementById('todoList');
   if(!todos.length){ el.innerHTML='<div class="empty">尚無待辦事項</div>'; return; }
   el.innerHTML = todos.map((t,i)=>`
-    <div class="todo-li">
+    <div class="todo-li${t.done?' done-item':''}">
       <div class="tcheck${t.done?' done':''}" onclick="toggleTodo('${t.id}')"></div>
       <div class="tbody">
         <div class="ttl${t.done?' done':''}">${t.title}</div>
