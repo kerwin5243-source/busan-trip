@@ -287,6 +287,7 @@ body{padding-bottom:calc(72px + env(safe-area-inset-bottom))}
 .cgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .ctile{background:rgba(255,255,255,.65);border:1px solid rgba(233,225,214,.8);border-radius:14px;padding:12px 6px;text-align:center;font-size:.78rem;font-weight:700;display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;transition:.2s;line-height:1.35}
 .ctile i{font-size:1.25rem;color:#B9B2AA}
+.ctile span{word-break:break-all;width:100%}
 .ctile.done{background:rgba(232,245,233,.9);border-color:rgba(52,199,89,.5);color:#2E7D32}
 .ctile.done i{color:#34C759}
 
@@ -296,6 +297,11 @@ body{padding-bottom:calc(72px + env(safe-area-inset-bottom))}
 .sheet{width:100%;background:var(--bg);border-radius:24px 24px 0 0;padding:14px 20px calc(env(safe-area-inset-bottom)+28px);animation:su .25s ease}
 @keyframes su{from{transform:translateY(100%)}to{transform:translateY(0)}}
 .handle{width:36px;height:4px;background:var(--div);border-radius:2px;margin:0 auto 16px}
+
+/* ── Swipe rows ── */
+#todoList{overflow:hidden}
+#souvList{overflow:hidden}
+.swipe-hint{font-size:.7rem;color:var(--ink2);opacity:.55;text-align:center;padding:4px 0 2px;letter-spacing:.02em}
 
 /* ── Misc ── */
 .divl{height:1px;background:rgba(233,225,214,.8);margin:12px 0}
@@ -974,7 +980,7 @@ function renderSouvList(){
   const el = document.getElementById('shopItems');
   if(!items.length){ el.innerHTML = `<div class="empty" style="padding:10px 0">尚無項目</div>`; return; }
   el.innerHTML = items.map((it,i)=>`
-    <div class="shop-item">
+    <div class="shop-item" data-idx="${i}">
       <div class="scheck${it.done?' done':''}" onclick="toggleShop(${i})"></div>
       <div class="sbody">
         <div class="sname${it.done?' done':''}">${it.name}</div>
@@ -988,7 +994,14 @@ function renderSouvList(){
       <span class="sedit" onclick="openSouvSheet(${i})"><i class="fa-solid fa-pen-to-square"></i></span>
       <span class="sdel" onclick="delShop(${i})"><i class="fa-solid fa-xmark"></i></span>
     </div>
-  `).join('');
+  `).join('') + `<div class="swipe-hint">← 左滑刪除　右滑編輯 →</div>`;
+  el.querySelectorAll('.shop-item[data-idx]').forEach(row => {
+    const idx = parseInt(row.dataset.idx);
+    attachSwipe(row,
+      () => { const items=getShop(souvUser); items.splice(idx,1); setShop(souvUser,items); renderSouvList(); },
+      () => openSouvSheet(idx)
+    );
+  });
 }
 
 let editSouvIdx = null;
@@ -1043,10 +1056,9 @@ function toggleShop(idx){
 }
 
 function delShop(idx){
-  const items = getShop(souvUser);
-  items.splice(idx,1);
-  setShop(souvUser,items);
-  renderSouvList();
+  const row = document.querySelector(`.shop-item[data-idx="${idx}"]`);
+  if(row){ row.style.transition='transform .2s,opacity .2s'; row.style.transform='translateX(-110%)'; row.style.opacity='0'; setTimeout(()=>{ const items=getShop(souvUser); items.splice(idx,1); setShop(souvUser,items); renderSouvList(); },200); }
+  else { const items=getShop(souvUser); items.splice(idx,1); setShop(souvUser,items); renderSouvList(); }
 }
 
 function addRecToShop(name){
@@ -1384,6 +1396,38 @@ function saveEditExp(){
 }
 
 // ════════════════════════════════════════
+// SWIPE GESTURE
+// ════════════════════════════════════════
+function attachSwipe(el, onDelete, onEdit){
+  let sx=0, sy=0, live=false;
+  const reset = ()=>{ live=false; el.style.transition='transform .2s,background .2s'; el.style.transform=''; el.style.background=''; };
+  el.addEventListener('touchstart', e=>{
+    sx=e.touches[0].clientX; sy=e.touches[0].clientY;
+    live=true; el.style.transition='none';
+  },{passive:true});
+  el.addEventListener('touchmove', e=>{
+    if(!live) return;
+    const dx=e.touches[0].clientX-sx, dy=e.touches[0].clientY-sy;
+    if(Math.abs(dy)>Math.abs(dx)+8){ reset(); return; }
+    const x=Math.max(-120,Math.min(120,dx));
+    el.style.transform=`translateX(${x}px)`;
+    el.style.background=dx<-15?'rgba(255,59,48,.1)':dx>15?'rgba(176,138,91,.1)':'';
+  },{passive:true});
+  el.addEventListener('touchend', e=>{
+    if(!live) return; live=false;
+    const dx=e.changedTouches[0].clientX-sx;
+    if(dx<-60){
+      el.style.transition='transform .22s ease,opacity .22s';
+      el.style.transform='translateX(-110%)'; el.style.opacity='0';
+      setTimeout(()=>onDelete?.(),220);
+    } else if(dx>60){
+      reset(); onEdit?.();
+    } else { reset(); }
+  },{passive:true});
+  el.addEventListener('touchcancel', reset,{passive:true});
+}
+
+// ════════════════════════════════════════
 // PREP
 // ════════════════════════════════════════
 async function initPrep(){
@@ -1419,8 +1463,8 @@ function renderTodos(){
   const todos = getTodos();
   const el = document.getElementById('todoList');
   if(!todos.length){ el.innerHTML='<div class="empty">尚無待辦事項</div>'; return; }
-  el.innerHTML = todos.map((t,i)=>`
-    <div class="todo-li${t.done?' done-item':''}">
+  el.innerHTML = todos.map((t)=>`
+    <div class="todo-li${t.done?' done-item':''}" data-id="${t.id}">
       <div class="tcheck${t.done?' done':''}" onclick="toggleTodo('${t.id}')"></div>
       <div class="tbody">
         <div class="ttl${t.done?' done':''}">${t.title}</div>
@@ -1430,7 +1474,14 @@ function renderTodos(){
       <span class="tdel2" onclick="editTodo('${t.id}')"><i class="fa-solid fa-pen-to-square"></i></span>
       <span class="tdel2" onclick="delTodo('${t.id}')"><i class="fa-solid fa-xmark"></i></span>
     </div>
-  `).join('');
+  `).join('') + `<div class="swipe-hint">← 左滑刪除　右滑編輯 →</div>`;
+  el.querySelectorAll('.todo-li[data-id]').forEach(row => {
+    const id = row.dataset.id;
+    attachSwipe(row,
+      () => { setTodos(getTodos().filter(t=>t.id!==id)); renderTodos(); },
+      () => editTodo(id)
+    );
+  });
 }
 
 function toggleTodo(id){
@@ -1441,8 +1492,9 @@ function toggleTodo(id){
 }
 
 function delTodo(id){
-  setTodos(getTodos().filter(t=>t.id!==id));
-  renderTodos();
+  const row = document.querySelector(`.todo-li[data-id="${id}"]`);
+  if(row){ row.style.transition='transform .2s,opacity .2s'; row.style.transform='translateX(-110%)'; row.style.opacity='0'; setTimeout(()=>{ setTodos(getTodos().filter(t=>t.id!==id)); renderTodos(); },200); }
+  else { setTodos(getTodos().filter(t=>t.id!==id)); renderTodos(); }
 }
 
 function openTodoSheet(){ editTodoId=null; document.getElementById('todoSheetTitle').textContent='新增待辦'; document.getElementById('todoSaveBtn').textContent='新增'; document.getElementById('todoTitle').value=''; document.getElementById('todoNote').value=''; document.getElementById('todoLink').value=''; document.getElementById('todoOverlay').classList.add('open') }
