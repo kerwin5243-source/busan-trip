@@ -1,0 +1,151 @@
+[
+  {
+    "date": "06/09",
+    "day": "二",
+    "loc": "機張 · 龍宮寺",
+    "hotel_id": "H1",
+    "photos": [],
+    "items": [
+      {
+        "id": "0609_01",
+        "time": "08:30",
+        "title": "機張市場（기장시장）",
+        "tag": "food",
+        "subtag": "市場",
+        "desc": "釜山最大海鮮市場，螃蟹和活海鮮超便宜",
+        "detail": "必買：\n• 活螃蟹（꽃게 / 대게）\n• 各種生猛海鮮\n\n玩法：\n• 1 樓選購海鮮\n• 請攤販介紹並委託附近餐廳加工",
+        "addr": "釜山廣域市 機張郡 機張邑 機張市場1街",
+        "mapcode": "",
+        "parking": "",
+        "hours": "05:00–15:00（早去最新鮮）",
+        "price": "依選購海鮮",
+        "stay": "2 hr",
+        "guide": [
+          "週二是機張市場最大的五日市集日，人潮和貨品最多",
+          "早上 8 點是最新鮮的時段，超過 11 點好東西就被挑走了"
+        ],
+        "avoid": ["注意秤重，建議多家比價"],
+        "links": [],
+        "menu": [],
+        "reservations": [],
+        "highlight": true
+      },
+      {
+        "id": "0609_02",
+        "time": "11:30",
+        "title": "機張 → 龍宮寺",
+        "tag": "route",
+        "subtag": "",
+        "desc": "",
+        "detail": "",
+        "addr": "",
+        "mapcode": "",
+        "parking": "",
+        "hours": "",
+        "price": "",
+        "stay": "15 min",
+        "guide": [],
+        "avoid": [],
+        "links": [],
+        "menu": [],
+        "reservations": [],
+        "route": {
+          "mode": "transit",
+          "from": "機張市場",
+          "to": "龍宮寺",
+          "minutes": 15
+        }
+      },
+      {
+        "id": "0609_03",
+        "time": "12:00",
+        "title": "海東龍宮寺（해동용궁사）",
+        "tag": "sight",
+        "subtag": "寺廟",
+        "desc": "建在海邊懸崖上的奇特寺廟，景色壯觀",
+        "detail": "亮點：\n• 海邊觀音像\n• 十二生肖石像\n• 退潮時可走到礁石邊\n\n傳說：\n• 到龍宮寺許一個願望，離開時不要回頭，願望會成真",
+        "addr": "釜山廣域市 機張郡 機張邑 龍宮吉86",
+        "mapcode": "",
+        "parking": "",
+        "hours": "05:00–18:00",
+        "price": "免費",
+        "stay": "1.5 hr",
+        "guide": [
+          "退潮時往海邊走，風景很壯觀",
+          "寺廟階梯旁有很多賣炸物和海鮮麵的攤販"
+        ],
+        "avoid": ["石板路濕滑，注意腳步"],
+        "links": [],
+        "menu": [],
+        "reservations": [],
+        "highlight": true
+      },
+      {
+        "id": "0609_04",
+        "time": "14:00",
+        "title": "午餐：龍宮寺附近",
+        "tag": "food",
+        "subtag": "韓食",
+        "desc": "寺廟外有現炸海鮮攤",
+        "detail": "推薦：\n• 龍宮寺入口炸物攤：炸海鮮餅、炸魚\n• 周邊有家常式海鮮湯麵餐廳",
+        "addr": "龍宮寺入口周邊",
+        "mapcode": "",
+        "parking": "",
+        "hours": "",
+        "price": "約 ₩8,000–15,000",
+        "stay": "1 hr",
+        "guide": [],
+        "avoid": [],
+        "links": [],
+        "menu": [],
+        "reservations": []
+      },
+      {
+        "id": "0609_05",
+        "time": "16:00",
+        "title": "釜山市區購物 / 自由活動",
+        "tag": "shop",
+        "subtag": "購物",
+        "desc": "自由購物時間",
+        "detail": "推薦地點：\n• 서면（西面）：年輕人購物街，LOTTE YOUNG PLAZA、ABC Mart\n• 南浦洞：光復路地下商店街\n• 海雲台 SHINSEGAE Centum City：世界最大百貨公司",
+        "addr": "",
+        "mapcode": "",
+        "parking": "",
+        "hours": "",
+        "price": "",
+        "stay": "3 hr",
+        "guide": [
+          "SHINSEGAE Centum City 有免稅店和溫水游泳池，非常值得一逛",
+          "西面有很多文青咖啡廳和潮流店"
+        ],
+        "avoid": [],
+        "links": [],
+        "menu": [],
+        "reservations": []
+      },
+      {
+        "id": "0609_06",
+        "time": "19:30",
+        "title": "晚餐：삼겹살（三層肉）烤肉",
+        "tag": "food",
+        "subtag": "燒烤",
+        "desc": "韓式三層肉烤肉，自己動手烤",
+        "detail": "點餐建議：\n• 삼겹살（三層肉）₩12,000/人份\n• 목살（頸肉）₩12,000/人份\n• 配：된장찌개（大醬鍋）或 냉면（冷麵）\n• 一定要包生菜（상추쌈）配蒜片和辣椒一起吃",
+        "addr": "西面 / 南浦洞 周邊",
+        "mapcode": "",
+        "parking": "",
+        "hours": "",
+        "price": "約 ₩15,000–20,000 / 人",
+        "stay": "1.5 hr",
+        "guide": [
+          "韓國烤肉一般 2 人份起點，6 人一起點很划算",
+          "烤肉完記得換衣服，油煙味很重"
+        ],
+        "avoid": [],
+        "links": [],
+        "menu": [],
+        "reservations": []
+      }
+    ]
+  }
+]

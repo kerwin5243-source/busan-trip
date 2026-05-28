@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>月半家族釜山之旅</title>
+<link rel="manifest" href="/manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#F6F3EE">
+<link rel="apple-touch-icon" sizes="180x180" href="/icon/apple-touch-icon-180.png">
+<link rel="apple-touch-icon" sizes="167x167" href="/icon/apple-touch-icon-167.png">
+<link rel="apple-touch-icon" sizes="152x152" href="/icon/apple-touch-icon-152.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/icon/favicon-32.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@600;700;900&family=Roboto+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+:root{
+  --bg:#F6F3EE; --card:rgba(255,255,255,.72); --ink:#1E1E1E; --ink2:#6F6A62;
+  --div:#E9E1D6; --pri:#2B2723; --acc:#B08A5B;
+  --rL:24px; --rM:18px; --rS:14px;
+  --shd:0 8px 24px rgba(0,0,0,.08);
+  --sans:"Noto Sans TC",system-ui,sans-serif;
+  --serif:"Noto Serif TC",serif;
+  --mono:"Roboto Mono",monospace;
+}
+*,*::before,*::after{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);min-height:100dvh;overscroll-behavior-y:none}
+body{padding-bottom:calc(72px + env(safe-area-inset-bottom))}
+
+/* ── Header ── */
+.hdr{
+  padding:calc(env(safe-area-inset-top)+14px) 20px 10px;
+  text-align:center;position:sticky;top:0;z-index:100;
+  background:linear-gradient(to bottom,rgba(246,243,238,1) 70%,rgba(246,243,238,0));
+}
+.hdr-title{font-family:var(--serif);font-size:1.28rem;font-weight:900;letter-spacing:.03em;margin:0;color:var(--pri)}
+.hdr-sub{font-size:.74rem;color:var(--ink2);font-weight:700;margin-top:3px;letter-spacing:.1em}
+.hdr-meta{display:flex;justify-content:center;gap:7px;margin-top:5px}
+.year-pill{font-size:.67rem;font-weight:900;padding:3px 10px;border-radius:999px;border:1px solid rgba(176,138,91,.5);background:rgba(255,255,255,.65);color:#7D5B34}
+
+/* ── Bottom Nav ── */
+.nav{
+  position:fixed;bottom:0;left:0;right:0;
+  height:calc(60px + env(safe-area-inset-bottom));
+  padding-bottom:env(safe-area-inset-bottom);
+  background:rgba(246,243,238,.92);backdrop-filter:blur(18px);
+  border-top:1px solid rgba(233,225,214,.8);
+  display:flex;z-index:200;
+}
+.nav-btn{
+  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:3px;cursor:pointer;color:var(--ink2);font-size:.6rem;font-weight:800;transition:.15s;
+}
+.nav-btn i{font-size:1.2rem;transition:transform .15s}
+.nav-btn.on{color:var(--acc)}
+.nav-btn.on i{transform:translateY(-1px)}
+
+/* ── Pages ── */
+.page{display:none;padding:6px 16px 20px;animation:fadeIn .22s ease}
+.page.on{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── Card ── */
+.card{background:var(--card);border:1px solid rgba(233,225,214,.85);border-radius:var(--rL);padding:18px;margin-bottom:14px;box-shadow:var(--shd);backdrop-filter:blur(10px)}
+
+/* ── Section title ── */
+.sec{font-family:var(--serif);font-size:1rem;font-weight:900;color:var(--pri);margin:0 0 11px;display:flex;align-items:center;gap:8px}
+.sec i{color:#8B8175;font-size:.9rem}
+
+/* ── Segment ── */
+.seg{display:flex;gap:5px;background:rgba(233,225,214,.9);padding:4px;border-radius:14px;margin-bottom:11px}
+.seg-btn{flex:1;text-align:center;padding:9px 0;border-radius:10px;font-weight:900;font-size:.88rem;color:var(--ink2);cursor:pointer;transition:.2s;user-select:none}
+.seg-btn.on{background:#fff;color:var(--pri);box-shadow:0 4px 12px rgba(0,0,0,.09)}
+
+/* ── User tabs ── */
+.utabs{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:4px;background:rgba(233,225,214,.9);border-radius:14px;margin-bottom:12px}
+.utabs::-webkit-scrollbar{display:none}
+.utab{flex:0 0 auto;padding:8px 14px;border-radius:10px;font-weight:800;font-size:.85rem;color:var(--ink2);cursor:pointer;transition:.2s;white-space:nowrap}
+.utab.on{background:#fff;color:var(--pri);box-shadow:0 4px 12px rgba(0,0,0,.09)}
+
+/* ── Form ── */
+.form-row{display:flex;gap:8px;margin-bottom:10px}
+.inp{flex:1;background:rgba(242,242,247,.95);border-radius:12px;padding:10px 12px;display:flex;align-items:center;gap:6px}
+.inp-pre{font-family:var(--mono);font-size:.8rem;color:var(--ink2);white-space:nowrap}
+.inp input{flex:1;border:none;background:none;font-size:.93rem;font-family:var(--sans);color:var(--ink);outline:none;min-width:0}
+.inp input::placeholder{color:var(--ink2);opacity:.6}
+.inp.wide{flex:3}.inp.narrow{flex:2}
+.btn-add{width:100%;padding:13px;background:var(--pri);color:#fff;border:none;border-radius:var(--rS);font-weight:900;font-size:.95rem;font-family:var(--sans);cursor:pointer;transition:transform .1s,opacity .15s;letter-spacing:.02em;margin-top:2px}
+.btn-add:active{transform:scale(.98);opacity:.9}
+
+/* ── Field label ── */
+.flabel{font-size:.8rem;font-weight:700;color:var(--ink2);margin-bottom:6px}
+
+/* ── Chips ── */
+.chips{display:flex;flex-wrap:wrap;gap:7px;margin:6px 0 10px}
+.chip{padding:7px 12px;border-radius:999px;border:1.5px solid rgba(233,225,214,.9);background:rgba(255,255,255,.8);font-weight:900;font-size:.82rem;color:var(--pri);cursor:pointer;user-select:none;transition:.15s}
+.chip.on{border-color:rgba(176,138,91,.7);background:rgba(176,138,91,.12);color:#7D5B34}
+.chip.payer{border-color:rgba(61,110,169,.6);background:rgba(61,110,169,.1);color:#2A5080}
+
+/* ── Household ── */
+.hrow{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.hall{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:900;cursor:pointer;border:1.5px solid rgba(233,225,214,.9);background:rgba(242,242,247,.9);color:var(--ink2);flex-shrink:0;transition:.15s}
+.hall.hA-on{border-color:rgba(61,110,169,.5);background:rgba(61,110,169,.1);color:#3D6EA9}
+.hall.hB-on{border-color:rgba(47,143,91,.5);background:rgba(47,143,91,.1);color:#2F8F5B}
+.hchip{padding:7px 12px;border-radius:999px;font-weight:900;font-size:.82rem;cursor:pointer;border:1.5px solid rgba(233,225,214,.9);background:rgba(255,255,255,.8);color:var(--pri);transition:.15s}
+.hchip.hA-on{border-color:rgba(61,110,169,.5);background:rgba(61,110,169,.1);color:#3D6EA9}
+.hchip.hB-on{border-color:rgba(47,143,91,.5);background:rgba(47,143,91,.1);color:#2F8F5B}
+
+/* ── Balance ── */
+.bal-cur{font-size:.78rem;font-weight:900;color:var(--ink2);margin-bottom:7px}
+.bal-row{display:flex;align-items:center;padding:7px 10px;border-radius:10px;margin-bottom:3px}
+.bal-name{font-weight:800;font-size:.93rem;flex:1}
+.badge{padding:4px 10px;border-radius:999px;font-family:var(--mono);font-size:.8rem;font-weight:600}
+.badge.pos{background:rgba(52,199,89,.12);color:#2E7D32}
+.badge.neg{background:rgba(255,59,48,.1);color:#C62828}
+.badge.zero{background:rgba(233,225,214,.9);color:var(--ink2)}
+
+/* ── Records ── */
+.rec{display:flex;align-items:center;padding:11px 14px;background:var(--card);border:1px solid rgba(233,225,214,.8);border-radius:14px;margin-bottom:8px;gap:12px;position:relative;overflow:hidden;transition:transform .25s,opacity .25s,max-height .3s}
+.rec.removing{transform:translateX(-100%);opacity:0;max-height:0;padding:0;margin:0;overflow:hidden}
+.ric{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:.95rem}
+.ric.trip{background:rgba(61,110,169,.12);color:#3D6EA9}
+.ric.pre{background:rgba(224,92,58,.12);color:#E05C3A}
+.ric.pay{background:rgba(47,143,91,.12);color:#2F8F5B}
+.rbody{flex:1;min-width:0}
+.rname{font-weight:700;font-size:.92rem}
+.rmeta{font-size:.76rem;color:var(--ink2);margin-top:2px}
+.ramt{font-family:var(--mono);font-size:.9rem;font-weight:600}
+.rdel{padding:6px 10px;color:#ccc;font-size:1rem;cursor:pointer;flex-shrink:0}
+
+/* ── Itinerary ── */
+.day-pills{display:flex;gap:7px;overflow-x:auto;scrollbar-width:none;padding:2px 0 12px}
+.day-pills::-webkit-scrollbar{display:none}
+.dpill{flex:0 0 auto;padding:7px 14px;border-radius:999px;font-weight:900;font-size:.8rem;color:var(--ink2);background:rgba(233,225,214,.7);cursor:pointer;transition:.2s;white-space:nowrap}
+.dpill.on{background:var(--pri);color:#fff}
+.tl{padding:4px 0}
+.tl-item{display:flex;gap:14px;padding:0 0 18px;position:relative}
+.tl-item::before{content:"";position:absolute;left:15px;top:32px;bottom:0;width:1.5px;background:rgba(233,225,214,.9)}
+.tl-item:last-child::before{display:none}
+.tdot{width:32px;height:32px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.85rem;margin-top:2px}
+.tbody{flex:1;min-width:0;cursor:pointer}
+.ttime{font-family:var(--mono);font-size:.73rem;color:var(--ink2);margin-bottom:3px}
+.ttitle{font-weight:800;font-size:.93rem;margin-bottom:3px}
+.tdesc{font-size:.81rem;color:var(--ink2);line-height:1.5}
+.tdetail{font-size:.79rem;color:var(--ink2);line-height:1.65;margin-top:7px;white-space:pre-line;display:none}
+.tl-item.exp .tdetail{display:block}
+.ttags{display:flex;gap:5px;flex-wrap:wrap;margin-top:5px}
+.ttag{font-size:.7rem;font-weight:800;padding:2px 8px;border-radius:999px}
+/* tag colors */
+.c-food{background:rgba(229,115,115,.18);color:#C62828}
+.c-sight{background:rgba(77,182,172,.18);color:#00695C}
+.c-transport{background:rgba(144,164,174,.18);color:#455A64}
+.c-hotel{background:rgba(149,117,205,.18);color:#4527A0}
+.c-route{background:rgba(176,190,197,.15);color:#607D8B}
+.c-shop{background:rgba(129,199,132,.18);color:#1B5E20}
+/* dot colors */
+.d-food{background:rgba(229,115,115,.22)}
+.d-sight{background:rgba(77,182,172,.22)}
+.d-transport{background:rgba(144,164,174,.22)}
+.d-hotel{background:rgba(149,117,205,.22)}
+.d-route{background:rgba(176,190,197,.2)}
+.d-shop{background:rgba(129,199,132,.22)}
+/* route card */
+.route-card{display:flex;align-items:center;gap:10px;padding:8px 12px;background:rgba(233,225,214,.3);border-radius:10px;font-size:.8rem;color:var(--ink2)}
+.star{color:#FFA000;margin-left:3px;font-size:.82rem}
+
+/* ── Info ── */
+.flight-dir{font-size:.7rem;font-weight:900;color:var(--ink2);letter-spacing:.1em;margin-bottom:5px}
+.ft{display:flex;align-items:center;gap:10px}
+.ftime{font-family:var(--serif);font-size:1.65rem;font-weight:900;color:var(--pri)}
+.farrow{flex:1;text-align:center;color:var(--acc);font-size:1rem}
+.fcity{font-size:.75rem;color:var(--ink2);margin-top:2px}
+.fmeta{font-size:.78rem;color:var(--ink2);margin-top:8px;display:flex;gap:8px;flex-wrap:wrap}
+.fbadge{padding:3px 9px;border-radius:999px;background:rgba(176,138,91,.1);border:1px solid rgba(176,138,91,.3);color:#7D5B34;font-size:.74rem;font-weight:800}
+.hdivider{height:1px;background:rgba(233,225,214,.8);margin:12px 0}
+.hrow2{display:flex;gap:8px;font-size:.84rem;margin-bottom:5px}
+.hlabel{color:var(--ink2);font-weight:700;flex-shrink:0;min-width:52px}
+.hval{flex:1}
+.notice-chip{display:inline-flex;padding:4px 10px;border-radius:999px;background:rgba(233,225,214,.7);font-size:.76rem;color:var(--ink2);font-weight:700;margin:3px 3px 0 0}
+.fac-chip{display:inline-flex;padding:4px 10px;border-radius:999px;background:rgba(176,138,91,.1);border:1px solid rgba(176,138,91,.25);font-size:.76rem;color:#7D5B34;font-weight:700;margin:3px 3px 0 0}
+.acc-toggle{display:flex;align-items:center;justify-content:space-between;cursor:pointer}
+.acc-body{display:none;margin-top:10px}
+.acc-body.open{display:block}
+
+/* ── Souvenir ── */
+.shop-item{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid rgba(233,225,214,.7)}
+.shop-item:last-child{border-bottom:none}
+.scheck{width:22px;height:22px;border-radius:6px;border:1.5px solid rgba(233,225,214,1);background:#fff;flex-shrink:0;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.15s}
+.scheck.done{background:var(--acc);border-color:var(--acc)}
+.scheck.done::after{content:"✓";color:#fff;font-size:.72rem;font-weight:900}
+.sname{flex:1;font-weight:700;font-size:.9rem}
+.sname.done{text-decoration:line-through;color:var(--ink2)}
+.sdel{color:#ccc;cursor:pointer;padding:4px;font-size:.9rem}
+.add-row{display:flex;gap:8px;margin-top:10px}
+.add-inp{flex:1;background:rgba(242,242,247,.95);border:none;border-radius:12px;padding:10px 14px;font-size:.9rem;font-family:var(--sans);color:var(--ink);outline:none}
+.add-inp::placeholder{color:var(--ink2);opacity:.6}
+.add-btn{padding:10px 16px;background:var(--acc);color:#fff;border:none;border-radius:12px;font-weight:900;font-size:.88rem;font-family:var(--sans);cursor:pointer}
+.rec-cats{display:flex;flex-direction:column;gap:12px}
+.cat-label{font-weight:900;font-size:.87rem;color:var(--pri);margin-bottom:6px}
+.cat-chips{display:flex;flex-wrap:wrap;gap:6px}
+.rchip{padding:6px 12px;border-radius:999px;border:1px solid rgba(233,225,214,.9);background:rgba(255,255,255,.7);font-size:.82rem;font-weight:700;color:var(--ink);cursor:pointer;transition:.15s;user-select:none}
+.rchip:active{transform:scale(.96);background:rgba(176,138,91,.1)}
+
+/* ── Prep todos ── */
+.todo-li{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid rgba(233,225,214,.7)}
+.todo-li:last-child{border-bottom:none}
+.tcheck{width:22px;height:22px;border-radius:50%;border:1.5px solid rgba(233,225,214,1);background:#fff;flex-shrink:0;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.15s;margin-top:1px}
+.tcheck.done{background:#34C759;border-color:#34C759}
+.tcheck.done::after{content:"✓";color:#fff;font-size:.72rem;font-weight:900}
+.tbody{flex:1}
+.ttl{font-weight:800;font-size:.9rem}
+.ttl.done{color:var(--ink2);text-decoration:line-through}
+.tnote{font-size:.78rem;color:var(--ink2);margin-top:2px}
+.tlink{font-size:.76rem;color:var(--acc);margin-top:3px}
+.tdel2{color:#ddd;cursor:pointer;padding:4px;flex-shrink:0}
+
+/* ── Checklist ── */
+.prog-bar{height:6px;background:var(--div);border-radius:999px;overflow:hidden;margin:8px 0}
+.prog-fill{height:100%;background:#34C759;border-radius:999px;transition:width .3s ease}
+.cgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.ctile{background:rgba(255,255,255,.65);border:1px solid rgba(233,225,214,.8);border-radius:14px;padding:12px 6px;text-align:center;font-size:.78rem;font-weight:700;display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;transition:.2s;line-height:1.35}
+.ctile i{font-size:1.25rem;color:#B9B2AA}
+.ctile.done{background:rgba(232,245,233,.9);border-color:rgba(52,199,89,.5);color:#2E7D32}
+.ctile.done i{color:#34C759}
+
+/* ── Modal ── */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:300;align-items:flex-end}
+.overlay.open{display:flex}
+.sheet{width:100%;background:var(--bg);border-radius:24px 24px 0 0;padding:14px 20px calc(env(safe-area-inset-bottom)+28px);animation:su .25s ease}
+@keyframes su{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.handle{width:36px;height:4px;background:var(--div);border-radius:2px;margin:0 auto 16px}
+
+/* ── Misc ── */
+.divl{height:1px;background:rgba(233,225,214,.8);margin:12px 0}
+.empty{text-align:center;padding:24px 0;color:var(--ink2);font-size:.88rem}
+.mt8{margin-top:8px}.mt12{margin-top:12px}.mt16{margin-top:16px}
+.dayhead{background:var(--card);border:1px solid rgba(233,225,214,.8);border-radius:18px;padding:12px 16px;margin-bottom:14px;display:flex;gap:10px;align-items:center}
+.dayhead-day{font-family:var(--serif);font-size:1.4rem;font-weight:900;color:var(--pri)}
+.dayhead-info{flex:1}
+.dayhead-date{font-size:.75rem;font-weight:900;color:var(--acc);margin-bottom:2px}
+.dayhead-loc{font-size:.88rem;font-weight:800;color:var(--pri)}
+</style>
+</head>
+<body>
+
+<!-- ══════════════ HEADER ══════════════ -->
+<header class="hdr">
+  <div class="hdr-title">月半家族釜山之旅</div>
+  <div class="hdr-sub">해운대 · 남포동 · 서면 · 광안리</div>
+  <div class="hdr-meta">
+    <span class="year-pill">5天4夜</span>
+    <span class="year-pill">2026</span>
+  </div>
+</header>
+
+<!-- ══════════════ PAGES ══════════════ -->
+
+<!-- 行程 -->
+<div id="pg-itin" class="page on">
+  <div class="day-pills" id="dayPills"></div>
+  <div id="dayContent"><div class="empty"><i class="fa fa-spinner fa-spin"></i> 載入中…</div></div>
+</div>
+
+<!-- 資訊 -->
+<div id="pg-info" class="page">
+  <div class="sec"><i class="fa-solid fa-plane"></i>航班資訊</div>
+  <div id="flightCard" class="card"></div>
+  <div class="sec mt12"><i class="fa-solid fa-hotel"></i>住宿資訊</div>
+  <div id="hotelCard"></div>
+</div>
+
+<!-- 伴手禮 -->
+<div id="pg-souv" class="page">
+  <div class="sec"><i class="fa-solid fa-bag-shopping"></i>代購清單</div>
+  <div class="utabs" id="souvTabs"></div>
+  <div class="card" id="souvList">
+    <div id="shopItems"></div>
+    <div class="add-row">
+      <input class="add-inp" id="shopInp" placeholder="新增代購項目…" maxlength="40">
+      <button class="add-btn" onclick="addShopItem()"><i class="fa-solid fa-plus"></i></button>
+    </div>
+  </div>
+  <div class="sec mt12"><i class="fa-solid fa-gift"></i>伴手禮推薦</div>
+  <div class="card">
+    <div class="rec-cats" id="recCats"></div>
+  </div>
+</div>
+
+<!-- 記帳 -->
+<div id="pg-money" class="page">
+  <!-- Mode & currency -->
+  <div class="seg" id="modeSeg">
+    <div class="seg-btn on" onclick="setMode('exp',this)">新增支出</div>
+    <div class="seg-btn" onclick="setMode('pay',this)">收付款</div>
+  </div>
+  <div class="seg" id="curSeg">
+    <div class="seg-btn on" onclick="setCur('KRW',this)">韓幣 (₩)</div>
+    <div class="seg-btn" onclick="setCur('TWD',this)">台幣 (NT$)</div>
+  </div>
+
+  <!-- Input form -->
+  <div class="card" id="moneyForm">
+    <div class="form-row">
+      <div class="inp wide"><input id="mName" placeholder="項目 / 備註" maxlength="30"></div>
+      <div class="inp narrow"><span class="inp-pre" id="curPre">₩</span><input id="mAmt" type="number" inputmode="numeric" placeholder="金額"></div>
+    </div>
+    <button class="btn-add" onclick="addRecord()">加入紀錄</button>
+    <div class="divl mt12"></div>
+    <div class="flabel" id="payerLabel">付款人</div>
+    <div class="chips" id="payerChips"></div>
+    <div id="payeeRow" style="display:none">
+      <div class="flabel">收款人</div>
+      <div class="chips" id="payeeChips"></div>
+    </div>
+    <div id="expTypeRow">
+      <div class="seg" id="expTypeSeg">
+        <div class="seg-btn on" onclick="setExpType('trip',this)">行中支出</div>
+        <div class="seg-btn" onclick="setExpType('prepaid',this)">預付費用</div>
+      </div>
+      <div class="flabel">分攤成員</div>
+      <div id="houseA" class="hrow"></div>
+      <div id="houseB" class="hrow"></div>
+    </div>
+  </div>
+
+  <!-- Balance -->
+  <div class="sec"><i class="fa-solid fa-scale-balanced"></i>個人結算</div>
+  <div class="card" id="balCard">
+    <div class="bal-cur">₩ 韓幣</div>
+    <div id="balKRW"></div>
+    <div class="divl"></div>
+    <div class="bal-cur">NT$ 台幣</div>
+    <div id="balTWD"></div>
+  </div>
+
+  <!-- Records -->
+  <div class="sec mt4"><i class="fa-solid fa-receipt"></i>支出明細</div>
+  <div id="expRecs"></div>
+  <div class="sec mt8" id="paySecTitle" style="display:none"><i class="fa-solid fa-arrows-left-right"></i>收付款明細</div>
+  <div id="payRecs"></div>
+</div>
+
+<!-- 行前 -->
+<div id="pg-prep" class="page">
+  <!-- Todos -->
+  <div style="display:flex;align-items:center;margin-bottom:11px">
+    <div class="sec" style="margin:0;flex:1"><i class="fa-solid fa-circle-check"></i>出發前待辦</div>
+    <button onclick="openTodoSheet()" style="padding:5px 12px;border:none;border-radius:999px;background:rgba(176,138,91,.12);color:var(--acc);font-weight:900;font-size:.82rem;font-family:var(--sans);cursor:pointer"><i class="fa-solid fa-plus"></i> 新增</button>
+  </div>
+  <div class="card" id="todoList"></div>
+
+  <!-- Packing -->
+  <div class="sec mt12"><i class="fa-solid fa-suitcase"></i>個人行李清單</div>
+  <div class="utabs" id="packTabs"></div>
+  <div class="card" style="margin-bottom:12px">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <span style="font-weight:800;font-size:.9rem">打包進度</span>
+      <span class="badge zero" id="packProgress">0 / 0</span>
+    </div>
+    <div class="prog-bar"><div class="prog-fill" id="packBar" style="width:0%"></div></div>
+  </div>
+  <div class="sec" style="font-size:.92rem"><i class="fa-solid fa-backpack" style="color:#8B8175;font-size:.85rem"></i>隨身行李</div>
+  <div class="card"><div class="cgrid" id="carryGrid"></div></div>
+  <div class="sec mt8" style="font-size:.92rem"><i class="fa-solid fa-luggage-cart" style="color:#8B8175;font-size:.85rem"></i>托運行李</div>
+  <div class="card"><div class="cgrid" id="checkGrid"></div></div>
+</div>
+
+<!-- ══════════════ BOTTOM NAV ══════════════ -->
+<nav class="nav">
+  <div class="nav-btn on" onclick="showPage('itin',this)"><i class="fa-regular fa-calendar-days"></i><span>行程</span></div>
+  <div class="nav-btn" onclick="showPage('info',this)"><i class="fa-solid fa-circle-info"></i><span>資訊</span></div>
+  <div class="nav-btn" onclick="showPage('souv',this)"><i class="fa-solid fa-gift"></i><span>伴手禮</span></div>
+  <div class="nav-btn" onclick="showPage('money',this)"><i class="fa-solid fa-wallet"></i><span>記帳</span></div>
+  <div class="nav-btn" onclick="showPage('prep',this)"><i class="fa-solid fa-list-check"></i><span>行前</span></div>
+</nav>
+
+<!-- ══════════════ TODO ADD SHEET ══════════════ -->
+<div class="overlay" id="todoOverlay" onclick="closeTodoSheet(event)">
+  <div class="sheet">
+    <div class="handle"></div>
+    <div style="font-family:var(--serif);font-size:1.1rem;font-weight:900;margin-bottom:14px" id="todoSheetTitle">新增待辦</div>
+    <div class="flabel">標題</div>
+    <input class="add-inp" id="todoTitle" placeholder="例：韓圜換匯" style="width:100%;margin-bottom:10px">
+    <div class="flabel">備註</div>
+    <input class="add-inp" id="todoNote" placeholder="例：建議到明洞換匯" style="width:100%;margin-bottom:10px">
+    <div class="flabel">連結 URL</div>
+    <input class="add-inp" id="todoLink" placeholder="https://…" type="url" style="width:100%;margin-bottom:16px">
+    <button class="btn-add" onclick="saveTodo()" id="todoSaveBtn">新增</button>
+  </div>
+</div>
+
+<script>
+// ════════════════════════════════════════
+// CONFIG
+// ════════════════════════════════════════
+const MEMBERS = ['Kerwin','Franceca','Lotto','Latte','Hao','Ming'];
+const HOUSE_A = ['Kerwin','Franceca','Lotto'];
+const HOUSE_B = ['Latte','Hao','Ming'];
+const DAYS = [
+  {date:'06/06',day:'六',label:'D1 出發',file:'2026-06-06.json'},
+  {date:'06/07',day:'日',label:'D2 甘川',file:'2026-06-07.json'},
+  {date:'06/08',day:'一',label:'D3 海雲台',file:'2026-06-08.json'},
+  {date:'06/09',day:'二',label:'D4 機張',file:'2026-06-09.json'},
+  {date:'06/10',day:'三',label:'D5 返台',file:'2026-06-10.json'},
+];
+const TAG_ICON = {food:'fa-utensils',sight:'fa-camera',transport:'fa-bus',hotel:'fa-hotel',route:'fa-arrow-right-long',shop:'fa-bag-shopping'};
+
+// ════════════════════════════════════════
+// STATE
+// ════════════════════════════════════════
+let curDay = 0;
+let moneyMode = 'exp';   // exp | pay
+let moneyCur = 'KRW';
+let expType = 'trip';
+let selPayer = MEMBERS[0];
+let selPayee = MEMBERS[1];
+let selParts = new Set(MEMBERS);
+let souvUser = MEMBERS[0];
+let packUser = MEMBERS[0];
+let editTodoId = null;
+
+// Loaded data
+let itin = {};   // date -> items[]
+let souvenirs = [];
+let checklists = {carry:[],check:[]};
+
+// ════════════════════════════════════════
+// NAV
+// ════════════════════════════════════════
+function showPage(id, btn){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('on'));
+  document.getElementById('pg-'+id).classList.add('on');
+  btn.classList.add('on');
+}
+
+// ════════════════════════════════════════
+// STORAGE
+// ════════════════════════════════════════
+const LS = {
+  get:(k,d=[])=>{ try{ return JSON.parse(localStorage.getItem(k))??d }catch{ return d } },
+  set:(k,v)=>localStorage.setItem(k,JSON.stringify(v)),
+};
+function getExpenses(){ return LS.get('busan_expenses',[]) }
+function setExpenses(v){ LS.set('busan_expenses',v) }
+function getPayments(){ return LS.get('busan_payments',[]) }
+function setPayments(v){ LS.set('busan_payments',v) }
+function getTodos(){ return LS.get('busan_todos',[]) }
+function setTodos(v){ LS.set('busan_todos',v) }
+function getShop(u){ return LS.get('busan_shop_'+u,[]) }
+function setShop(u,v){ LS.set('busan_shop_'+u,v) }
+function getCarry(u){ return new Set(LS.get('busan_carry_'+u,[])) }
+function setCarry(u,s){ LS.set('busan_carry_'+u,[...s]) }
+function getCheck(u){ return new Set(LS.get('busan_check_'+u,[])) }
+function setCheck(u,s){ LS.set('busan_check_'+u,[...s]) }
+
+// ════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════
+async function init(){
+  if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');
+  buildDayPills();
+  loadDay(0);
+  loadInfo();
+  initMoney();
+  loadSouvenirs();
+  initPrep();
+}
+
+// ════════════════════════════════════════
+// ITINERARY
+// ════════════════════════════════════════
+function buildDayPills(){
+  const el = document.getElementById('dayPills');
+  el.innerHTML = DAYS.map((d,i)=>
+    `<div class="dpill${i===0?' on':''}" onclick="loadDay(${i},this)">${d.label}</div>`
+  ).join('');
+}
+
+async function loadDay(idx, btn){
+  curDay = idx;
+  document.querySelectorAll('.dpill').forEach((p,i)=>p.classList.toggle('on',i===idx));
+  const d = DAYS[idx];
+  if(!itin[d.file]){
+    document.getElementById('dayContent').innerHTML = '<div class="empty"><i class="fa fa-spinner fa-spin"></i></div>';
+    const res = await fetch('./data/itinerary/'+d.file);
+    const arr = await res.json();
+    itin[d.file] = arr[0].items;
+  }
+  renderDay(idx);
+}
+
+function tagClass(tag){ return 'c-'+(tag||'route') }
+function dotClass(tag){ return 'd-'+(tag||'route') }
+function tagIcon(tag){ return TAG_ICON[tag]||'fa-circle-dot' }
+
+function renderDay(idx){
+  const d = DAYS[idx];
+  const items = itin[d.file]||[];
+  let h = `<div class="dayhead">
+    <div class="dayhead-day">${d.day}</div>
+    <div class="dayhead-info">
+      <div class="dayhead-date">2026 / ${d.date}</div>
+      <div class="dayhead-loc">${items[0]?.addr?items.find(it=>it.addr)?.addr?.split(' ')[0]||d.label:d.label}</div>
+    </div>
+  </div><div class="tl">`;
+  items.forEach((it,i)=>{
+    if(it.tag==='route'){
+      const r = it.route||{};
+      const modeIcon = r.mode==='plane'?'fa-plane':r.mode==='transit'?'fa-train-subway':'fa-car-side';
+      h += `<div class="tl-item">
+        <div class="tdot ${dotClass(it.tag)}" style="color:#78909C"><i class="fa-solid ${modeIcon}"></i></div>
+        <div class="tbody" onclick="toggleItem(this)">
+          <div class="ttime">${it.time}</div>
+          <div class="route-card"><i class="fa-solid fa-arrow-right-long" style="color:var(--acc)"></i> ${r.from||''} → ${r.to||''}${r.minutes?' ('+r.minutes+'min)':''}</div>
+        </div>
+      </div>`;
+      return;
+    }
+    const star = it.highlight?`<span class="star">★</span>`:'';
+    const desc = it.desc?`<div class="tdesc">${it.desc}</div>`:'';
+    const detail = it.detail?`<div class="tdetail">${it.detail}</div>`:'';
+    const price = it.price?`<span class="ttag ${tagClass('route')}">${it.price}</span>`:'';
+    const stay = it.stay?`<span class="ttag ${tagClass('route')}">${it.stay}</span>`:'';
+    const addr = it.addr?`<div class="tdesc mt8" style="font-size:.76rem"><i class="fa-solid fa-location-dot" style="color:var(--acc);margin-right:4px"></i>${it.addr}</div>`:'';
+    h += `<div class="tl-item" id="tli_${it.id}">
+      <div class="tdot ${dotClass(it.tag)}" style="color:inherit"><i class="fa-solid ${tagIcon(it.tag)}" style="opacity:.7"></i></div>
+      <div class="tbody" onclick="toggleItem(this)">
+        <div class="ttime">${it.time}</div>
+        <div class="ttitle">${it.title}${star}</div>
+        ${desc}
+        <div class="ttags">
+          ${it.subtag?`<span class="ttag ${tagClass(it.tag)}">${it.subtag}</span>`:''}
+          ${price}${stay}
+        </div>
+        ${detail}
+        ${addr}
+      </div>
+    </div>`;
+  });
+  h += '</div>';
+  document.getElementById('dayContent').innerHTML = h;
+}
+
+function toggleItem(el){ el.parentElement.classList.toggle('exp') }
+
+// ════════════════════════════════════════
+// INFO
+// ════════════════════════════════════════
+async function loadInfo(){
+  const [fr, hr] = await Promise.all([
+    fetch('./data/flights.json').then(r=>r.json()),
+    fetch('./data/hotels.json').then(r=>r.json()),
+  ]);
+  renderFlight(fr);
+  renderHotels(hr);
+}
+
+function renderFlight(f){
+  const o = f.outbound, i = f.inbound;
+  document.getElementById('flightCard').innerHTML = `
+    <div class="flight-dir">▲ 去程 · ${f.carrier} ${o.flight_no}</div>
+    <div class="ft">
+      <div><div class="ftime">${o.depart_time}</div><div class="fcity">${o.from.city} (${o.from.code}) · ${o.from.terminal}</div></div>
+      <div class="farrow"><i class="fa-solid fa-plane"></i></div>
+      <div style="text-align:right"><div class="ftime">${o.arrive_time}</div><div class="fcity">${o.to.city} (${o.to.code})</div></div>
+    </div>
+    <div class="fmeta"><span class="fbadge">${o.date}</span><span class="fbadge">${o.aircraft}</span><span class="fbadge"><i class="fa-solid fa-suitcase"></i> ${o.baggage.checked} × ${o.baggage.pieces}</span></div>
+    <div class="hdivider"></div>
+    <div class="flight-dir">▼ 回程 · ${f.carrier} ${i.flight_no}</div>
+    <div class="ft">
+      <div><div class="ftime">${i.depart_time}</div><div class="fcity">${i.from.city} (${i.from.code}) · ${i.from.terminal}</div></div>
+      <div class="farrow"><i class="fa-solid fa-plane fa-flip-horizontal"></i></div>
+      <div style="text-align:right"><div class="ftime">${i.arrive_time}</div><div class="fcity">${i.to.city} (${i.to.code}) · ${i.to.terminal}</div></div>
+    </div>
+    <div class="fmeta"><span class="fbadge">${i.date}</span><span class="fbadge">${i.aircraft}</span><span class="fbadge"><i class="fa-solid fa-suitcase"></i> ${i.baggage.checked} × ${i.baggage.pieces}</span></div>
+  `;
+}
+
+function renderHotels(list){
+  document.getElementById('hotelCard').innerHTML = list.map(h=>`
+    <div class="card">
+      <div class="acc-toggle" onclick="this.nextElementSibling.classList.toggle('open')">
+        <div>
+          <div style="font-weight:900;font-size:1rem">${h.name}</div>
+          <div style="font-size:.78rem;color:var(--ink2);margin-top:3px">${h.stay.from} ～ ${h.stay.to} · ${h.nights}晚</div>
+        </div>
+        <i class="fa-solid fa-chevron-down" style="color:var(--ink2)"></i>
+      </div>
+      <div class="acc-body">
+        <div class="hdivider"></div>
+        <div class="hrow2"><span class="hlabel">入住</span><span class="hval">CI ${h.checkin} / CO ${h.checkout}</span></div>
+        <div class="hrow2"><span class="hlabel">地址</span><span class="hval">${h.address_zh}</span></div>
+        <div class="hrow2"><span class="hlabel">電話</span><span class="hval">${h.phone}</span></div>
+        ${h.desc?`<div style="font-size:.82rem;color:var(--ink2);margin-top:8px;line-height:1.6">${h.desc}</div>`:''}
+        <div style="margin-top:10px">${h.facilities.map(f=>`<span class="fac-chip">${f}</span>`).join('')}</div>
+        <div style="margin-top:8px;font-size:.8rem;font-weight:700;color:var(--ink2)">注意事項</div>
+        <div style="margin-top:4px">${h.notices.map(n=>`<div style="font-size:.79rem;color:var(--ink2);padding:2px 0">• ${n}</div>`).join('')}</div>
+        <div style="margin-top:8px;font-size:.8rem;font-weight:700;color:var(--ink2)">周邊</div>
+        <div style="margin-top:4px">${h.nearby.map(n=>`<div style="font-size:.79rem;color:var(--ink2);padding:2px 0">📍 ${n}</div>`).join('')}</div>
+        ${h.mapcode?`<a href="https://maps.google.com?q=${h.mapcode}" target="_blank" style="display:inline-flex;align-items:center;gap:6px;margin-top:12px;padding:8px 14px;border-radius:12px;background:rgba(176,138,91,.12);color:#7D5B34;font-size:.82rem;font-weight:800;text-decoration:none"><i class="fa-solid fa-map-location-dot"></i>在地圖中開啟</a>`:''}
+      </div>
+    </div>
+  `).join('');
+}
+
+// ════════════════════════════════════════
+// SOUVENIR
+// ════════════════════════════════════════
+async function loadSouvenirs(){
+  const [sv, sk] = await Promise.all([
+    fetch('./data/souvenirs.json').then(r=>r.json()),
+    Promise.resolve(), // shop data from localStorage
+  ]);
+  souvenirs = sv;
+  renderSouvTabs();
+  renderSouvList();
+  renderRecs();
+}
+
+function renderSouvTabs(){
+  document.getElementById('souvTabs').innerHTML = MEMBERS.map((m,i)=>
+    `<div class="utab${i===0?' on':''}" onclick="setSouvUser('${m}',this)">${m}</div>`
+  ).join('');
+}
+
+function setSouvUser(u, el){
+  souvUser = u;
+  document.querySelectorAll('#souvTabs .utab').forEach(t=>t.classList.remove('on'));
+  el.classList.add('on');
+  renderSouvList();
+}
+
+function renderSouvList(){
+  const items = getShop(souvUser);
+  const el = document.getElementById('shopItems');
+  if(!items.length){ el.innerHTML = `<div class="empty" style="padding:10px 0">尚無項目</div>`; return; }
+  el.innerHTML = items.map((it,i)=>`
+    <div class="shop-item">
+      <div class="scheck${it.done?' done':''}" onclick="toggleShop(${i})"></div>
+      <span class="sname${it.done?' done':''}">${it.name}</span>
+      <span class="sdel" onclick="delShop(${i})"><i class="fa-solid fa-xmark"></i></span>
+    </div>
+  `).join('');
+}
+
+function addShopItem(){
+  const inp = document.getElementById('shopInp');
+  const name = inp.value.trim();
+  if(!name) return;
+  const items = getShop(souvUser);
+  items.push({name,done:false});
+  setShop(souvUser,items);
+  inp.value='';
+  renderSouvList();
+}
+
+function toggleShop(idx){
+  const items = getShop(souvUser);
+  items[idx].done = !items[idx].done;
+  setShop(souvUser,items);
+  renderSouvList();
+}
+
+function delShop(idx){
+  const items = getShop(souvUser);
+  items.splice(idx,1);
+  setShop(souvUser,items);
+  renderSouvList();
+}
+
+function addRecToShop(name){
+  const items = getShop(souvUser);
+  if(items.find(i=>i.name===name)) return;
+  items.push({name,done:false});
+  setShop(souvUser,items);
+  renderSouvList();
+  // flash feedback
+  event.target.style.background='rgba(176,138,91,.2)';
+  setTimeout(()=>{ if(event.target) event.target.style.background=''; },400);
+}
+
+function renderRecs(){
+  document.getElementById('recCats').innerHTML = souvenirs.map(cat=>`
+    <div>
+      <div class="cat-label">• ${cat.region}</div>
+      <div class="cat-chips">${cat.items.map(it=>
+        `<span class="rchip" onclick="addRecToShop('${it.name.replace(/'/g,"\\'")}')">${it.name}</span>`
+      ).join('')}</div>
+    </div>
+  `).join('');
+}
+
+document.getElementById('shopInp').addEventListener('keydown',e=>{ if(e.key==='Enter') addShopItem() });
+
+// ════════════════════════════════════════
+// MONEY
+// ════════════════════════════════════════
+function initMoney(){
+  renderPayerChips();
+  renderPayeeChips();
+  renderHousePicker();
+  renderRecords();
+  renderBalance();
+}
+
+function setMode(m, el){
+  moneyMode = m;
+  document.querySelectorAll('#modeSeg .seg-btn').forEach(b=>b.classList.remove('on'));
+  el.classList.add('on');
+  document.getElementById('payeeRow').style.display = m==='pay'?'block':'none';
+  document.getElementById('expTypeRow').style.display = m==='pay'?'none':'block';
+}
+
+function setCur(c, el){
+  moneyCur = c;
+  document.querySelectorAll('#curSeg .seg-btn').forEach(b=>b.classList.remove('on'));
+  el.classList.add('on');
+  document.getElementById('curPre').textContent = c==='KRW'?'₩':'NT$';
+}
+
+function setExpType(t, el){
+  expType = t;
+  document.querySelectorAll('#expTypeSeg .seg-btn').forEach(b=>b.classList.remove('on'));
+  el.classList.add('on');
+}
+
+function renderPayerChips(){
+  document.getElementById('payerChips').innerHTML = MEMBERS.map(m=>
+    `<div class="chip${m===selPayer?' payer':''}" onclick="selPayer='${m}';renderPayerChips();renderPayeeChips()">${m}</div>`
+  ).join('');
+}
+
+function renderPayeeChips(){
+  const others = MEMBERS.filter(m=>m!==selPayer);
+  if(!others.includes(selPayee)) selPayee = others[0]||'';
+  document.getElementById('payeeChips').innerHTML = others.map(m=>
+    `<div class="chip${m===selPayee?' payer':''}" onclick="selPayee='${m}';renderPayeeChips()">${m}</div>`
+  ).join('');
+}
+
+function renderHousePicker(){
+  renderHouseRow('houseA', HOUSE_A, 'A', '甲');
+  renderHouseRow('houseB', HOUSE_B, 'B', '乙');
+}
+
+function renderHouseRow(elId, group, key, label){
+  const el = document.getElementById(elId);
+  const allOn = group.every(m=>selParts.has(m));
+  const cls = allOn ? `hA-on` : '';
+  el.innerHTML = `<div class="hall ${key==='A'&&allOn?'hA-on':key==='B'&&allOn?'hB-on':''}" onclick="toggleHouseAll('${key}')">${'全'+label}</div>` +
+    group.map(m=>`<div class="hchip${selParts.has(m)?(key==='A'?' hA-on':' hB-on'):''}" onclick="togglePart('${m}','${key}')">${m}</div>`).join('');
+}
+
+function toggleHouseAll(key){
+  const group = key==='A'?HOUSE_A:HOUSE_B;
+  const allOn = group.every(m=>selParts.has(m));
+  group.forEach(m=>allOn?selParts.delete(m):selParts.add(m));
+  renderHousePicker();
+}
+
+function togglePart(m, key){
+  selParts.has(m)?selParts.delete(m):selParts.add(m);
+  renderHousePicker();
+}
+
+function addRecord(){
+  const name = document.getElementById('mName').value.trim();
+  const amt = parseFloat(document.getElementById('mAmt').value);
+  if(!name || !amt || amt<=0) return;
+  document.activeElement?.blur();
+  if(moneyMode==='exp'){
+    const exps = getExpenses();
+    exps.push({name,cost:amt,payer:selPayer,participants:[...selParts],type:expType,currency:moneyCur,ts:Date.now()});
+    setExpenses(exps);
+  } else {
+    const pays = getPayments();
+    pays.push({from:selPayer,to:selPayee,amount:amt,currency:moneyCur,ts:Date.now()});
+    setPayments(pays);
+  }
+  document.getElementById('mName').value='';
+  document.getElementById('mAmt').value='';
+  renderRecords();
+  renderBalance();
+}
+
+function calcBalance(cur){
+  const bal = Object.fromEntries(MEMBERS.map(m=>[m,0]));
+  getExpenses().filter(e=>e.currency===cur).forEach(e=>{
+    const parts = e.participants.length?e.participants:MEMBERS;
+    const share = e.cost/parts.length;
+    bal[e.payer] = (bal[e.payer]||0)+e.cost;
+    parts.forEach(u=>{ bal[u]=(bal[u]||0)-share });
+  });
+  getPayments().filter(p=>p.currency===cur).forEach(p=>{
+    bal[p.from]=(bal[p.from]||0)+p.amount;
+    bal[p.to]=(bal[p.to]||0)-p.amount;
+  });
+  return bal;
+}
+
+function fmtAmt(cur, v){
+  const abs = Math.abs(v);
+  return cur==='KRW'?'₩'+Math.round(abs).toLocaleString():'NT$'+Math.round(abs);
+}
+
+function renderBalance(){
+  ['KRW','TWD'].forEach(cur=>{
+    const bal = calcBalance(cur);
+    const id = cur==='KRW'?'balKRW':'balTWD';
+    document.getElementById(id).innerHTML = MEMBERS.map(m=>{
+      const v = bal[m]||0;
+      const cls = Math.abs(v)<0.5?'zero':v>0?'pos':'neg';
+      const txt = Math.abs(v)<0.5?'持平':`${v>0?'+':'-'}${fmtAmt(cur,v)}`;
+      return `<div class="bal-row"><span class="bal-name">${m}</span><span class="badge ${cls}">${txt}</span></div>`;
+    }).join('');
+  });
+}
+
+function renderRecords(){
+  const exps = getExpenses();
+  const pays = getPayments();
+  const expEl = document.getElementById('expRecs');
+  const payEl = document.getElementById('payRecs');
+
+  if(!exps.length){ expEl.innerHTML=`<div class="empty">尚無支出記錄</div>`; }
+  else {
+    expEl.innerHTML = [...exps].reverse().map((e,ri)=>{
+      const i = exps.length-1-ri;
+      const icon = e.type==='prepaid'?'fa-clock':'fa-receipt';
+      const cls = e.type==='prepaid'?'pre':'trip';
+      const parts = e.participants.length?e.participants:MEMBERS;
+      const share = fmtAmt(e.currency, e.cost/parts.length);
+      return `<div class="rec" id="erec_${e.ts}">
+        <div class="ric ${cls}"><i class="fa-solid ${icon}"></i></div>
+        <div class="rbody">
+          <div class="rname">${e.name}</div>
+          <div class="rmeta">${e.payer} 付 · 均攤 ${share}/人</div>
+        </div>
+        <span class="ramt">${fmtAmt(e.currency,e.cost)}</span>
+        <span class="rdel" onclick="delExp(${e.ts})"><i class="fa-solid fa-trash-can"></i></span>
+      </div>`;
+    }).join('');
+  }
+
+  document.getElementById('paySecTitle').style.display = pays.length?'flex':'none';
+  if(!pays.length){ payEl.innerHTML=''; return; }
+  payEl.innerHTML = [...pays].reverse().map(p=>`
+    <div class="rec" id="prec_${p.ts}">
+      <div class="ric pay"><i class="fa-solid fa-arrows-left-right"></i></div>
+      <div class="rbody">
+        <div class="rname">${p.from} → ${p.to}</div>
+        <div class="rmeta">${p.currency==='KRW'?'韓幣':'台幣'}</div>
+      </div>
+      <span class="ramt" style="color:#2F8F5B">${fmtAmt(p.currency,p.amount)}</span>
+      <span class="rdel" onclick="delPay(${p.ts})"><i class="fa-solid fa-trash-can"></i></span>
+    </div>
+  `).join('');
+}
+
+function delExp(ts){
+  const el = document.getElementById('erec_'+ts);
+  if(el){ el.classList.add('removing'); setTimeout(()=>{
+    const exps = getExpenses().filter(e=>e.ts!==ts);
+    setExpenses(exps); renderRecords(); renderBalance();
+  },280); }
+}
+
+function delPay(ts){
+  const el = document.getElementById('prec_'+ts);
+  if(el){ el.classList.add('removing'); setTimeout(()=>{
+    const pays = getPayments().filter(p=>p.ts!==ts);
+    setPayments(pays); renderRecords(); renderBalance();
+  },280); }
+}
+
+// ════════════════════════════════════════
+// PREP
+// ════════════════════════════════════════
+async function initPrep(){
+  const data = await fetch('./data/checklists.json').then(r=>r.json());
+  checklists = data;
+
+  // Seed todos from JSON if empty
+  if(!getTodos().length){
+    const raw = await fetch('./data/todos.json').then(r=>r.json());
+    setTodos(raw.map((t,i)=>({...t,id:'seed_'+i,done:false})));
+  }
+
+  buildPackTabs();
+  renderTodos();
+  renderPack();
+}
+
+function buildPackTabs(){
+  document.getElementById('packTabs').innerHTML = MEMBERS.map((m,i)=>
+    `<div class="utab${i===0?' on':''}" onclick="setPackUser('${m}',this)">${m}</div>`
+  ).join('');
+}
+
+function setPackUser(u, el){
+  packUser = u;
+  document.querySelectorAll('#packTabs .utab').forEach(t=>t.classList.remove('on'));
+  el.classList.add('on');
+  renderPack();
+}
+
+// ── Todos ──
+function renderTodos(){
+  const todos = getTodos();
+  const el = document.getElementById('todoList');
+  if(!todos.length){ el.innerHTML='<div class="empty">尚無待辦事項</div>'; return; }
+  el.innerHTML = todos.map((t,i)=>`
+    <div class="todo-li">
+      <div class="tcheck${t.done?' done':''}" onclick="toggleTodo('${t.id}')"></div>
+      <div class="tbody">
+        <div class="ttl${t.done?' done':''}">${t.title}</div>
+        ${t.note?`<div class="tnote">${t.note}</div>`:''}
+        ${t.link?`<div class="tlink"><a href="${t.link}" target="_blank"><i class="fa-solid fa-link" style="font-size:.72rem;margin-right:3px"></i>${t.link}</a></div>`:''}
+      </div>
+      <span class="tdel2" onclick="editTodo('${t.id}')"><i class="fa-solid fa-pen-to-square"></i></span>
+      <span class="tdel2" onclick="delTodo('${t.id}')"><i class="fa-solid fa-xmark"></i></span>
+    </div>
+  `).join('');
+}
+
+function toggleTodo(id){
+  const todos = getTodos();
+  const t = todos.find(t=>t.id===id);
+  if(t) t.done=!t.done;
+  setTodos(todos); renderTodos();
+}
+
+function delTodo(id){
+  setTodos(getTodos().filter(t=>t.id!==id));
+  renderTodos();
+}
+
+function openTodoSheet(){ editTodoId=null; document.getElementById('todoSheetTitle').textContent='新增待辦'; document.getElementById('todoSaveBtn').textContent='新增'; document.getElementById('todoTitle').value=''; document.getElementById('todoNote').value=''; document.getElementById('todoLink').value=''; document.getElementById('todoOverlay').classList.add('open') }
+
+function editTodo(id){ const t=getTodos().find(t=>t.id===id); if(!t)return; editTodoId=id; document.getElementById('todoSheetTitle').textContent='編輯待辦'; document.getElementById('todoSaveBtn').textContent='儲存'; document.getElementById('todoTitle').value=t.title||''; document.getElementById('todoNote').value=t.note||''; document.getElementById('todoLink').value=t.link||''; document.getElementById('todoOverlay').classList.add('open') }
+
+function closeTodoSheet(e){ if(e.target===document.getElementById('todoOverlay')) document.getElementById('todoOverlay').classList.remove('open') }
+
+function saveTodo(){
+  const title = document.getElementById('todoTitle').value.trim();
+  if(!title) return;
+  const todos = getTodos();
+  if(editTodoId){
+    const t = todos.find(t=>t.id===editTodoId);
+    if(t){ t.title=title; t.note=document.getElementById('todoNote').value.trim(); t.link=document.getElementById('todoLink').value.trim(); }
+  } else {
+    todos.push({id:'u_'+Date.now(),title,note:document.getElementById('todoNote').value.trim(),link:document.getElementById('todoLink').value.trim(),done:false});
+  }
+  setTodos(todos);
+  document.getElementById('todoOverlay').classList.remove('open');
+  renderTodos();
+}
+
+// ── Pack checklist ──
+const CARRY_ICONS = {'護照':'fa-passport','錢包':'fa-wallet','信用卡':'fa-credit-card','手機':'fa-mobile-screen','行動電源':'fa-battery-full','耳機':'fa-headphones','充電線':'fa-plug','口罩':'fa-head-side-mask','外套':'fa-shirt','雨傘 / 折傘':'fa-umbrella','換洗衣物（一天份）':'fa-tshirt','藥品急救包':'fa-kit-medical'};
+const CHECK_ICONS = {'衣物（4天份）':'fa-shirt','內衣褲':'fa-shirt','鞋子（備用）':'fa-shoe-prints','盥洗用品':'fa-soap','保養品':'fa-pump-soap','防曬乳':'fa-sun','洗髮潤髮':'fa-bottle-droplet','吹風機（如需）':'fa-wind','旅行插座 / 轉接頭':'fa-plug-circle-bolt','托運鎖頭':'fa-lock','空袋子（買東西用）':'fa-bag-shopping'};
+
+function renderPack(){
+  const carry = checklists.carry||[];
+  const chk = checklists.check||[];
+  const carryDone = getCarry(packUser);
+  const checkDone = getCheck(packUser);
+  const total = carry.length+chk.length;
+  const done = carryDone.size+checkDone.size;
+  document.getElementById('packProgress').textContent = `${done} / ${total}`;
+  document.getElementById('packBar').style.width = total?((done/total*100)+'%'):'0%';
+  document.getElementById('carryGrid').innerHTML = carry.map(item=>`
+    <div class="ctile${carryDone.has(item)?' done':''}" onclick="toggleCarry('${item.replace(/'/g,"\\'") }')">
+      <i class="fa-solid ${CARRY_ICONS[item]||'fa-check'}"></i>
+      <span>${item}</span>
+    </div>
+  `).join('');
+  document.getElementById('checkGrid').innerHTML = chk.map(item=>`
+    <div class="ctile${checkDone.has(item)?' done':''}" onclick="toggleCheck('${item.replace(/'/g,"\\'") }')">
+      <i class="fa-solid ${CHECK_ICONS[item]||'fa-suitcase'}"></i>
+      <span>${item}</span>
+    </div>
+  `).join('');
+}
+
+function toggleCarry(item){
+  const s = getCarry(packUser);
+  s.has(item)?s.delete(item):s.add(item);
+  setCarry(packUser,s); renderPack();
+}
+
+function toggleCheck(item){
+  const s = getCheck(packUser);
+  s.has(item)?s.delete(item):s.add(item);
+  setCheck(packUser,s); renderPack();
+}
+
+// ════════════════════════════════════════
+// KEYBOARD dismiss on tap outside input
+// ════════════════════════════════════════
+document.addEventListener('click', e=>{
+  if(!e.target.closest('input,textarea,.inp')) document.activeElement?.blur();
+});
+
+// ════════════════════════════════════════
+// START
+// ════════════════════════════════════════
+init();
+</script>
+</body>
+</html>

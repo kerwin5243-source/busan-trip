@@ -1,0 +1,23 @@
+{
+  "carrier": "中華航空",
+  "outbound": {
+    "date": "2026-06-06",
+    "flight_no": "CI190",
+    "from": { "city": "台北", "code": "TPE", "terminal": "T2" },
+    "to":   { "city": "釜山", "code": "PUS", "terminal": "T1" },
+    "depart_time": "06:15",
+    "arrive_time": "09:30",
+    "aircraft": "A321neo",
+    "baggage": { "checked": "23kg", "pieces": 1 }
+  },
+  "inbound": {
+    "date": "2026-06-10",
+    "flight_no": "CI187",
+    "from": { "city": "釜山", "code": "PUS", "terminal": "T1" },
+    "to":   { "city": "台北", "code": "TPE", "terminal": "T2" },
+    "depart_time": "20:00",
+    "arrive_time": "21:20",
+    "aircraft": "A321neo",
+    "baggage": { "checked": "23kg", "pieces": 1 }
+  }
+}
