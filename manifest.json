@@ -1,0 +1,13 @@
+{
+  "name": "月半家族釜山之旅",
+  "short_name": "釜山之旅",
+  "start_url": "/index.html",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#F6F3EE",
+  "theme_color": "#F6F3EE",
+  "icons": [
+    { "src": "/icon/pwa-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/icon/pwa-512-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

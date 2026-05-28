@@ -1,0 +1,15 @@
+{
+  "trip_title": "月半家族釜山之旅",
+  "date_range": {
+    "start": "2026-06-06",
+    "end": "2026-06-10"
+  },
+  "nights": 4,
+  "days": 5,
+  "mode": "大眾交通",
+  "members": ["Kerwin", "Franceca", "Lotto", "Latte", "Hao", "Ming"],
+  "districts": ["海雲台", "南浦洞", "西面", "廣安里"],
+  "default_currency": "KRW",
+  "language": "zh-TW",
+  "data_version": "v1.0"
+}
