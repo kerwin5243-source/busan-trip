@@ -242,6 +242,26 @@ body{padding-bottom:calc(72px + env(safe-area-inset-bottom))}
 .dayhead-info{flex:1}
 .dayhead-date{font-size:.75rem;font-weight:900;color:var(--acc);margin-bottom:2px}
 .dayhead-loc{font-size:.88rem;font-weight:800;color:var(--pri)}
+/* ── Tips ── */
+.tips{margin-top:9px;display:flex;flex-direction:column;gap:5px}
+.tip{display:flex;gap:6px;font-size:.78rem;line-height:1.5;padding:5px 8px;border-radius:8px}
+.tip.guide{background:rgba(52,199,89,.08);color:#2E7D32}
+.tip.avoid{background:rgba(255,149,0,.1);color:#9A5000}
+.tip i{flex-shrink:0;margin-top:2px;font-size:.7rem}
+.thours{font-size:.76rem;color:var(--ink2);margin-top:5px;display:flex;align-items:center;gap:4px}
+.reserved-badge{display:inline-flex;align-items:center;gap:3px;font-size:.7rem;font-weight:900;padding:2px 8px;border-radius:999px;background:rgba(149,117,205,.12);color:#4527A0;margin-left:6px}
+/* ── Balance breakdown ── */
+.bal-row{cursor:pointer;border-radius:10px;transition:background .15s}
+.bal-row:active{background:rgba(233,225,214,.5)}
+.bal-detail{background:rgba(242,242,247,.6);border-radius:12px;padding:10px 12px;margin-top:4px;margin-bottom:8px;display:none}
+.bal-detail.open{display:block}
+.bd-row{display:flex;font-size:.78rem;padding:3px 0;gap:8px;border-bottom:1px solid rgba(233,225,214,.5)}
+.bd-row:last-child{border-bottom:none}
+.bd-name{flex:1;color:var(--ink2)}
+.bd-amt{font-family:var(--mono);font-size:.76rem;font-weight:600}
+/* ── Edit sheet ── */
+.edit-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:300;align-items:flex-end}
+.edit-overlay.open{display:flex}
 </style>
 </head>
 <body>
@@ -377,6 +397,32 @@ body{padding-bottom:calc(72px + env(safe-area-inset-bottom))}
   <div class="nav-btn" onclick="showPage('prep',this)"><i class="fa-solid fa-list-check"></i><span>行前</span></div>
 </nav>
 
+<!-- ══════════════ EDIT EXPENSE SHEET ══════════════ -->
+<div class="edit-overlay" id="editExpOverlay" onclick="closeEditExp(event)">
+  <div class="sheet">
+    <div class="handle"></div>
+    <div style="font-family:var(--serif);font-size:1.1rem;font-weight:900;margin-bottom:14px">編輯支出</div>
+    <div class="form-row">
+      <div class="inp wide"><input id="editName" placeholder="項目 / 備註" maxlength="30"></div>
+      <div class="inp narrow"><span class="inp-pre" id="editCurPre">₩</span><input id="editAmt" type="number" inputmode="numeric" placeholder="金額"></div>
+    </div>
+    <div class="seg" id="editCurSeg" style="margin-bottom:12px">
+      <div class="seg-btn on" onclick="setEditCur('KRW',this)">韓幣 (₩)</div>
+      <div class="seg-btn" onclick="setEditCur('TWD',this)">台幣 (NT$)</div>
+    </div>
+    <div class="flabel">付款人</div>
+    <div class="chips" id="editPayerChips" style="margin-bottom:12px"></div>
+    <div class="seg" id="editTypeSeg" style="margin-bottom:12px">
+      <div class="seg-btn on" onclick="setEditType('trip',this)">行中支出</div>
+      <div class="seg-btn" onclick="setEditType('prepaid',this)">預付費用</div>
+    </div>
+    <div class="flabel">分攤成員</div>
+    <div id="editHouseA" class="hrow" style="margin-bottom:6px"></div>
+    <div id="editHouseB" class="hrow" style="margin-bottom:14px"></div>
+    <button class="btn-add" onclick="saveEditExp()">儲存</button>
+  </div>
+</div>
+
 <!-- ══════════════ TODO ADD SHEET ══════════════ -->
 <div class="overlay" id="todoOverlay" onclick="closeTodoSheet(event)">
   <div class="sheet">
@@ -488,7 +534,7 @@ async function loadDay(idx, btn){
     document.getElementById('dayContent').innerHTML = '<div class="empty"><i class="fa fa-spinner fa-spin"></i></div>';
     const res = await fetch('./data/itinerary/'+d.file);
     const arr = await res.json();
-    itin[d.file] = arr[0].items;
+    itin[d.file] = { loc: arr[0].loc, items: arr[0].items };
   }
   renderDay(idx);
 }
@@ -499,12 +545,14 @@ function tagIcon(tag){ return TAG_ICON[tag]||'fa-circle-dot' }
 
 function renderDay(idx){
   const d = DAYS[idx];
-  const items = itin[d.file]||[];
+  const data = itin[d.file] || {};
+  const items = data.items || (Array.isArray(data) ? data : []);
+  const loc = data.loc || d.label;
   let h = `<div class="dayhead">
     <div class="dayhead-day">${d.day}</div>
     <div class="dayhead-info">
       <div class="dayhead-date">2026 / ${d.date}</div>
-      <div class="dayhead-loc">${items[0]?.addr?items.find(it=>it.addr)?.addr?.split(' ')[0]||d.label:d.label}</div>
+      <div class="dayhead-loc">${loc}</div>
     </div>
   </div><div class="tl">`;
   items.forEach((it,i)=>{
@@ -520,24 +568,31 @@ function renderDay(idx){
       </div>`;
       return;
     }
+    const reservedBadge = it.reserved?`<span class="reserved-badge"><i class="fa-solid fa-circle-check"></i>已預約</span>`:'';
     const star = it.highlight?`<span class="star">★</span>`:'';
     const desc = it.desc?`<div class="tdesc">${it.desc}</div>`:'';
     const detail = it.detail?`<div class="tdetail">${it.detail}</div>`:'';
     const price = it.price?`<span class="ttag ${tagClass('route')}">${it.price}</span>`:'';
     const stay = it.stay?`<span class="ttag ${tagClass('route')}">${it.stay}</span>`:'';
     const addr = it.addr?`<div class="tdesc mt8" style="font-size:.76rem"><i class="fa-solid fa-location-dot" style="color:var(--acc);margin-right:4px"></i>${it.addr}</div>`:'';
+    const hours = it.hours?`<div class="thours"><i class="fa-regular fa-clock"></i>${it.hours}</div>`:'';
+    const guides = (it.guide||[]).map(g=>`<div class="tip guide"><i class="fa-solid fa-lightbulb"></i>${g}</div>`).join('');
+    const avoids = (it.avoid||[]).map(a=>`<div class="tip avoid"><i class="fa-solid fa-triangle-exclamation"></i>${a}</div>`).join('');
+    const tips = (guides||avoids)?`<div class="tips">${guides}${avoids}</div>`:'';
     h += `<div class="tl-item" id="tli_${it.id}">
       <div class="tdot ${dotClass(it.tag)}" style="color:inherit"><i class="fa-solid ${tagIcon(it.tag)}" style="opacity:.7"></i></div>
       <div class="tbody" onclick="toggleItem(this)">
         <div class="ttime">${it.time}</div>
-        <div class="ttitle">${it.title}${star}</div>
+        <div class="ttitle">${it.title}${star}${reservedBadge}</div>
         ${desc}
         <div class="ttags">
           ${it.subtag?`<span class="ttag ${tagClass(it.tag)}">${it.subtag}</span>`:''}
           ${price}${stay}
         </div>
+        ${hours}
         ${detail}
         ${addr}
+        ${tips}
       </div>
     </div>`;
   });
@@ -807,6 +862,8 @@ function fmtAmt(cur, v){
   return cur==='KRW'?'₩'+Math.round(abs).toLocaleString():'NT$'+Math.round(abs);
 }
 
+let selectedViewer = null;
+
 function renderBalance(){
   ['KRW','TWD'].forEach(cur=>{
     const bal = calcBalance(cur);
@@ -815,9 +872,44 @@ function renderBalance(){
       const v = bal[m]||0;
       const cls = Math.abs(v)<0.5?'zero':v>0?'pos':'neg';
       const txt = Math.abs(v)<0.5?'持平':`${v>0?'+':'-'}${fmtAmt(cur,v)}`;
-      return `<div class="bal-row"><span class="bal-name">${m}</span><span class="badge ${cls}">${txt}</span></div>`;
+      const isOpen = selectedViewer===m;
+      const detail = isOpen ? buildPersonalDetail(m, cur) : '';
+      return `<div class="bal-row" onclick="toggleViewer('${m}')" style="display:flex;align-items:center;padding:7px 10px;border-radius:10px;margin-bottom:3px;cursor:pointer">
+        <span class="bal-name">${m}</span><span class="badge ${cls}">${txt}</span>
+        <i class="fa-solid fa-chevron-${isOpen?'up':'down'}" style="font-size:.65rem;color:var(--ink2);margin-left:8px"></i>
+      </div>
+      ${isOpen?`<div class="bal-detail open">${detail}</div>`:''}`;
     }).join('');
   });
+}
+
+function toggleViewer(m){
+  selectedViewer = selectedViewer===m ? null : m;
+  renderBalance();
+}
+
+function buildPersonalDetail(m, cur){
+  const exps = getExpenses().filter(e=>e.currency===cur);
+  const pays = getPayments().filter(p=>p.currency===cur);
+  let rows = '';
+  // expenses paid by this person
+  exps.filter(e=>e.payer===m).forEach(e=>{
+    rows += `<div class="bd-row"><span class="bd-name">付：${e.name}</span><span class="bd-amt" style="color:#2F8F5B">+${fmtAmt(cur,e.cost)}</span></div>`;
+  });
+  // expenses this person shares
+  exps.filter(e=>(e.participants.length?e.participants:MEMBERS).includes(m)).forEach(e=>{
+    const parts = e.participants.length?e.participants:MEMBERS;
+    const share = e.cost/parts.length;
+    rows += `<div class="bd-row"><span class="bd-name">攤：${e.name}</span><span class="bd-amt" style="color:#C62828">-${fmtAmt(cur,share)}</span></div>`;
+  });
+  // payments
+  pays.filter(p=>p.from===m).forEach(p=>{
+    rows += `<div class="bd-row"><span class="bd-name">付給 ${p.to}</span><span class="bd-amt" style="color:#2F8F5B">+${fmtAmt(cur,p.amount)}</span></div>`;
+  });
+  pays.filter(p=>p.to===m).forEach(p=>{
+    rows += `<div class="bd-row"><span class="bd-name">收自 ${p.from}</span><span class="bd-amt" style="color:#C62828">-${fmtAmt(cur,p.amount)}</span></div>`;
+  });
+  return rows || `<div style="font-size:.78rem;color:var(--ink2)">尚無記錄</div>`;
 }
 
 function renderRecords(){
@@ -841,6 +933,7 @@ function renderRecords(){
           <div class="rmeta">${e.payer} 付 · 均攤 ${share}/人</div>
         </div>
         <span class="ramt">${fmtAmt(e.currency,e.cost)}</span>
+        <span class="rdel" onclick="openEditExp(${e.ts})" style="color:#B08A5B"><i class="fa-solid fa-pen-to-square"></i></span>
         <span class="rdel" onclick="delExp(${e.ts})"><i class="fa-solid fa-trash-can"></i></span>
       </div>`;
     }).join('');
@@ -875,6 +968,100 @@ function delPay(ts){
     const pays = getPayments().filter(p=>p.ts!==ts);
     setPayments(pays); renderRecords(); renderBalance();
   },280); }
+}
+
+// ── Edit expense ──
+let editExpTs = null;
+let editExpPayer = MEMBERS[0];
+let editExpType = 'trip';
+let editExpCur = 'KRW';
+let editExpParts = new Set(MEMBERS);
+
+function openEditExp(ts){
+  const e = getExpenses().find(e=>e.ts===ts);
+  if(!e) return;
+  editExpTs = ts;
+  editExpPayer = e.payer;
+  editExpType = e.type;
+  editExpCur = e.currency;
+  editExpParts = new Set(e.participants.length?e.participants:MEMBERS);
+  document.getElementById('editName').value = e.name;
+  document.getElementById('editAmt').value = e.cost;
+  // currency
+  document.getElementById('editCurPre').textContent = e.currency==='KRW'?'₩':'NT$';
+  document.querySelectorAll('#editCurSeg .seg-btn').forEach((b,i)=>{
+    b.classList.toggle('on', (i===0&&e.currency==='KRW')||(i===1&&e.currency==='TWD'));
+  });
+  // type
+  document.querySelectorAll('#editTypeSeg .seg-btn').forEach((b,i)=>{
+    b.classList.toggle('on', (i===0&&e.type==='trip')||(i===1&&e.type==='prepaid'));
+  });
+  renderEditPayer();
+  renderEditHouse();
+  document.getElementById('editExpOverlay').classList.add('open');
+}
+
+function closeEditExp(ev){
+  if(ev.target===document.getElementById('editExpOverlay'))
+    document.getElementById('editExpOverlay').classList.remove('open');
+}
+
+function setEditCur(c, el){
+  editExpCur = c;
+  document.querySelectorAll('#editCurSeg .seg-btn').forEach(b=>b.classList.remove('on'));
+  el.classList.add('on');
+  document.getElementById('editCurPre').textContent = c==='KRW'?'₩':'NT$';
+}
+
+function setEditType(t, el){
+  editExpType = t;
+  document.querySelectorAll('#editTypeSeg .seg-btn').forEach(b=>b.classList.remove('on'));
+  el.classList.add('on');
+}
+
+function renderEditPayer(){
+  document.getElementById('editPayerChips').innerHTML = MEMBERS.map(m=>
+    `<div class="chip${m===editExpPayer?' payer':''}" onclick="editExpPayer='${m}';renderEditPayer()">${m}</div>`
+  ).join('');
+}
+
+function renderEditHouse(){
+  renderEditHouseRow('editHouseA', HOUSE_A, 'A', '甲');
+  renderEditHouseRow('editHouseB', HOUSE_B, 'B', '乙');
+}
+
+function renderEditHouseRow(elId, group, key, label){
+  const el = document.getElementById(elId);
+  const allOn = group.every(m=>editExpParts.has(m));
+  el.innerHTML = `<div class="hall ${key==='A'&&allOn?'hA-on':key==='B'&&allOn?'hB-on':''}" onclick="toggleEditHouseAll('${key}')">${'全'+label}</div>` +
+    group.map(m=>`<div class="hchip${editExpParts.has(m)?(key==='A'?' hA-on':' hB-on'):''}" onclick="toggleEditPart('${m}','${key}')">${m}</div>`).join('');
+}
+
+function toggleEditHouseAll(key){
+  const group = key==='A'?HOUSE_A:HOUSE_B;
+  const allOn = group.every(m=>editExpParts.has(m));
+  group.forEach(m=>allOn?editExpParts.delete(m):editExpParts.add(m));
+  renderEditHouse();
+}
+
+function toggleEditPart(m){
+  editExpParts.has(m)?editExpParts.delete(m):editExpParts.add(m);
+  renderEditHouse();
+}
+
+function saveEditExp(){
+  const name = document.getElementById('editName').value.trim();
+  const amt = parseFloat(document.getElementById('editAmt').value);
+  if(!name||!amt||amt<=0) return;
+  const exps = getExpenses();
+  const idx = exps.findIndex(e=>e.ts===editExpTs);
+  if(idx!==-1){
+    exps[idx] = {...exps[idx], name, cost:amt, payer:editExpPayer, participants:[...editExpParts], type:editExpType, currency:editExpCur};
+    setExpenses(exps);
+    renderRecords();
+    renderBalance();
+  }
+  document.getElementById('editExpOverlay').classList.remove('open');
 }
 
 // ════════════════════════════════════════
