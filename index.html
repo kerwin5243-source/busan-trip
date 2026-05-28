@@ -131,41 +131,100 @@ body{padding-bottom:calc(72px + env(safe-area-inset-bottom))}
 .ramt{font-family:var(--mono);font-size:.9rem;font-weight:600}
 .rdel{padding:6px 10px;color:#ccc;font-size:1rem;cursor:pointer;flex-shrink:0}
 
-/* ── Itinerary ── */
-.day-pills{display:flex;gap:7px;overflow-x:auto;scrollbar-width:none;padding:2px 0 12px}
-.day-pills::-webkit-scrollbar{display:none}
-.dpill{flex:0 0 auto;padding:7px 14px;border-radius:999px;font-weight:900;font-size:.8rem;color:var(--ink2);background:rgba(233,225,214,.7);cursor:pointer;transition:.2s;white-space:nowrap}
-.dpill.on{background:var(--pri);color:#fff}
-.tl{padding:4px 0}
-.tl-item{display:flex;gap:14px;padding:0 0 18px;position:relative}
-.tl-item::before{content:"";position:absolute;left:15px;top:32px;bottom:0;width:1.5px;background:rgba(233,225,214,.9)}
-.tl-item:last-child::before{display:none}
-.tdot{width:32px;height:32px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.85rem;margin-top:2px}
-.tbody{flex:1;min-width:0;cursor:pointer}
-.ttime{font-family:var(--mono);font-size:.73rem;color:var(--ink2);margin-bottom:3px}
-.ttitle{font-weight:800;font-size:.93rem;margin-bottom:3px}
-.tdesc{font-size:.81rem;color:var(--ink2);line-height:1.5}
-.tdetail{font-size:.79rem;color:var(--ink2);line-height:1.65;margin-top:7px;white-space:pre-line;display:none}
-.tl-item.exp .tdetail{display:block}
-.ttags{display:flex;gap:5px;flex-wrap:wrap;margin-top:5px}
-.ttag{font-size:.7rem;font-weight:800;padding:2px 8px;border-radius:999px}
-/* tag colors */
-.c-food{background:rgba(229,115,115,.18);color:#C62828}
-.c-sight{background:rgba(77,182,172,.18);color:#00695C}
-.c-transport{background:rgba(144,164,174,.18);color:#455A64}
-.c-hotel{background:rgba(149,117,205,.18);color:#4527A0}
-.c-route{background:rgba(176,190,197,.15);color:#607D8B}
-.c-shop{background:rgba(129,199,132,.18);color:#1B5E20}
-/* dot colors */
-.d-food{background:rgba(229,115,115,.22)}
-.d-sight{background:rgba(77,182,172,.22)}
-.d-transport{background:rgba(144,164,174,.22)}
-.d-hotel{background:rgba(149,117,205,.22)}
-.d-route{background:rgba(176,190,197,.2)}
-.d-shop{background:rgba(129,199,132,.22)}
-/* route card */
-.route-card{display:flex;align-items:center;gap:10px;padding:8px 12px;background:rgba(233,225,214,.3);border-radius:10px;font-size:.8rem;color:var(--ink2)}
-.star{color:#FFA000;margin-left:3px;font-size:.82rem}
+/* ── Day Cards ── */
+.day-cards-row{display:flex;gap:5px;padding:8px 0 8px}
+.day-card{flex:1;padding:8px 4px;border-radius:14px;border:1.5px solid rgba(233,225,214,.9);background:rgba(255,255,255,.55);text-align:center;cursor:pointer;transition:all .22s}
+.day-card.on{background:#fff;border-color:rgba(176,138,91,.8);transform:translateY(-2px);box-shadow:0 4px 16px rgba(176,138,91,.18)}
+.dc-label{font-family:var(--serif);font-size:.82rem;font-weight:900;color:#7D5B34}
+.day-card:not(.on) .dc-label{color:var(--ink)}
+.dc-date{font-size:.62rem;font-weight:800;color:var(--ink2);margin-top:1px}
+.dc-wd{font-size:.58rem;color:rgba(0,0,0,.35)}
+
+/* ── Day Banner ── */
+.day-banner{border-radius:18px;overflow:hidden;margin-bottom:10px;height:130px;position:relative;cursor:pointer}
+.db-bg{position:absolute;inset:0;background-size:cover;background-position:center}
+.db-ov{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.08),rgba(0,0,0,.35))}
+.db-cnt{position:absolute;inset:0;padding:16px 18px;display:flex;flex-direction:column;justify-content:flex-end}
+.db-pill{display:inline-flex;padding:2px 9px;border-radius:999px;background:rgba(255,255,255,.2);font-size:.68rem;font-weight:800;color:#fff;margin-bottom:5px;align-self:flex-start}
+.db-title{font-family:var(--serif);font-size:1.02rem;font-weight:900;color:#fff;line-height:1.3}
+.db-hint{font-size:.7rem;color:rgba(255,255,255,.75);margin-top:4px;display:flex;align-items:center;gap:4px}
+.db-rm{position:absolute;top:8px;right:8px;width:26px;height:26px;border-radius:50%;background:rgba(0,0,0,.38);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#fff;font-size:.78rem}
+
+/* ── Weather ── */
+.weather-wrap{margin-bottom:8px}
+.weather-bar{display:flex;align-items:center;gap:8px;padding:9px 12px;border-radius:12px;background:rgba(61,123,191,.08);border:1px solid rgba(61,123,191,.18);font-size:.82rem;margin-bottom:6px}
+.wb-loc{font-weight:800;color:var(--pri)}
+.wb-temp{font-family:var(--mono);color:#3D7BBF;font-size:.8rem}
+.wb-rain{display:flex;align-items:center;gap:2px;font-family:var(--mono);font-size:.78rem}
+.wb-rain.wet{color:#2196F3}
+.wb-lbl{margin-left:auto;color:var(--ink2);font-size:.76rem}
+.weather-hourly{display:flex;gap:5px;overflow-x:auto;scrollbar-width:none;padding-bottom:4px}
+.weather-hourly::-webkit-scrollbar{display:none}
+.wh{flex:0 0 50px;padding:7px 4px;border-radius:12px;border:1px solid rgba(233,225,214,.9);background:rgba(255,255,255,.7);text-align:center}
+.wh.now{background:rgba(61,123,191,.1);border:1.5px solid rgba(61,123,191,.35)}
+.wh-h{font-size:.62rem;font-weight:700;color:var(--ink2)}
+.wh.now .wh-h{color:#3D7BBF}
+.wh-e{font-size:1.1rem;margin:2px 0}
+.wh-t{font-family:var(--mono);font-size:.76rem;color:var(--ink)}
+
+/* ── Hotel strip ── */
+.hotel-strip{display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:12px;background:rgba(176,138,91,.07);border:1px solid rgba(176,138,91,.2);margin-bottom:10px;font-size:.82rem}
+.hs-name{font-weight:800;color:var(--pri);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+/* ── Maps button ── */
+.maps-btn{display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:14px;background:rgba(52,168,83,.08);border:1px solid rgba(52,168,83,.22);margin-bottom:14px;cursor:pointer;text-decoration:none;color:inherit}
+.mb-icon{width:32px;height:32px;border-radius:10px;background:rgba(52,168,83,.14);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#34A853;font-size:.95rem}
+.mb-t{font-weight:800;font-size:.87rem;color:var(--pri)}
+.mb-s{font-size:.74rem;color:var(--ink2);margin-top:1px}
+
+/* ── New Timeline ── */
+.tl2{padding:4px 0}
+.tl2-row{display:flex;align-items:flex-start;gap:12px;margin-bottom:16px}
+.tl2-time{width:46px;flex-shrink:0;text-align:right;font-family:var(--mono);font-size:.8rem;color:var(--ink2);padding-top:12px;line-height:1.3}
+.tl2-card{flex:1;background:rgba(255,255,255,.82);border:1px solid rgba(233,225,214,.85);border-radius:18px;padding:11px 13px;position:relative;cursor:pointer;transition:transform .1s,box-shadow .1s}
+.tl2-card:active{transform:scale(.985)}
+.tl2-card.hl{border-color:rgba(176,138,91,.65);background:rgba(255,255,255,.92);box-shadow:0 0 0 4px rgba(176,138,91,.07),0 6px 20px rgba(176,138,91,.1)}
+.tl2-tag{display:flex;align-items:center;gap:5px;margin-bottom:5px}
+.tl2-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.tl2-cat{font-size:.65rem;font-weight:900;color:#A5A39F;letter-spacing:.02em}
+.tl2-sub{font-size:.72rem;color:var(--ink2);margin-left:2px}
+.tl2-title{font-family:var(--serif);font-size:1.03rem;font-weight:900;color:var(--ink);line-height:1.35;margin-bottom:3px}
+.tl2-desc{font-size:.8rem;color:var(--ink2);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.tl2-chips{display:flex;gap:5px;flex-wrap:wrap;margin-top:7px}
+.tl2-chip{display:flex;align-items:center;gap:4px;padding:3px 9px;border-radius:999px;background:rgba(242,242,247,.95);font-size:.72rem;font-weight:800;color:#555}
+.tl2-chip i{font-size:.62rem;color:#8E8E93}
+.tl2-star{position:absolute;top:9px;right:9px;width:24px;height:24px;border-radius:50%;background:var(--acc);display:flex;align-items:center;justify-content:center;font-size:.75rem;color:#fff;box-shadow:0 3px 10px rgba(176,138,91,.45)}
+.tl2-resv{position:absolute;top:9px;right:9px;padding:2px 7px;border-radius:7px;background:rgba(255,255,255,.88);border:1.5px solid rgba(180,35,24,.65);font-size:.65rem;font-weight:900;color:#B42318;transform:rotate(-3deg)}
+/* Route strip */
+.tl2-route{margin-left:58px;margin-bottom:12px;display:flex;align-items:center;gap:10px;padding:9px 12px;background:rgba(242,242,247,.9);border-radius:14px;border:1px solid rgba(0,0,0,.04)}
+.tr-icon{width:34px;height:34px;border-radius:11px;background:rgba(255,255,255,.6);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--pri);font-size:.85rem}
+.tr-body{flex:1;min-width:0}
+.tr-name{font-size:.83rem;font-weight:900;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tr-dir{font-size:.77rem;font-weight:700;color:var(--ink2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tr-dur{padding:3px 9px;border-radius:999px;background:rgba(255,255,255,.8);font-family:var(--mono);font-size:.7rem;color:#444;flex-shrink:0}
+
+/* ── Detail Sheet ── */
+.detail-hdr{padding:12px 18px 12px;border-bottom:1px solid rgba(233,225,214,.8);position:relative}
+.detail-tagrow{display:flex;align-items:center;gap:7px;margin-bottom:5px}
+.detail-tagpill{display:inline-flex;padding:2px 9px;border-radius:999px;font-size:.68rem;font-weight:900}
+.detail-timebadge{font-family:var(--mono);font-size:.75rem;color:var(--ink2);display:flex;align-items:center;gap:3px}
+.detail-title{font-family:var(--serif);font-size:1.18rem;font-weight:900;color:var(--ink);line-height:1.3}
+.detail-close{position:absolute;right:14px;top:12px;width:28px;height:28px;border-radius:50%;background:rgba(240,235,227,.9);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.82rem;color:#888070}
+.detail-pills{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
+.detail-pill{display:flex;align-items:center;gap:4px;padding:3px 9px;border-radius:999px;background:#fff;border:1px solid rgba(233,225,214,.9);font-size:.74rem;font-weight:900;color:#5F5A52}
+.detail-pill i{font-size:.62rem;color:#8B8175}
+.detail-body{padding:10px 18px;overflow-y:auto}
+.detail-meta{border-top:1px solid rgba(233,225,214,.8);border-bottom:1px solid rgba(233,225,214,.8);padding:5px 0;margin-bottom:10px}
+.detail-mrow{display:flex;align-items:flex-start;gap:10px;padding:5px 0;font-size:.84rem;color:var(--ink2)}
+.detail-mrow i{flex-shrink:0;width:16px;text-align:center;margin-top:2px}
+.detail-mrow span{flex:1}
+.detail-copy{padding:3px 9px;border-radius:8px;background:#fff;border:1px solid rgba(233,225,214,.9);font-size:.72rem;font-weight:900;color:#5F5A52;cursor:pointer;flex-shrink:0}
+.detail-text{font-size:.88rem;color:#3A352E;line-height:1.7;white-space:pre-line;margin-bottom:10px}
+.detail-block{padding:12px 13px;border-radius:15px;background:rgba(255,255,255,.72);border:1px solid rgba(233,225,214,.85);margin-bottom:9px}
+.detail-btitle{display:flex;align-items:center;gap:6px;font-family:var(--serif);font-size:.88rem;font-weight:900;color:var(--pri);margin-bottom:8px}
+.detail-bullet{display:flex;gap:8px;font-size:.84rem;color:#444;line-height:1.6;margin-bottom:5px;align-items:flex-start}
+.detail-bullet i{font-size:.55rem;margin-top:5px;flex-shrink:0;color:var(--ink2)}
+.detail-maps{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:12px;border-radius:14px;background:#fff;border:1.5px solid rgba(176,138,91,.5);font-weight:900;font-size:.88rem;color:var(--pri);cursor:pointer;text-decoration:none;margin-top:12px}
 
 /* ── Info ── */
 .flight-dir{font-size:.7rem;font-weight:900;color:var(--ink2);letter-spacing:.1em;margin-bottom:5px}
@@ -280,9 +339,10 @@ body{padding-bottom:calc(72px + env(safe-area-inset-bottom))}
 
 <!-- 行程 -->
 <div id="pg-itin" class="page on">
-  <div class="day-pills" id="dayPills"></div>
+  <div id="dayCards" class="day-cards-row"></div>
   <div id="dayContent"><div class="empty"><i class="fa fa-spinner fa-spin"></i> 載入中…</div></div>
 </div>
+<input type="file" id="bannerFilePick" accept="image/*" style="display:none" onchange="onBannerFile(event)">
 
 <!-- 資訊 -->
 <div id="pg-info" class="page">
@@ -397,6 +457,15 @@ body{padding-bottom:calc(72px + env(safe-area-inset-bottom))}
   <div class="nav-btn" onclick="showPage('prep',this)"><i class="fa-solid fa-list-check"></i><span>行前</span></div>
 </nav>
 
+<!-- ══════════════ ITEM DETAIL SHEET ══════════════ -->
+<div class="overlay" id="detailOverlay" onclick="closeDetail(event)" style="align-items:flex-end">
+  <div style="width:100%;max-height:78vh;background:var(--bg);border-radius:24px 24px 0 0;display:flex;flex-direction:column;overflow:hidden;animation:su .25s ease">
+    <div class="handle" style="margin-bottom:0;padding-top:10px"></div>
+    <div id="detailHdr" class="detail-hdr"></div>
+    <div id="detailBody" class="detail-body" style="padding-bottom:calc(env(safe-area-inset-bottom)+24px);-webkit-overflow-scrolling:touch"></div>
+  </div>
+</div>
+
 <!-- ══════════════ EDIT EXPENSE SHEET ══════════════ -->
 <div class="edit-overlay" id="editExpOverlay" onclick="closeEditExp(event)">
   <div class="sheet">
@@ -453,6 +522,14 @@ const DAYS = [
   {date:'06/10',day:'三',label:'D5 返台',file:'2026-06-10.json'},
 ];
 const TAG_ICON = {food:'fa-utensils',sight:'fa-camera',transport:'fa-bus',hotel:'fa-hotel',route:'fa-arrow-right-long',shop:'fa-bag-shopping'};
+const TAG_LABEL = {food:'美食',sight:'景點',transport:'交通',hotel:'住宿',route:'路線',shop:'購物'};
+const TAG_DOT = {food:'#E57373',sight:'#4DB6AC',transport:'#90A4AE',hotel:'#9575CD',route:'#B0BEC5',shop:'#81C784'};
+const DAY_SUBTITLES = ['抵達釜山 · 南浦洞','松島纜車 · 甘川文化村','海雲台海灘 · 西面夜市','廣安大橋 · 機張市場','離開釜山 · 平安回家'];
+const DAY_COLORS = [['#3D7BBF','#1A4A7A'],['#2F8F5B','#1A5237'],['#B08A5B','#7D5B34'],['#8B5CF6','#5B21B6'],['#E5534B','#9B1C1C']];
+const DAY_DISTRICTS = ['海雲台','甘川','西面','廣安里','機場'];
+const DAY_HOTELS = ['海雲台 L7 飯店','海雲台 L7 飯店','海雲台 L7 飯店','海雲台 L7 飯店',null];
+const DAY_DATES_ISO = ['2026-06-06','2026-06-07','2026-06-08','2026-06-09','2026-06-10'];
+const WEEKDAY_EN = {六:'SAT',日:'SUN',一:'MON',二:'TUE',三:'WED',四:'THU',五:'FRI'};
 
 // ════════════════════════════════════════
 // STATE
@@ -508,8 +585,8 @@ function setCheck(u,s){ LS.set('busan_check_'+u,[...s]) }
 // ════════════════════════════════════════
 async function init(){
   if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');
-  buildDayPills();
-  loadDay(0);
+  buildDayCards();
+  loadDayFull(0);
   loadInfo();
   initMoney();
   loadSouvenirs();
@@ -519,88 +596,251 @@ async function init(){
 // ════════════════════════════════════════
 // ITINERARY
 // ════════════════════════════════════════
-function buildDayPills(){
-  const el = document.getElementById('dayPills');
-  el.innerHTML = DAYS.map((d,i)=>
-    `<div class="dpill${i===0?' on':''}" onclick="loadDay(${i},this)">${d.label}</div>`
-  ).join('');
+let weatherCache = null; // {daily:{dates,maxT,minT,rainMax}, hourly:{times,temps,codes,probs}}
+
+function buildDayCards(){
+  document.getElementById('dayCards').innerHTML = DAYS.map((d,i)=>`
+    <div class="day-card${i===0?' on':''}" onclick="loadDayFull(${i})">
+      <div class="dc-label">Day ${i+1}</div>
+      <div class="dc-date">${d.date}</div>
+      <div class="dc-wd">${WEEKDAY_EN[d.day]||d.day}</div>
+    </div>`).join('');
 }
 
-async function loadDay(idx, btn){
+async function loadDayFull(idx){
   curDay = idx;
-  document.querySelectorAll('.dpill').forEach((p,i)=>p.classList.toggle('on',i===idx));
+  document.querySelectorAll('.day-card').forEach((c,i)=>c.classList.toggle('on',i===idx));
   const d = DAYS[idx];
   if(!itin[d.file]){
-    document.getElementById('dayContent').innerHTML = '<div class="empty"><i class="fa fa-spinner fa-spin"></i></div>';
-    const res = await fetch('./data/itinerary/'+d.file);
-    const arr = await res.json();
-    itin[d.file] = { loc: arr[0].loc, items: arr[0].items };
+    document.getElementById('dayContent').innerHTML='<div class="empty"><i class="fa fa-spinner fa-spin"></i></div>';
+    const arr = await fetch('./data/itinerary/'+d.file).then(r=>r.json());
+    itin[d.file] = {loc:arr[0].loc, items:arr[0].items};
   }
-  renderDay(idx);
+  renderDayFull(idx);
+  if(!weatherCache) fetchWeather().then(()=>renderWeatherStrip(idx));
+  else renderWeatherStrip(idx);
 }
 
-function tagClass(tag){ return 'c-'+(tag||'route') }
-function dotClass(tag){ return 'd-'+(tag||'route') }
-function tagIcon(tag){ return TAG_ICON[tag]||'fa-circle-dot' }
-
-function renderDay(idx){
+function renderDayFull(idx){
   const d = DAYS[idx];
-  const data = itin[d.file] || {};
-  const items = data.items || (Array.isArray(data) ? data : []);
-  const loc = data.loc || d.label;
-  let h = `<div class="dayhead">
-    <div class="dayhead-day">${d.day}</div>
-    <div class="dayhead-info">
-      <div class="dayhead-date">2026 / ${d.date}</div>
-      <div class="dayhead-loc">${loc}</div>
+  const data = itin[d.file]||{};
+  const items = data.items||[];
+  const colors = DAY_COLORS[idx]||DAY_COLORS[0];
+  const photo = localStorage.getItem('busan_banner_'+idx)||'';
+  const hotel = DAY_HOTELS[idx];
+
+  // Build maps URL
+  const spots = items.filter(it=>it.addr&&it.tag!=='transport'&&it.tag!=='route').slice(0,8);
+  let mapsUrl = '';
+  if(spots.length>=2){
+    const enc = s=>encodeURIComponent(s);
+    const wps = spots.slice(1,spots.length-1).map(s=>enc(s.addr)).join('|');
+    mapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${enc(spots[0].addr)}&destination=${enc(spots[spots.length-1].addr)}${wps?'&waypoints='+wps:''}&travelmode=transit`;
+  } else if(spots.length===1){
+    mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(spots[0].addr)}`;
+  }
+
+  let h = '';
+
+  // Banner
+  const bgStyle = photo
+    ? `background-image:url('${photo}');background-color:${colors[0]}`
+    : `background:linear-gradient(135deg,${colors[0]},${colors[1]})`;
+  h += `<div class="day-banner" onclick="pickBannerPhoto(${idx})">
+    <div class="db-bg" style="${bgStyle}"></div>
+    <div class="db-ov"></div>
+    <div class="db-cnt">
+      <div class="db-pill">Day ${idx+1}</div>
+      <div class="db-title">${DAY_SUBTITLES[idx]||d.label}</div>
+      <div class="db-hint"><i class="fa-regular fa-image"></i>${photo?'點此更換照片':'點此加入旅遊照片'}</div>
     </div>
-  </div><div class="tl">`;
-  items.forEach((it,i)=>{
+    ${photo?`<button class="db-rm" onclick="removeBannerPhoto(event,${idx})"><i class="fa-solid fa-xmark"></i></button>`:''}
+  </div>`;
+
+  // Weather placeholder (filled by renderWeatherStrip)
+  h += `<div id="weatherStrip_${idx}" class="weather-wrap"></div>`;
+
+  // Hotel strip
+  if(hotel) h += `<div class="hotel-strip"><i class="fa-solid fa-hotel" style="color:var(--acc)"></i><span class="hs-name">今晚住宿 · ${hotel}</span></div>`;
+
+  // Maps button
+  if(mapsUrl) h += `<a href="${mapsUrl}" target="_blank" class="maps-btn">
+    <div class="mb-icon"><i class="fa-solid fa-map"></i></div>
+    <div><div class="mb-t">今日路線地圖</div><div class="mb-s">點擊開啟 Google Maps 導航</div></div>
+    <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:.78rem;color:rgba(52,168,83,.7)"></i>
+  </a>`;
+
+  // Timeline
+  h += renderTimeline(items);
+
+  document.getElementById('dayContent').innerHTML = h;
+  if(weatherCache) renderWeatherStrip(idx);
+}
+
+function renderTimeline(items){
+  let h = '<div class="tl2">';
+  items.forEach(it=>{
     if(it.tag==='route'){
       const r = it.route||{};
-      const modeIcon = r.mode==='plane'?'fa-plane':r.mode==='transit'?'fa-train-subway':'fa-car-side';
-      h += `<div class="tl-item">
-        <div class="tdot ${dotClass(it.tag)}" style="color:#78909C"><i class="fa-solid ${modeIcon}"></i></div>
-        <div class="tbody" onclick="toggleItem(this)">
-          <div class="ttime">${it.time}</div>
-          <div class="route-card"><i class="fa-solid fa-arrow-right-long" style="color:var(--acc)"></i> ${r.from||''} → ${r.to||''}${r.minutes?' ('+r.minutes+'min)':''}</div>
+      const modeIcon = r.mode==='plane'?'fa-plane':r.mode==='transit'?'fa-train-subway':r.mode==='walk'?'fa-person-walking':r.mode==='ferry'?'fa-ship':'fa-car-side';
+      const dur = r.minutes?r.minutes+'min':(it.stay||'');
+      h += `<div class="tl2-route">
+        <div class="tr-icon"><i class="fa-solid ${modeIcon}"></i></div>
+        <div class="tr-body">
+          ${it.title?`<div class="tr-name">${it.title}</div>`:''}
+          ${r.from?`<div class="tr-dir">${r.from} → ${r.to}</div>`:''}
         </div>
+        ${dur?`<div class="tr-dur">${dur}</div>`:''}
       </div>`;
       return;
     }
-    const reservedBadge = it.reserved?`<span class="reserved-badge"><i class="fa-solid fa-circle-check"></i>已預約</span>`:'';
-    const star = it.highlight?`<span class="star">★</span>`:'';
-    const desc = it.desc?`<div class="tdesc">${it.desc}</div>`:'';
-    const detail = it.detail?`<div class="tdetail">${it.detail}</div>`:'';
-    const price = it.price?`<span class="ttag ${tagClass('route')}">${it.price}</span>`:'';
-    const stay = it.stay?`<span class="ttag ${tagClass('route')}">${it.stay}</span>`:'';
-    const addr = it.addr?`<div class="tdesc mt8" style="font-size:.76rem"><i class="fa-solid fa-location-dot" style="color:var(--acc);margin-right:4px"></i>${it.addr}</div>`:'';
-    const hours = it.hours?`<div class="thours"><i class="fa-regular fa-clock"></i>${it.hours}</div>`:'';
-    const guides = (it.guide||[]).map(g=>`<div class="tip guide"><i class="fa-solid fa-lightbulb"></i>${g}</div>`).join('');
-    const avoids = (it.avoid||[]).map(a=>`<div class="tip avoid"><i class="fa-solid fa-triangle-exclamation"></i>${a}</div>`).join('');
-    const tips = (guides||avoids)?`<div class="tips">${guides}${avoids}</div>`:'';
-    h += `<div class="tl-item" id="tli_${it.id}">
-      <div class="tdot ${dotClass(it.tag)}" style="color:inherit"><i class="fa-solid ${tagIcon(it.tag)}" style="opacity:.7"></i></div>
-      <div class="tbody" onclick="toggleItem(this)">
-        <div class="ttime">${it.time}</div>
-        <div class="ttitle">${it.title}${star}${reservedBadge}</div>
-        ${desc}
-        <div class="ttags">
-          ${it.subtag?`<span class="ttag ${tagClass(it.tag)}">${it.subtag}</span>`:''}
-          ${price}${stay}
+    const dot = TAG_DOT[it.tag]||'#B0BEC5';
+    const label = TAG_LABEL[it.tag]||it.tag;
+    const chips = [
+      it.hours?`<span class="tl2-chip"><i class="fa-regular fa-clock"></i>${it.hours}</span>`:'',
+      it.price?`<span class="tl2-chip"><i class="fa-solid fa-tag"></i>${it.price}</span>`:'',
+      it.stay?`<span class="tl2-chip"><i class="fa-regular fa-hourglass"></i>${it.stay}</span>`:'',
+    ].filter(Boolean).join('');
+    const badge = it.highlight
+      ? `<div class="tl2-star">★</div>`
+      : it.reserved ? `<div class="tl2-resv">預約中</div>` : '';
+    h += `<div class="tl2-row">
+      <div class="tl2-time">${it.time}</div>
+      <div class="tl2-card${it.highlight?' hl':''}" onclick='openDetail(${JSON.stringify(it).replace(/'/g,"&#39;")})'>
+        <div class="tl2-tag">
+          <div class="tl2-dot" style="background:${dot}"></div>
+          <span class="tl2-cat">${label}</span>
+          ${it.subtag?`<span class="tl2-sub">· ${it.subtag}</span>`:''}
         </div>
-        ${hours}
-        ${detail}
-        ${addr}
-        ${tips}
+        <div class="tl2-title">${it.title}</div>
+        ${it.desc?`<div class="tl2-desc">${it.desc}</div>`:''}
+        ${chips?`<div class="tl2-chips">${chips}</div>`:''}
+        ${badge}
       </div>
     </div>`;
   });
   h += '</div>';
-  document.getElementById('dayContent').innerHTML = h;
+  return h;
 }
 
-function toggleItem(el){ el.parentElement.classList.toggle('exp') }
+// ── Weather ──
+async function fetchWeather(){
+  try{
+    const url = 'https://api.open-meteo.com/v1/forecast?latitude=35.1796&longitude=129.0756'
+      +'&hourly=temperature_2m,precipitation_probability,weathercode'
+      +'&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max'
+      +'&timezone=Asia%2FSeoul&start_date=2026-06-06&end_date=2026-06-10';
+    const data = await fetch(url).then(r=>r.json());
+    weatherCache = data;
+    renderWeatherStrip(curDay);
+  }catch(e){ weatherCache = {}; }
+}
+
+function wmoEmoji(c){ return c===0?'☀️':c<=2?'🌤':c===3?'☁️':c<=48?'🌫':c<=57?'🌦':c<=67?'🌧':c<=82?'🌦':c<=99?'⛈':'🌡' }
+function wmoLabel(c){ return c===0?'晴天':c<=2?'多雲時晴':c===3?'陰天':c<=48?'有霧':c<=57?'毛毛雨':c<=67?'降雨':c<=82?'陣雨':c<=99?'雷陣雨':'未知' }
+
+function renderWeatherStrip(idx){
+  const el = document.getElementById('weatherStrip_'+idx);
+  if(!el||!weatherCache||!weatherCache.daily) return;
+  const targetDate = DAY_DATES_ISO[idx];
+  const di = (weatherCache.daily.time||[]).indexOf(targetDate);
+  if(di<0){ el.innerHTML=''; return; }
+  const maxT = Math.round(weatherCache.daily.temperature_2m_max[di]);
+  const minT = Math.round(weatherCache.daily.temperature_2m_min[di]);
+  const rainMax = weatherCache.daily.precipitation_probability_max[di]||0;
+  const district = DAY_DISTRICTS[idx]||'釜山';
+
+  // Hourly slots (6am-9pm for that date)
+  const htimes = weatherCache.hourly.time||[];
+  const slots = [];
+  htimes.forEach((t,i)=>{
+    if(!t.startsWith(targetDate)) return;
+    const h = parseInt(t.split('T')[1]);
+    if(h<6||h>21) return;
+    slots.push({h, temp:Math.round(weatherCache.hourly.temperature_2m[i]), code:weatherCache.hourly.weathercode[i], rain:weatherCache.hourly.precipitation_probability[i]||0});
+  });
+
+  const nowH = new Date().getHours();
+  const todayISO = new Date().toISOString().slice(0,10);
+  const isToday = targetDate===todayISO;
+
+  el.innerHTML = `<div class="weather-bar">
+    <span class="wb-loc">${district}</span>
+    <span class="wb-temp">${minT}–${maxT}°C</span>
+    <span class="wb-rain${rainMax>=50?' wet':''}">💧${rainMax}%</span>
+    ${slots.length?`<span class="wb-lbl">${wmoLabel(slots[0].code)}</span>`:''}
+  </div>
+  ${slots.length?`<div class="weather-hourly">${slots.map(s=>{
+    const isNow = isToday&&s.h===nowH;
+    return `<div class="wh${isNow?' now':''}">
+      <div class="wh-h${isNow?' now':''}">${isNow?'現在':s.h+'時'}</div>
+      <div class="wh-e">${wmoEmoji(s.code)}</div>
+      <div class="wh-t">${s.temp}°</div>
+    </div>`;
+  }).join('')}</div>`:''}`;
+}
+
+// ── Banner photo ──
+let _bannerPickIdx = 0;
+function pickBannerPhoto(idx){ _bannerPickIdx=idx; document.getElementById('bannerFilePick').click(); }
+function onBannerFile(e){
+  const file = e.target.files[0]; if(!file) return;
+  const reader = new FileReader();
+  reader.onload = ev=>{
+    localStorage.setItem('busan_banner_'+_bannerPickIdx, ev.target.result);
+    renderDayFull(_bannerPickIdx);
+  };
+  reader.readAsDataURL(file);
+  e.target.value='';
+}
+function removeBannerPhoto(e, idx){
+  e.stopPropagation();
+  localStorage.removeItem('busan_banner_'+idx);
+  renderDayFull(idx);
+}
+
+// ── Item detail sheet ──
+function openDetail(item){
+  if(typeof item==='string') item=JSON.parse(item);
+  const dot = TAG_DOT[item.tag]||'#B0BEC5';
+  const label = TAG_LABEL[item.tag]||item.tag;
+  // Header
+  document.getElementById('detailHdr').innerHTML = `
+    <div class="detail-tagrow">
+      <span class="detail-tagpill" style="background:${dot}22;color:${dot}">${label}</span>
+      ${item.time?`<span class="detail-timebadge"><i class="fa-regular fa-clock"></i>${item.time}</span>`:''}
+    </div>
+    <div class="detail-title">${item.title}</div>
+    ${(item.hours||item.price||item.stay)?`<div class="detail-pills">
+      ${item.hours?`<span class="detail-pill"><i class="fa-regular fa-clock"></i>${item.hours}</span>`:''}
+      ${item.price?`<span class="detail-pill"><i class="fa-solid fa-tag"></i>${item.price}</span>`:''}
+      ${item.stay?`<span class="detail-pill"><i class="fa-regular fa-hourglass"></i>${item.stay}</span>`:''}
+    </div>`:''}
+    <button class="detail-close" onclick="document.getElementById('detailOverlay').classList.remove('open')"><i class="fa-solid fa-xmark"></i></button>`;
+  // Body
+  const hasMeta = item.addr||item.hours||item.parking||item.mapcode;
+  let b = '';
+  if(hasMeta) b += `<div class="detail-meta">
+    ${item.addr?`<div class="detail-mrow"><i class="fa-solid fa-location-dot"></i><span>${item.addr}</span><button class="detail-copy" onclick="copyText('${item.addr.replace(/'/g,"\\'")}')">複製</button></div>`:''}
+    ${item.hours?`<div class="detail-mrow"><i class="fa-regular fa-clock"></i><span>${item.hours}</span></div>`:''}
+    ${item.parking?`<div class="detail-mrow"><i class="fa-solid fa-square-parking"></i><span>${item.parking}</span></div>`:''}
+  </div>`;
+  if(item.detail) b += `<div class="detail-text">${item.detail}</div>`;
+  if((item.guide||[]).length) b += `<div class="detail-block">
+    <div class="detail-btitle"><i class="fa-solid fa-lightbulb" style="color:#8B8175"></i>導覽</div>
+    ${item.guide.map(g=>`<div class="detail-bullet"><i class="fa-solid fa-circle" style="font-size:.35rem;color:#ccc;margin-top:6px"></i>${g}</div>`).join('')}
+  </div>`;
+  if((item.avoid||[]).length) b += `<div class="detail-block">
+    <div class="detail-btitle"><i class="fa-solid fa-triangle-exclamation" style="color:#E57373"></i>注意事項</div>
+    ${item.avoid.map(a=>`<div class="detail-bullet"><i class="fa-solid fa-circle" style="font-size:.35rem;color:#ccc;margin-top:6px"></i>${a}</div>`).join('')}
+  </div>`;
+  if(item.addr) b += `<a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.addr)}" target="_blank" class="detail-maps"><i class="fa-solid fa-map-location-dot"></i>Google Maps 導航</a>`;
+  document.getElementById('detailBody').innerHTML = b;
+  document.getElementById('detailOverlay').classList.add('open');
+}
+
+function closeDetail(e){ if(e.target===document.getElementById('detailOverlay')) document.getElementById('detailOverlay').classList.remove('open'); }
+function copyText(t){ navigator.clipboard?.writeText(t); }
 
 // ════════════════════════════════════════
 // INFO
