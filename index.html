@@ -27,19 +27,25 @@
   --mono:"Roboto Mono",monospace;
 }
 *,*::before,*::after{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{background:#F6F3EE}
 html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);min-height:100dvh;overscroll-behavior-y:none}
 body{padding-bottom:calc(72px + env(safe-area-inset-bottom))}
+/* Cover Dynamic Island / notch area with background color */
+body::before{content:'';position:fixed;top:0;left:0;right:0;height:env(safe-area-inset-top);background:#F6F3EE;z-index:9999;pointer-events:none}
 
 /* ── Header ── */
 .hdr{
   padding:calc(env(safe-area-inset-top)+14px) 20px 10px;
   text-align:center;position:sticky;top:0;z-index:100;
-  background:linear-gradient(to bottom,rgba(246,243,238,1) 70%,rgba(246,243,238,0));
+  background:rgba(246,243,238,.97);backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  position:relative;
 }
 .hdr-title{font-family:var(--serif);font-size:1.28rem;font-weight:900;letter-spacing:.03em;margin:0;color:var(--pri)}
 .hdr-sub{font-size:.74rem;color:var(--ink2);font-weight:700;margin-top:3px;letter-spacing:.1em}
 .hdr-meta{display:flex;justify-content:center;gap:7px;margin-top:5px}
 .year-pill{font-size:.67rem;font-weight:900;padding:3px 10px;border-radius:999px;border:1px solid rgba(176,138,91,.5);background:rgba(255,255,255,.65);color:#7D5B34}
+.hdr-sync{position:absolute;top:calc(env(safe-area-inset-top)+10px);right:14px;width:32px;height:32px;border-radius:50%;background:rgba(176,138,91,.12);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--acc);font-size:.88rem}
 
 /* ── Bottom Nav ── */
 .nav{
@@ -368,6 +374,7 @@ body{padding-bottom:calc(72px + env(safe-area-inset-bottom))}
     <span class="year-pill">5天4夜</span>
     <span class="year-pill">2026</span>
   </div>
+  <button class="hdr-sync" onclick="openSyncSheet()" title="雲端同步"><i class="fa-solid fa-cloud-arrow-up" id="syncIcon"></i></button>
 </header>
 
 <!-- ══════════════ PAGES ══════════════ -->
@@ -578,6 +585,54 @@ body{padding-bottom:calc(72px + env(safe-area-inset-bottom))}
     <div class="flabel">連結 URL</div>
     <input class="add-inp" id="todoLink" placeholder="https://…" type="url" style="width:100%;margin-bottom:16px">
     <button class="btn-add" onclick="saveTodo()" id="todoSaveBtn">新增</button>
+  </div>
+</div>
+
+<!-- ══════════════ SYNC SHEET ══════════════ -->
+<div class="overlay" id="syncOverlay" onclick="closeSyncSheet(event)">
+  <div class="sheet" style="padding-bottom:calc(env(safe-area-inset-bottom)+32px)">
+    <div class="handle"></div>
+    <div style="font-family:var(--serif);font-size:1.1rem;font-weight:900;margin-bottom:4px">☁️ 雲端同步</div>
+    <div style="font-size:.78rem;color:var(--ink2);margin-bottom:14px;line-height:1.6">透過 Google Apps Script 同步至 Google Sheet，6台裝置共用同一份資料。</div>
+
+    <div class="flabel">Apps Script 網址</div>
+    <input class="add-inp" id="syncUrl" placeholder="https://script.google.com/macros/s/…/exec" type="url" style="margin-bottom:6px;font-size:.78rem">
+    <div style="font-size:.72rem;color:var(--ink2);margin-bottom:14px">設定方式請點下方「查看教學」</div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
+      <button class="btn-add" style="background:#34C759" onclick="syncPush()"><i class="fa-solid fa-cloud-arrow-up"></i> 上傳資料</button>
+      <button class="btn-add" style="background:#007AFF" onclick="syncPull()"><i class="fa-solid fa-cloud-arrow-down"></i> 下載資料</button>
+    </div>
+    <div id="syncStatus" style="text-align:center;font-size:.78rem;color:var(--ink2);min-height:20px;margin-bottom:10px"></div>
+
+    <div style="background:rgba(242,242,247,.9);border-radius:12px;padding:10px 12px;margin-bottom:10px">
+      <div style="font-size:.76rem;font-weight:900;color:var(--pri);margin-bottom:6px">📋 查看教學</div>
+      <div style="font-size:.72rem;color:var(--ink2);line-height:1.8">
+        1. 開啟 <b>script.google.com</b>，新增專案<br>
+        2. 貼上下方程式碼，儲存<br>
+        3. 點「部署 → 新增部署」→ 類型選「網頁應用程式」<br>
+        4. 「以誰身份執行」選自己，「誰可以存取」選「任何人」<br>
+        5. 複製網址貼到上方欄位
+      </div>
+    </div>
+    <div style="background:rgba(30,30,30,.95);border-radius:10px;padding:10px 12px;position:relative">
+      <button onclick="copySyncScript()" style="position:absolute;top:8px;right:8px;padding:3px 8px;border-radius:6px;background:rgba(255,255,255,.15);border:none;color:#fff;font-size:.68rem;font-weight:900;cursor:pointer">複製</button>
+      <pre id="syncScriptCode" style="margin:0;font-size:.62rem;color:#a8d8a8;overflow-x:auto;white-space:pre;font-family:var(--mono);line-height:1.6">const SHEET_NAME = 'busan';
+function doGet(e){
+  const ss=SpreadsheetApp.getActiveSpreadsheet();
+  let sh=ss.getSheetByName(SHEET_NAME);
+  if(!sh) return ContentService.createTextOutput('{}').setMimeType(ContentService.MimeType.JSON);
+  const data=sh.getRange(1,1).getValue();
+  return ContentService.createTextOutput(data||'{}').setMimeType(ContentService.MimeType.JSON);
+}
+function doPost(e){
+  const ss=SpreadsheetApp.getActiveSpreadsheet();
+  let sh=ss.getSheetByName(SHEET_NAME);
+  if(!sh) sh=ss.insertSheet(SHEET_NAME);
+  sh.getRange(1,1).setValue(e.postData.contents);
+  return ContentService.createTextOutput('ok').setMimeType(ContentService.MimeType.TEXT);
+}</pre>
+    </div>
   </div>
 </div>
 
@@ -1868,6 +1923,96 @@ function toggleCheck(item){
   const s = getCheck(packUser);
   s.has(item)?s.delete(item):s.add(item);
   setCheck(packUser,s); renderPack();
+}
+
+// ════════════════════════════════════════
+// GOOGLE SHEET SYNC
+// ════════════════════════════════════════
+const SYNC_URL_KEY = 'busan_sync_url';
+
+function openSyncSheet(){
+  document.getElementById('syncUrl').value = localStorage.getItem(SYNC_URL_KEY)||'';
+  document.getElementById('syncStatus').textContent = '';
+  document.getElementById('syncOverlay').classList.add('open');
+}
+function closeSyncSheet(e){ if(e.target===document.getElementById('syncOverlay')) document.getElementById('syncOverlay').classList.remove('open'); }
+
+function getSyncUrl(){
+  const url = document.getElementById('syncUrl').value.trim();
+  if(url) localStorage.setItem(SYNC_URL_KEY, url);
+  return url;
+}
+
+function setSyncStatus(msg, color='var(--ink2)'){
+  const el = document.getElementById('syncStatus');
+  el.style.color = color;
+  el.textContent = msg;
+}
+
+// Collect all busan_* keys into one object (excluding large banner images to keep size down)
+function collectLocalData(){
+  const out = {};
+  for(let i=0;i<localStorage.length;i++){
+    const k = localStorage.key(i);
+    if(!k.startsWith('busan_')) continue;
+    if(k.startsWith('busan_banner_')||k.startsWith('busan_shop_img_')) continue; // skip images
+    out[k] = localStorage.getItem(k);
+  }
+  return out;
+}
+
+async function syncPush(){
+  const url = getSyncUrl();
+  if(!url){ setSyncStatus('請先填入 Apps Script 網址', '#FF3B30'); return; }
+  setSyncStatus('⏳ 上傳中…');
+  const icon = document.getElementById('syncIcon');
+  icon.className = 'fa-solid fa-spinner fa-spin';
+  try{
+    const data = collectLocalData();
+    const res = await fetch(url, {
+      method:'POST',
+      headers:{'Content-Type':'text/plain'},
+      body: JSON.stringify(data),
+      mode:'no-cors'
+    });
+    setSyncStatus('✅ 上傳成功！', '#34C759');
+  } catch(e){
+    setSyncStatus('❌ 上傳失敗：'+e.message, '#FF3B30');
+  }
+  icon.className = 'fa-solid fa-cloud-arrow-up';
+}
+
+async function syncPull(){
+  const url = getSyncUrl();
+  if(!url){ setSyncStatus('請先填入 Apps Script 網址', '#FF3B30'); return; }
+  setSyncStatus('⏳ 下載中…');
+  const icon = document.getElementById('syncIcon');
+  icon.className = 'fa-solid fa-spinner fa-spin';
+  try{
+    const res = await fetch(url+'?t='+Date.now());
+    const data = await res.json();
+    if(!data||typeof data!=='object'||!Object.keys(data).length){
+      setSyncStatus('⚠️ 雲端尚無資料，請先從某台裝置上傳', '#FF9500');
+      icon.className = 'fa-solid fa-cloud-arrow-up';
+      return;
+    }
+    let count = 0;
+    Object.keys(data).forEach(k=>{
+      if(k.startsWith('busan_')){ localStorage.setItem(k, data[k]); count++; }
+    });
+    setSyncStatus(`✅ 已同步 ${count} 筆資料，即將重新載入…`, '#34C759');
+    setTimeout(()=>{ window.location.reload(); }, 1200);
+  } catch(e){
+    setSyncStatus('❌ 下載失敗：'+e.message, '#FF3B30');
+  }
+  icon.className = 'fa-solid fa-cloud-arrow-up';
+}
+
+function copySyncScript(){
+  const code = document.getElementById('syncScriptCode').textContent;
+  navigator.clipboard?.writeText(code);
+  event.target.textContent = '已複製！';
+  setTimeout(()=>{ event.target.textContent='複製'; }, 1500);
 }
 
 // ════════════════════════════════════════
