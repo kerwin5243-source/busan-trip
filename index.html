@@ -119,8 +119,8 @@ body{padding-bottom:calc(72px + env(safe-area-inset-bottom))}
 .badge.zero{background:rgba(233,225,214,.9);color:var(--ink2)}
 
 /* ── Records ── */
-.rec{display:flex;align-items:center;padding:11px 14px;background:var(--card);border:1px solid rgba(233,225,214,.8);border-radius:14px;margin-bottom:8px;gap:12px;position:relative;overflow:hidden;transition:transform .25s,opacity .25s,max-height .3s}
-.rec.removing{transform:translateX(-100%);opacity:0;max-height:0;padding:0;margin:0;overflow:hidden}
+.rec{display:flex;align-items:center;padding:11px 14px;background:var(--card);border:1px solid rgba(233,225,214,.8);border-radius:14px;margin-bottom:0;gap:12px;position:relative;transition:opacity .25s}
+.sw-row.removing,.rec.removing{opacity:0;max-height:0;padding:0;margin:0;overflow:hidden;transition:all .28s ease}
 .ric{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:.95rem}
 .ric.trip{background:rgba(61,110,169,.12);color:#3D6EA9}
 .ric.pre{background:rgba(224,92,58,.12);color:#E05C3A}
@@ -245,26 +245,26 @@ body{padding-bottom:calc(72px + env(safe-area-inset-bottom))}
 .acc-body.open{display:block}
 
 /* ── Souvenir grid ── */
-.souv-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.souv-card{background:rgba(255,255,255,.82);border:1px solid rgba(233,225,214,.85);border-radius:16px;overflow:hidden;position:relative;transition:transform .1s}
+.souv-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+.souv-card{background:rgba(255,255,255,.82);border:1px solid rgba(233,225,214,.85);border-radius:13px;overflow:hidden;position:relative;transition:transform .1s}
 .souv-card.done-card{opacity:.65}
 .souv-photo{width:100%;aspect-ratio:1;background:rgba(233,225,214,.4);display:flex;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;position:relative}
 .souv-photo img{width:100%;height:100%;object-fit:cover;display:block}
-.souv-photo-icon{font-size:1.8rem;color:rgba(0,0,0,.18)}
-.souv-chk{position:absolute;top:6px;left:6px;width:22px;height:22px;border-radius:6px;border:2px solid rgba(255,255,255,.9);background:rgba(0,0,0,.25);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.15s;z-index:2}
+.souv-photo-icon{font-size:1.4rem;color:rgba(0,0,0,.18)}
+.souv-chk{position:absolute;top:4px;left:4px;width:19px;height:19px;border-radius:5px;border:2px solid rgba(255,255,255,.9);background:rgba(0,0,0,.25);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.15s;z-index:2}
 .souv-chk.done{background:var(--acc);border-color:var(--acc)}
-.souv-chk.done::after{content:"✓";color:#fff;font-size:.68rem;font-weight:900}
-.souv-info{padding:8px 10px 10px}
-.souv-name{font-weight:800;font-size:.88rem;color:var(--ink);line-height:1.3;margin-bottom:3px;word-break:break-all}
+.souv-chk.done::after{content:"✓";color:#fff;font-size:.58rem;font-weight:900}
+.souv-info{padding:5px 7px 7px}
+.souv-name{font-weight:800;font-size:.75rem;color:var(--ink);line-height:1.3;margin-bottom:2px;word-break:break-all}
 .souv-name.done{text-decoration:line-through;color:var(--ink2)}
-.souv-price{font-family:var(--mono);font-size:.7rem;color:var(--ink2);margin-bottom:6px}
-.souv-bottom{display:flex;align-items:center;gap:4px}
-.souv-qbtn{width:22px;height:22px;border-radius:6px;border:1px solid rgba(233,225,214,.9);background:#fff;display:flex;align-items:center;justify-content:center;font-size:.82rem;font-weight:900;cursor:pointer;flex-shrink:0;transition:.1s}
+.souv-price{font-family:var(--mono);font-size:.62rem;color:var(--ink2);margin-bottom:4px}
+.souv-bottom{display:flex;align-items:center;gap:2px}
+.souv-qbtn{width:18px;height:18px;border-radius:5px;border:1px solid rgba(233,225,214,.9);background:#fff;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:900;cursor:pointer;flex-shrink:0;transition:.1s}
 .souv-qbtn:active{background:rgba(176,138,91,.12)}
-.souv-qnum{font-family:var(--mono);font-size:.78rem;font-weight:700;min-width:14px;text-align:center}
-.souv-acts{display:flex;gap:6px;margin-left:auto}
-.souv-edt{color:var(--acc);cursor:pointer;font-size:.8rem;padding:2px}
-.souv-del{color:#ccc;cursor:pointer;font-size:.8rem;padding:2px}
+.souv-qnum{font-family:var(--mono);font-size:.7rem;font-weight:700;min-width:12px;text-align:center}
+.souv-acts{display:flex;gap:4px;margin-left:auto}
+.souv-edt{color:var(--acc);cursor:pointer;font-size:.72rem;padding:2px}
+.souv-del{color:#ccc;cursor:pointer;font-size:.72rem;padding:2px}
 .add-inp{flex:1;background:rgba(242,242,247,.95);border:none;border-radius:12px;padding:10px 14px;font-size:.9rem;font-family:var(--sans);color:var(--ink);outline:none;box-sizing:border-box;width:100%}
 .add-inp::placeholder{color:var(--ink2);opacity:.6}
 /* ── Souvenir sheet photo preview ── */
@@ -272,11 +272,13 @@ body{padding-bottom:calc(72px + env(safe-area-inset-bottom))}
 .souv-sheet-photo img{width:100%;height:100%;object-fit:cover;display:block}
 .souv-sheet-photo-hint{display:flex;flex-direction:column;align-items:center;gap:5px;color:var(--ink2);font-size:.78rem;font-weight:700}
 .souv-sheet-photo-hint i{font-size:1.4rem;color:var(--acc);opacity:.7}
-.rec-cats{display:flex;flex-direction:column;gap:12px}
-.cat-label{font-weight:900;font-size:.87rem;color:var(--pri);margin-bottom:6px}
-.cat-chips{display:flex;flex-wrap:wrap;gap:6px}
-.rchip{padding:6px 12px;border-radius:999px;border:1px solid rgba(233,225,214,.9);background:rgba(255,255,255,.7);font-size:.82rem;font-weight:700;color:var(--ink);cursor:pointer;transition:.15s;user-select:none}
-.rchip:active{transform:scale(.96);background:rgba(176,138,91,.1)}
+.rec-cats{display:flex;flex-direction:column;gap:14px}
+.cat-label{font-weight:900;font-size:.87rem;color:var(--pri);margin-bottom:8px}
+.rec-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+.rcard{background:rgba(255,255,255,.75);border:1px solid rgba(233,225,214,.9);border-radius:13px;padding:10px 6px 8px;text-align:center;cursor:pointer;transition:.15s;user-select:none;display:flex;flex-direction:column;align-items:center;gap:4px}
+.rcard:active{transform:scale(.96);background:rgba(176,138,91,.1);border-color:rgba(176,138,91,.4)}
+.rcard-emoji{font-size:1.55rem;line-height:1}
+.rcard-name{font-size:.72rem;font-weight:800;color:var(--ink);line-height:1.3;word-break:break-all}
 
 /* ── Prep todos ── */
 .todo-li{display:flex;align-items:flex-start;gap:10px;padding:10px 8px;border-radius:12px;margin-bottom:4px;transition:background .15s}
@@ -316,10 +318,14 @@ body{padding-bottom:calc(72px + env(safe-area-inset-bottom))}
 @keyframes su{from{transform:translateY(100%)}to{transform:translateY(0)}}
 .handle{width:36px;height:4px;background:var(--div);border-radius:2px;margin:0 auto 16px}
 
-/* ── Swipe rows ── */
-#todoList{overflow:hidden}
-#souvList{overflow:hidden}
-.swipe-hint{font-size:.7rem;color:var(--ink2);opacity:.55;text-align:center;padding:4px 0 2px;letter-spacing:.02em}
+/* ── iOS-style swipe reveal rows ── */
+.sw-row{position:relative;overflow:hidden;border-radius:12px;margin-bottom:8px}
+.sw-actions{position:absolute;right:0;top:0;bottom:0;display:flex;z-index:0}
+.sw-btn{width:64px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#fff;font-size:.6rem;font-weight:900;font-family:var(--sans);cursor:pointer;user-select:none;-webkit-user-select:none}
+.sw-btn i{font-size:1rem}
+.sw-edit{background:#34C759}
+.sw-del{background:#FF3B30}
+.sw-content{position:relative;z-index:1;background:var(--bg)}
 
 /* ── Misc ── */
 .divl{height:1px;background:rgba(233,225,214,.8);margin:12px 0}
@@ -394,7 +400,6 @@ body{padding-bottom:calc(72px + env(safe-area-inset-bottom))}
   <div class="utabs" id="souvTabs"></div>
   <div id="souvList">
     <div class="souv-grid" id="shopItems"></div>
-    <div class="swipe-hint" style="margin-top:8px">← 左滑刪除　右滑編輯 →</div>
   </div>
   <div class="sec mt12"><i class="fa-solid fa-gift"></i>伴手禮推薦</div>
   <div class="card">
@@ -732,11 +737,11 @@ function renderDayFull(idx){
   if(hotel) h += `<div class="hotel-strip"><i class="fa-solid fa-hotel" style="color:var(--acc)"></i><span class="hs-name">今晚住宿 · ${hotel}</span></div>`;
 
   // Maps button
-  if(mapsUrl) h += `<a href="${mapsUrl}" target="_blank" class="maps-btn">
+  if(mapsUrl) h += `<div class="maps-btn" onclick="openExternal('${mapsUrl.replace(/'/g,"\\'")}')">
     <div class="mb-icon"><i class="fa-solid fa-map"></i></div>
     <div><div class="mb-t">今日路線地圖</div><div class="mb-s">點擊開啟 NAVER MAPS 導航</div></div>
     <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:.78rem;color:rgba(52,168,83,.7)"></i>
-  </a>`;
+  </div>`;
 
   // Timeline
   h += renderTimeline(items, d.file);
@@ -773,7 +778,7 @@ function renderTimeline(items, dayFile){
       ? `<div class="tl2-star">★</div>`
       : it.reserved ? `<div class="tl2-resv">預約中</div>` : '';
     const cardAction = itinEditMode
-      ? `openItemEdit(${JSON.stringify(it).replace(/'/g,"&#39;")}, '${dayFile||''}', ${idx})`
+      ? `openItemEdit(${JSON.stringify(it).replace(/'/g,"&#39;")}, "${dayFile||''}", ${idx})`
       : `openDetail(${JSON.stringify(it).replace(/'/g,"&#39;")})`;
     h += `<div class="tl2-row">
       <div class="tl2-time">${it.time}</div>
@@ -905,7 +910,7 @@ function openDetail(item){
     <div class="detail-btitle"><i class="fa-solid fa-triangle-exclamation" style="color:#E57373"></i>注意事項</div>
     ${item.avoid.map(a=>`<div class="detail-bullet"><i class="fa-solid fa-circle" style="font-size:.35rem;color:#ccc;margin-top:6px"></i>${a}</div>`).join('')}
   </div>`;
-  if(item.addr) b += `<a href="${naverSearchUrl(item.addr)}" target="_blank" class="detail-maps"><i class="fa-solid fa-map-location-dot"></i>NAVER MAPS 導航</a>`;
+  if(item.addr) b += `<div class="detail-maps" onclick="openExternal('${naverSearchUrl(item.addr).replace(/'/g,"\\'")}')"><i class="fa-solid fa-map-location-dot"></i>NAVER MAPS 導航</div>`;
   document.getElementById('detailBody').innerHTML = b;
   document.getElementById('detailOverlay').classList.add('open');
 }
@@ -986,11 +991,11 @@ function renderHotels(list){
         ${h.notices.map(n=>`<div style="display:flex;gap:6px;font-size:.79rem;color:var(--ink2);padding:2px 0"><span style="color:var(--acc);flex-shrink:0">·</span>${n}</div>`).join('')}
         ${(h.nearby||[]).length?`<div style="margin-top:10px;font-size:.8rem;font-weight:700;color:var(--ink2);margin-bottom:5px">周邊</div>
         ${h.nearby.map(n=>`<div style="font-size:.79rem;color:var(--ink2);padding:2px 0">📍 ${n}</div>`).join('')}`:''}
-        ${h.mapcode?`<a href="${naverSearchUrl(h.address||h.address_zh)}" target="_blank" class="maps-btn" style="margin-top:14px;margin-bottom:0">
+        ${h.mapcode?`<div class="maps-btn" style="margin-top:14px;margin-bottom:0" onclick="openExternal('${naverSearchUrl(h.address||h.address_zh).replace(/'/g,"\\'")}')">
           <div class="mb-icon"><i class="fa-solid fa-map-location-dot"></i></div>
           <div><div class="mb-t">在地圖中開啟</div><div class="mb-s">${h.address_zh}</div></div>
           <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:.78rem;color:rgba(52,168,83,.7)"></i>
-        </a>`:''}
+        </div>`:''}
       </div>
     </div>
   `).join('');
@@ -1052,13 +1057,6 @@ function renderSouvList(){
       </div>
     </div>`;
   }).join('');
-  el.querySelectorAll('.souv-card[data-idx]').forEach(row => {
-    const idx = parseInt(row.dataset.idx);
-    attachSwipe(row,
-      () => { const items=getShop(souvUser); const uid=items[idx]?.uid||idx; delSouvImg(souvUser,uid); items.splice(idx,1); setShop(souvUser,items); renderSouvList(); },
-      () => openSouvSheet(idx)
-    );
-  });
 }
 
 let editSouvIdx = null;
@@ -1164,13 +1162,37 @@ function addRecToShop(name){
   setTimeout(()=>{ if(event.target) event.target.style.background=''; },400);
 }
 
+const REC_EMOJI = {
+  'HITE 啤酒（手提箱裝）':'🍺',
+  '韓國泡麵禮盒':'🍜',
+  '海苔禮盒':'🌿',
+  '韓式辣醬（CJ 고추장）':'🌶️',
+  '芝士年糕條（즉석떡볶이）':'🍢',
+  '韓國護膚品（COSRX / 一葉子）':'🧴',
+  '樂天巧克力派禮盒':'🍫',
+  '濟州蜂蜜柚子茶':'🍵',
+  '人參糖禮盒':'🍬',
+  'MEDIHEAL 面膜':'💆',
+  'ROUND LAB 防曬':'☀️',
+  'Abib 鯊魚霜':'🦈',
+  'VT CICA 虎克霜':'🐯',
+  '魚腥草水噴霧':'💧',
+  '韓國零食大禮包':'🎁',
+  '幹明太魚（北魚乾）':'🐟',
+  '蝦餅 / 海鮮餅乾':'🦐',
+};
+
 function renderRecs(){
   document.getElementById('recCats').innerHTML = souvenirs.map(cat=>`
     <div>
       <div class="cat-label">• ${cat.region}</div>
-      <div class="cat-chips">${cat.items.map(it=>
-        `<span class="rchip" onclick="addRecToShop('${it.name.replace(/'/g,"\\'")}')">${it.name}</span>`
-      ).join('')}</div>
+      <div class="rec-grid">${cat.items.map(it=>{
+        const emoji = REC_EMOJI[it.name]||'🛍️';
+        return `<div class="rcard" onclick="addRecToShop('${it.name.replace(/'/g,"\\'")}')">
+          <div class="rcard-emoji">${emoji}</div>
+          <div class="rcard-name">${it.name}</div>
+        </div>`;
+      }).join('')}</div>
     </div>
   `).join('');
 }
@@ -1358,7 +1380,7 @@ function renderRecords(){
         </div>
         <span class="ramt">${fmtAmt(e.currency,e.cost)}</span>
       </div>`;
-    }).join('') + `<div class="swipe-hint">← 左滑刪除　右滑編輯 →</div>`;
+    }).join('');
     expEl.querySelectorAll('.rec[data-ts]').forEach(row => {
       const ts = parseInt(row.dataset.ts);
       attachSwipe(row, () => delExp(ts), () => openEditExp(ts));
@@ -1376,7 +1398,7 @@ function renderRecords(){
       </div>
       <span class="ramt" style="color:#2F8F5B">${fmtAmt(p.currency,p.amount)}</span>
     </div>
-  `).join('') + `<div class="swipe-hint">← 左滑刪除 →</div>`;
+  `).join('');
   payEl.querySelectorAll('.rec[data-ts]').forEach(row => {
     const ts = parseInt(row.dataset.ts);
     attachSwipe(row, () => delPay(ts), null);
@@ -1599,38 +1621,126 @@ function naverSearchUrl(query){
 function naverRouteUrl(destQuery){
   return `https://map.naver.com/p/directions/-/-/${encodeURIComponent(destQuery)}/transit`;
 }
+function openExternal(url){ window.open(url,'_blank'); }
 
 // ════════════════════════════════════════
-// SWIPE GESTURE
+// iOS-STYLE SWIPE REVEAL
 // ════════════════════════════════════════
-function attachSwipe(el, onDelete, onEdit){
-  let sx=0, sy=0, live=false;
-  const reset = ()=>{ live=false; el.style.transition='transform .2s,background .2s'; el.style.transform=''; el.style.background=''; };
-  el.addEventListener('touchstart', e=>{
+// Wraps el in .sw-row structure:
+//   .sw-row > .sw-actions(.sw-edit + .sw-del) + .sw-content(el)
+// First left swipe reveals buttons (-128px); tap trash OR swipe past -190px to delete.
+// Right swipe (or snap back) resets. Green pen triggers onEdit immediately on tap.
+function attachSwipeReveal(el, onDelete, onEdit){
+  // Build wrapper
+  const row = document.createElement('div');
+  row.className = 'sw-row';
+  el.parentNode.insertBefore(row, el);
+
+  const actions = document.createElement('div');
+  actions.className = 'sw-actions';
+  const btnEdit = document.createElement('div');
+  btnEdit.className = 'sw-btn sw-edit';
+  btnEdit.innerHTML = '<i class="fa-solid fa-pen"></i><span>編輯</span>';
+  const btnDel = document.createElement('div');
+  btnDel.className = 'sw-btn sw-del';
+  btnDel.innerHTML = '<i class="fa-solid fa-trash-can"></i><span>刪除</span>';
+  if(onEdit) actions.appendChild(btnEdit);
+  actions.appendChild(btnDel);
+
+  const content = document.createElement('div');
+  content.className = 'sw-content';
+  content.appendChild(el);
+
+  row.appendChild(actions);
+  row.appendChild(content);
+
+  // Actions width
+  const actW = onEdit ? 128 : 64;
+  actions.style.width = actW + 'px';
+
+  let sx=0, sy=0, live=false, revealed=false, offset=0;
+
+  function snapTo(x, animate){
+    if(animate) content.style.transition='transform .25s cubic-bezier(.25,.46,.45,.94)';
+    else content.style.transition='none';
+    content.style.transform = x ? `translateX(${x}px)` : '';
+    offset = x;
+  }
+  function reset(animate=true){ snapTo(0,animate); revealed=false; }
+
+  // Close all other open rows when opening this one
+  function closeOthers(){
+    document.querySelectorAll('.sw-content').forEach(c=>{
+      if(c!==content && c.style.transform && c.style.transform!==''){
+        c.style.transition='transform .25s cubic-bezier(.25,.46,.45,.94)';
+        c.style.transform='';
+        c._swRevealed=false;
+      }
+    });
+  }
+
+  content.addEventListener('touchstart', e=>{
     sx=e.touches[0].clientX; sy=e.touches[0].clientY;
-    live=true; el.style.transition='none';
+    live=true; content.style.transition='none';
   },{passive:true});
-  el.addEventListener('touchmove', e=>{
+
+  content.addEventListener('touchmove', e=>{
     if(!live) return;
     const dx=e.touches[0].clientX-sx, dy=e.touches[0].clientY-sy;
-    if(Math.abs(dy)>Math.abs(dx)+8){ reset(); return; }
-    const x=Math.max(-120,Math.min(120,dx));
-    el.style.transform=`translateX(${x}px)`;
-    el.style.background=dx<-15?'rgba(255,59,48,.1)':dx>15?'rgba(176,138,91,.1)':'';
+    if(Math.abs(dy)>Math.abs(dx)+8){ live=false; return; }
+    const base = revealed ? -actW : 0;
+    const x = Math.max(-(actW+80), Math.min(0, base+dx));
+    content.style.transform = `translateX(${x}px)`;
+    offset = x;
   },{passive:true});
-  el.addEventListener('touchend', e=>{
-    if(!live) return; live=false;
+
+  content.addEventListener('touchend', e=>{
+    if(!live){ live=false; return; } live=false;
     const dx=e.changedTouches[0].clientX-sx;
-    if(dx<-60){
-      el.style.transition='transform .22s ease,opacity .22s';
-      el.style.transform='translateX(-110%)'; el.style.opacity='0';
-      setTimeout(()=>onDelete?.(),220);
-    } else if(dx>60){
-      reset(); onEdit?.();
-    } else { reset(); }
+    if(offset < -(actW+40)){
+      // Full swipe past threshold → delete directly
+      content.style.transition='transform .22s ease,opacity .22s';
+      content.style.transform='translateX(-120%)';
+      content.style.opacity='0';
+      row.style.transition='max-height .3s ease,margin .3s ease';
+      row.style.overflow='hidden';
+      setTimeout(()=>{ row.style.maxHeight='0'; row.style.margin='0'; },10);
+      setTimeout(()=>onDelete?.(),320);
+    } else if(offset < -actW*0.45){
+      closeOthers(); snapTo(-actW, true); revealed=true;
+    } else {
+      reset();
+    }
   },{passive:true});
-  el.addEventListener('touchcancel', reset,{passive:true});
+
+  content.addEventListener('touchcancel', ()=>{ live=false; },{passive:true});
+
+  // Tap edit button
+  btnEdit.addEventListener('click', ()=>{ reset(); onEdit?.(); });
+
+  // Tap delete: first tap shows "確認?" label, second tap deletes
+  let delPending = false, delTimer = null;
+  btnDel.addEventListener('click', ()=>{
+    if(!delPending){
+      delPending=true;
+      btnDel.innerHTML='<i class="fa-solid fa-circle-exclamation"></i><span>確認?</span>';
+      delTimer=setTimeout(()=>{ delPending=false; btnDel.innerHTML='<i class="fa-solid fa-trash-can"></i><span>刪除</span>'; },2000);
+    } else {
+      clearTimeout(delTimer);
+      content.style.transition='transform .22s ease,opacity .22s';
+      content.style.transform='translateX(-120%)';
+      content.style.opacity='0';
+      row.style.overflow='hidden';
+      setTimeout(()=>{ row.style.transition='max-height .3s ease,margin .3s ease'; row.style.maxHeight='0'; row.style.margin='0'; },10);
+      setTimeout(()=>onDelete?.(),320);
+    }
+  });
+
+  return row;
 }
+
+// Legacy alias (kept for compatibility)
+function attachSwipe(el, onDelete, onEdit){ attachSwipeReveal(el, onDelete, onEdit); }
 
 // ════════════════════════════════════════
 // PREP
@@ -1677,7 +1787,7 @@ function renderTodos(){
         ${t.link?`<div class="tlink"><a href="${t.link}" target="_blank"><i class="fa-solid fa-link" style="font-size:.72rem;margin-right:3px"></i>${t.link}</a></div>`:''}
       </div>
     </div>
-  `).join('') + `<div class="swipe-hint">← 左滑刪除　右滑編輯 →</div>`;
+  `).join('');
   el.querySelectorAll('.todo-li[data-id]').forEach(row => {
     const id = row.dataset.id;
     attachSwipe(row,
