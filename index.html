@@ -107,11 +107,13 @@ body::before{content:'';position:fixed;top:0;left:0;right:0;height:env(safe-area
 .chip.payer{border-color:rgba(61,110,169,.6);background:rgba(61,110,169,.1);color:#2A5080}
 
 /* ── Household ── */
-.hrow{display:flex;align-items:center;gap:8px;margin-bottom:8px}
-.hall{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:900;cursor:pointer;border:1.5px solid rgba(233,225,214,.9);background:rgba(242,242,247,.9);color:var(--ink2);flex-shrink:0;transition:.15s}
+.hrow{display:flex;align-items:center;gap:6px;margin-bottom:6px;flex-wrap:wrap}
+.hrow-label{font-size:.72rem;font-weight:900;color:var(--ink2);min-width:28px;display:flex;align-items:center;gap:3px}
+.hall{width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:900;cursor:pointer;border:1.5px solid rgba(233,225,214,.9);background:rgba(242,242,247,.9);color:var(--ink2);flex-shrink:0;transition:.15s}
 .hall.hA-on{border-color:rgba(61,110,169,.5);background:rgba(61,110,169,.1);color:#3D6EA9}
 .hall.hB-on{border-color:rgba(47,143,91,.5);background:rgba(47,143,91,.1);color:#2F8F5B}
-.hchip{padding:7px 12px;border-radius:999px;font-weight:900;font-size:.82rem;cursor:pointer;border:1.5px solid rgba(233,225,214,.9);background:rgba(255,255,255,.8);color:var(--pri);transition:.15s}
+.hchip{padding:6px 11px;border-radius:999px;font-weight:900;font-size:.8rem;cursor:pointer;border:1.5px solid rgba(233,225,214,.9);background:rgba(255,255,255,.8);color:var(--pri);transition:.15s;display:flex;align-items:center;gap:5px}
+.hchip i{font-size:.72rem}
 .hchip.hA-on{border-color:rgba(61,110,169,.5);background:rgba(61,110,169,.1);color:#3D6EA9}
 .hchip.hB-on{border-color:rgba(47,143,91,.5);background:rgba(47,143,91,.1);color:#2F8F5B}
 
@@ -141,10 +143,12 @@ body::before{content:'';position:fixed;top:0;left:0;right:0;height:env(safe-area
 .day-cards-row{display:flex;gap:5px;padding:8px 0 8px}
 .day-card{flex:1;padding:8px 4px;border-radius:14px;border:1.5px solid rgba(233,225,214,.9);background:rgba(255,255,255,.55);text-align:center;cursor:pointer;transition:all .22s}
 .day-card.on{background:#fff;border-color:rgba(176,138,91,.8);transform:translateY(-2px);box-shadow:0 4px 16px rgba(176,138,91,.18)}
-.dc-label{font-family:var(--serif);font-size:.82rem;font-weight:900;color:#7D5B34}
-.day-card:not(.on) .dc-label{color:var(--ink)}
-.dc-date{font-size:.62rem;font-weight:800;color:var(--ink2);margin-top:1px}
-.dc-wd{font-size:.58rem;color:rgba(0,0,0,.35)}
+/* reordered: date top, weekday mid, Day# bottom */
+.dc-date{font-size:.82rem;font-weight:900;color:var(--pri)}
+.day-card:not(.on) .dc-date{color:var(--ink)}
+.dc-wd{font-size:.6rem;font-weight:700;color:var(--ink2);margin:1px 0}
+.dc-label{font-family:var(--serif);font-size:.62rem;font-weight:900;color:#7D5B34}
+.day-card:not(.on) .dc-label{color:var(--ink2)}
 
 /* ── Day Banner ── */
 .day-banner{border-radius:18px;overflow:hidden;margin-bottom:10px;aspect-ratio:16/9;height:auto;position:relative;cursor:pointer}
@@ -185,9 +189,9 @@ body::before{content:'';position:fixed;top:0;left:0;right:0;height:env(safe-area
 
 /* ── New Timeline ── */
 .tl2{padding:4px 0}
-.tl2-row{display:flex;align-items:flex-start;gap:12px;margin-bottom:12px}
-.tl2-time{width:46px;flex-shrink:0;text-align:right;font-family:var(--mono);font-size:.78rem;color:var(--ink2);padding-top:11px;line-height:1.3}
-.tl2-card{flex:1;background:rgba(255,255,255,.82);border:1px solid rgba(233,225,214,.85);border-left-width:3.5px;border-radius:16px;padding:10px 12px 10px 13px;position:relative;cursor:pointer;transition:transform .12s;overflow:hidden;box-shadow:none}
+.tl2-row{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px}
+.tl2-time{width:38px;flex-shrink:0;text-align:right;font-family:var(--mono);font-size:.72rem;color:var(--ink2);padding-top:10px;line-height:1.3}
+.tl2-card{flex:1;background:rgba(255,255,255,.82);border:1px solid rgba(233,225,214,.85);border-left-width:3.5px;border-radius:16px;padding:9px 11px 9px 12px;position:relative;cursor:pointer;transition:transform .12s;overflow:hidden;box-shadow:none}
 .tl2-card:active{transform:scale(.985)}
 /* Tag accent border colors */
 .tl2-card[data-tag="food"]{border-left-color:#E57373}
@@ -197,24 +201,26 @@ body::before{content:'';position:fixed;top:0;left:0;right:0;height:env(safe-area
 .tl2-card[data-tag="shop"]{border-left-color:#F48FB1}
 /* Gold highlight */
 .tl2-card.hl{border-color:rgba(176,138,91,.45);border-left-color:var(--acc)!important;background:rgba(255,251,242,.94)}
-.tl2-tagrow{display:flex;align-items:center;gap:5px;margin-bottom:4px}
-.tl2-tagpill{display:inline-flex;align-items:center;gap:4px;padding:2px 7px;border-radius:999px;font-size:.6rem;font-weight:900;letter-spacing:.04em}
+.tl2-tagrow{display:flex;align-items:center;gap:5px;margin-bottom:3px}
+.tl2-tagpill{display:inline-flex;align-items:center;gap:3px;padding:2px 6px;border-radius:999px;font-size:.65rem;font-weight:900}
+.tl2-tagpill i{font-size:.58rem}
 .tl2-sub{font-size:.68rem;color:var(--ink2);margin-left:1px}
-.tl2-title{font-family:var(--serif);font-size:.98rem;font-weight:900;color:var(--ink);line-height:1.35;margin-bottom:0}
-.tl2-desc{font-size:.75rem;color:var(--ink2);line-height:1.4;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tl2-title{font-family:var(--serif);font-size:1rem;font-weight:900;color:var(--ink);line-height:1.35;margin-bottom:0}
+.tl2-desc{font-size:.78rem;color:var(--ink2);line-height:1.4;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 /* Detail chips (inside sheet only) */
 .tl2-chips{display:flex;gap:5px;flex-wrap:wrap;margin-top:7px}
 .tl2-chip{display:flex;align-items:center;gap:4px;padding:3px 9px;border-radius:999px;background:rgba(242,242,247,.95);font-size:.72rem;font-weight:800;color:#555}
 .tl2-chip i{font-size:.62rem;color:#8E8E93}
-.tl2-star{font-size:.72rem;color:var(--acc);margin-left:auto;flex-shrink:0}
-.tl2-resv{padding:2px 6px;border-radius:6px;background:rgba(255,255,255,.88);border:1.5px solid rgba(180,35,24,.65);font-size:.6rem;font-weight:900;color:#B42318;transform:rotate(-2deg);margin-left:auto;flex-shrink:0}
-/* Route strip */
-.tl2-route{margin-left:58px;margin-bottom:12px;display:flex;align-items:center;gap:10px;padding:9px 12px;background:rgba(242,242,247,.9);border-radius:14px;border:1px solid rgba(0,0,0,.04)}
-.tr-icon{width:34px;height:34px;border-radius:11px;background:rgba(255,255,255,.6);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--pri);font-size:.85rem}
+.tl2-star{font-size:.75rem;color:var(--acc);margin-left:auto;flex-shrink:0}
+.tl2-resv{padding:2px 6px;border-radius:6px;background:rgba(255,255,255,.88);border:1.5px solid rgba(180,35,24,.65);font-size:.62rem;font-weight:900;color:#B42318;transform:rotate(-2deg);margin-left:auto;flex-shrink:0}
+/* Route strip — compact */
+.tl2-route{margin-left:48px;margin-bottom:8px;display:flex;align-items:center;gap:8px;padding:7px 10px;background:rgba(242,242,247,.85);border-radius:12px;border:1px solid rgba(0,0,0,.04)}
+.tr-icon{width:28px;height:28px;border-radius:9px;background:rgba(255,255,255,.7);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--pri);font-size:.78rem}
 .tr-body{flex:1;min-width:0}
-.tr-name{font-size:.83rem;font-weight:900;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.tr-dir{font-size:.77rem;font-weight:700;color:var(--ink2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.tr-dur{padding:3px 9px;border-radius:999px;background:rgba(255,255,255,.8);font-family:var(--mono);font-size:.7rem;color:#444;flex-shrink:0}
+.tr-name{font-size:.8rem;font-weight:900;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tr-dir{font-size:.74rem;font-weight:700;color:var(--ink2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tr-dur{padding:2px 8px;border-radius:999px;background:rgba(255,255,255,.8);font-family:var(--mono);font-size:.68rem;color:#444;flex-shrink:0}
+.tr-price{padding:2px 7px;border-radius:999px;background:rgba(176,138,91,.1);font-family:var(--mono);font-size:.65rem;color:#7D5B34;flex-shrink:0;margin-left:2px}
 
 /* ── Detail Sheet ── */
 .detail-hdr{padding:12px 18px 12px;border-bottom:1px solid rgba(233,225,214,.8);position:relative;border-left-width:4px;border-left-style:solid;border-left-color:transparent;border-radius:0}
@@ -333,7 +339,7 @@ body::before{content:'';position:fixed;top:0;left:0;right:0;height:env(safe-area
 /* ── Modal ── */
 .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:300;align-items:flex-end}
 .overlay.open{display:flex}
-.sheet{width:100%;max-width:560px;margin:0 auto;background:var(--bg);border-radius:24px 24px 0 0;padding:14px 20px calc(env(safe-area-inset-bottom)+28px);animation:su .25s ease}
+.sheet{width:100%;max-width:560px;margin:0 auto;background:var(--bg);border-radius:24px 24px 0 0;padding:14px 20px calc(env(safe-area-inset-bottom)+28px);animation:su .25s ease;max-height:88vh;overflow-y:auto;-webkit-overflow-scrolling:touch}
 @keyframes su{from{transform:translateY(100%)}to{transform:translateY(0)}}
 .handle{width:36px;height:4px;background:var(--div);border-radius:2px;margin:0 auto 16px}
 
@@ -355,6 +361,16 @@ body::before{content:'';position:fixed;top:0;left:0;right:0;height:env(safe-area
 .dayhead-info{flex:1}
 .dayhead-date{font-size:.75rem;font-weight:900;color:var(--acc);margin-bottom:2px}
 .dayhead-loc{font-size:.88rem;font-weight:800;color:var(--pri)}
+/* ── Scroll to top ── */
+.scroll-top{position:fixed;bottom:calc(72px + env(safe-area-inset-bottom) + 12px);right:16px;width:40px;height:40px;border-radius:50%;background:rgba(176,138,91,.9);border:none;color:#fff;font-size:.9rem;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:190;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;transform:translateY(10px);box-shadow:0 4px 14px rgba(0,0,0,.18)}
+.scroll-top.visible{opacity:1;pointer-events:auto;transform:translateY(0)}
+/* ── Detail menu table ── */
+.detail-menu{margin:10px 0;border-radius:12px;overflow:hidden;border:1px solid rgba(233,225,214,.9)}
+.dm-row{display:flex;align-items:center;padding:8px 12px;border-bottom:1px solid rgba(233,225,214,.6);font-size:.84rem;gap:8px}
+.dm-row:last-child{border-bottom:none}
+.dm-name{flex:1;color:var(--ink);font-weight:700}
+.dm-price{font-family:var(--mono);font-size:.78rem;color:var(--acc);font-weight:700;flex-shrink:0}
+.dm-note{font-size:.72rem;color:var(--ink2);flex-shrink:0}
 /* ── Tips ── */
 .tips{margin-top:9px;display:flex;flex-direction:column;gap:5px}
 .tip{display:flex;gap:6px;font-size:.78rem;line-height:1.5;padding:5px 8px;border-radius:8px}
@@ -375,6 +391,7 @@ body::before{content:'';position:fixed;top:0;left:0;right:0;height:env(safe-area
 /* ── Edit sheet ── */
 .edit-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:300;align-items:flex-end}
 .edit-overlay.open{display:flex}
+.edit-overlay .sheet{max-height:90vh;overflow-y:auto;-webkit-overflow-scrolling:touch}
 </style>
 </head>
 <body>
@@ -505,6 +522,9 @@ body::before{content:'';position:fixed;top:0;left:0;right:0;height:env(safe-area
   <div class="sec mt8" style="font-size:.92rem"><i class="fa-solid fa-luggage-cart" style="color:#8B8175;font-size:.85rem"></i>托運行李</div>
   <div class="card"><div class="cgrid" id="checkGrid"></div></div>
 </div>
+
+<!-- ══════════════ SCROLL TO TOP ══════════════ -->
+<button class="scroll-top" id="scrollTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})"><i class="fa-solid fa-chevron-up"></i></button>
 
 <!-- ══════════════ BOTTOM NAV ══════════════ -->
 <nav class="nav">
@@ -658,17 +678,17 @@ const HOUSE_A = ['Kerwin','Franceca','Lotto'];
 const HOUSE_B = ['Latte','Hao','Ming'];
 const DAYS = [
   {date:'06/06',day:'六',label:'D1 海雲台',file:'2026-06-06.json'},
-  {date:'06/07',day:'日',label:'D2 甘川',file:'2026-06-07.json'},
-  {date:'06/08',day:'一',label:'D3 海雲台',file:'2026-06-08.json'},
-  {date:'06/09',day:'二',label:'D4 機張',file:'2026-06-09.json'},
+  {date:'06/07',day:'日',label:'D2 南浦',file:'2026-06-07.json'},
+  {date:'06/08',day:'一',label:'D3 機張',file:'2026-06-08.json'},
+  {date:'06/09',day:'二',label:'D4 包車',file:'2026-06-09.json'},
   {date:'06/10',day:'三',label:'D5 返台',file:'2026-06-10.json'},
 ];
 const TAG_ICON = {food:'fa-utensils',sight:'fa-camera',transport:'fa-bus',hotel:'fa-hotel',route:'fa-arrow-right-long',shop:'fa-bag-shopping'};
 const TAG_LABEL = {food:'美食',sight:'景點',transport:'交通',hotel:'住宿',route:'路線',shop:'購物'};
 const TAG_DOT = {food:'#E57373',sight:'#4DB6AC',transport:'#90A4AE',hotel:'#9575CD',route:'#B0BEC5',shop:'#F48FB1'};
-const DAY_SUBTITLES = ['海雲台逛街 · 廣安里無人機','松島纜車 · 甘川文化村','海雲台海灘 · 西面夜市','廣安大橋 · 機張市場','離開釜山 · 平安回家'];
+const DAY_SUBTITLES = ['海雲台逛街 · 廣安里無人機','南浦市場 · 札嘎其 · 鑽石塔','龍宮寺 · Luge · 海岸列車 · Spa Land','甘川 · 松島纜車 · 白淺灘','離開釜山 · 平安回家'];
 const DAY_COLORS = [['#3D7BBF','#1A4A7A'],['#2F8F5B','#1A5237'],['#B08A5B','#7D5B34'],['#8B5CF6','#5B21B6'],['#E5534B','#9B1C1C']];
-const DAY_DISTRICTS = ['廣安里','甘川','西面','廣安里','機場'];
+const DAY_DISTRICTS = ['海雲台','南浦洞','機張','釜山西部','海雲台'];
 const DAY_HOTELS = ['海雲台 L7 飯店','海雲台 L7 飯店','海雲台 L7 飯店','海雲台 L7 飯店',null];
 const DAY_DATES_ISO = ['2026-06-06','2026-06-07','2026-06-08','2026-06-09','2026-06-10'];
 const WEEKDAY_EN = {六:'SAT',日:'SUN',一:'MON',二:'TUE',三:'WED',四:'THU',五:'FRI'};
@@ -743,9 +763,9 @@ let weatherCache = null; // {daily:{dates,maxT,minT,rainMax}, hourly:{times,temp
 function buildDayCards(){
   document.getElementById('dayCards').innerHTML = DAYS.map((d,i)=>`
     <div class="day-card${i===0?' on':''}" onclick="loadDayFull(${i})">
-      <div class="dc-label">Day ${i+1}</div>
       <div class="dc-date">${d.date}</div>
       <div class="dc-wd">${WEEKDAY_EN[d.day]||d.day}</div>
+      <div class="dc-label">Day ${i+1}</div>
     </div>`).join('');
 }
 
@@ -826,38 +846,38 @@ function renderTimeline(items, dayFile){
       const modeIcon = r.mode==='plane'?'fa-plane':r.mode==='transit'?'fa-train-subway':r.mode==='walk'?'fa-person-walking':r.mode==='ferry'?'fa-ship':r.mode==='bus'?'fa-bus':'fa-taxi';
       const dur = r.minutes?(r.minutes>=60?Math.floor(r.minutes/60)+'h'+(r.minutes%60?r.minutes%60+'m':''):r.minutes+'min'):(it.stay||'');
       const label = r.from&&r.to ? `${r.from} → ${r.to}` : (it.title||'');
+      const price = it.price||'';
       h += `<div class="tl2-route">
         <div class="tr-icon"><i class="fa-solid ${modeIcon}"></i></div>
         <div class="tr-body" style="overflow:hidden">
           <div class="tr-dir" style="white-space:normal;line-height:1.4">${label}</div>
         </div>
         ${dur?`<div class="tr-dur">${dur}</div>`:''}
+        ${price?`<div class="tr-price">${price}</div>`:''}
       </div>`;
       return;
     }
     const dot = TAG_DOT[it.tag]||'#B0BEC5';
-    const label = TAG_LABEL[it.tag]||it.tag;
-    // Tag pill style
+    const icon = TAG_ICON[it.tag]||'fa-circle';
     const pillBg = dot+'22';
     const badge = it.highlight
       ? `<span class="tl2-star">★</span>`
       : it.reserved ? `<div class="tl2-resv">預約中</div>` : '';
-    // Inline chips only show stay on card (keep card minimal)
-    const stayChip = it.stay ? `<span class="tl2-chip" style="margin-top:4px"><i class="fa-regular fa-hourglass"></i>${it.stay}</span>` : '';
+    // Show only hour:min (drop leading zero for cleanliness)
+    const timeStr = it.time ? it.time.replace(/^0(\d:)/, '$1') : '';
     const cardAction = itinEditMode
       ? `openItemEdit(${JSON.stringify(it).replace(/'/g,"&#39;")}, "${dayFile||''}", ${idx})`
       : `openDetail(${JSON.stringify(it).replace(/'/g,"&#39;")})`;
     h += `<div class="tl2-row">
-      <div class="tl2-time">${it.time}</div>
+      <div class="tl2-time">${timeStr}</div>
       <div class="tl2-card${it.highlight?' hl':''}${itinEditMode?' edit-mode':''}" data-tag="${it.tag||''}" onclick='${cardAction}'>
         <div class="tl2-tagrow">
-          <span class="tl2-tagpill" style="background:${pillBg};color:${dot}">${label.toUpperCase()}</span>
-          ${it.subtag?`<span class="tl2-sub">· ${it.subtag}</span>`:''}
+          <span class="tl2-tagpill" style="background:${pillBg};color:${dot}"><i class="fa-solid ${icon}"></i></span>
+          ${it.subtag?`<span class="tl2-sub">${it.subtag}</span>`:''}
           ${badge}
         </div>
         <div class="tl2-title">${it.title}</div>
         ${it.desc?`<div class="tl2-desc">${it.desc}</div>`:''}
-        ${stayChip}
         ${itinEditMode?`<div class="tl2-edit-icon"><i class="fa-solid fa-pen"></i></div>`:''}
       </div>
     </div>`;
@@ -972,6 +992,10 @@ function openDetail(item){
     ${item.parking?`<div class="detail-mrow"><i class="fa-solid fa-square-parking"></i><span>${item.parking}</span></div>`:''}
   </div>`;
   if(item.detail) b += `<div class="detail-text">${item.detail}</div>`;
+  if((item.menu||[]).length) b += `<div class="detail-block">
+    <div class="detail-btitle"><i class="fa-solid fa-utensils" style="color:#E57373"></i>菜單推薦</div>
+    <div class="detail-menu">${item.menu.map(m=>`<div class="dm-row"><span class="dm-name">${m.name}</span>${m.price?`<span class="dm-price">${m.price}</span>`:''}${m.note?`<span class="dm-note">${m.note}</span>`:''}</div>`).join('')}</div>
+  </div>`;
   if((item.guide||[]).length) b += `<div class="detail-block">
     <div class="detail-btitle"><i class="fa-solid fa-lightbulb" style="color:#8B8175"></i>導覽</div>
     ${item.guide.map(g=>`<div class="detail-bullet"><i class="fa-solid fa-circle" style="font-size:.35rem;color:#ccc;margin-top:6px"></i>${g}</div>`).join('')}
@@ -1264,14 +1288,13 @@ function delShop(idx){
   else { const items=getShop(souvUser); items.splice(idx,1); setShop(souvUser,items); renderSouvList(); }
 }
 
-function addRecToShop(name){
+function addRecToShop(name, el){
   const items = getShop(souvUser);
   if(items.find(i=>i.name===name)) return;
   items.push({name,done:false,price:0,qty:1,uid:Date.now().toString(36)});
   setShop(souvUser,items);
   renderSouvList();
-  event.target.style.background='rgba(176,138,91,.2)';
-  setTimeout(()=>{ if(event.target) event.target.style.background=''; },400);
+  if(el){ el.style.background='rgba(176,138,91,.2)'; setTimeout(()=>{ el.style.background=''; },400); }
 }
 
 const REC_EMOJI = {
@@ -1300,7 +1323,7 @@ function renderRecs(){
       <div class="cat-label">• ${cat.region}</div>
       <div class="rec-grid">${cat.items.map(it=>{
         const emoji = REC_EMOJI[it.name]||'🛍️';
-        return `<div class="rcard" onclick="addRecToShop('${it.name.replace(/'/g,"\\'")}')">
+        return `<div class="rcard" onclick="addRecToShop('${it.name.replace(/'/g,"\\'")}',this)">
           <div class="rcard-emoji">${emoji}</div>
           <div class="rcard-name">${it.name}</div>
         </div>`;
@@ -1363,9 +1386,11 @@ function renderHousePicker(){
 function renderHouseRow(elId, group, key, label){
   const el = document.getElementById(elId);
   const allOn = group.every(m=>selParts.has(m));
-  const cls = allOn ? `hA-on` : '';
-  el.innerHTML = `<div class="hall ${key==='A'&&allOn?'hA-on':key==='B'&&allOn?'hB-on':''}" onclick="toggleHouseAll('${key}')">${'全'+label}</div>` +
-    group.map(m=>`<div class="hchip${selParts.has(m)?(key==='A'?' hA-on':' hB-on'):''}" onclick="togglePart('${m}','${key}')">${m}</div>`).join('');
+  const icon = key==='A' ? 'fa-user-group' : 'fa-users';
+  const color = key==='A' ? '#3D6EA9' : '#2F8F5B';
+  el.innerHTML = `<span class="hrow-label" style="color:${color}"><i class="fa-solid ${icon}"></i></span>` +
+    `<div class="hall ${key==='A'&&allOn?'hA-on':key==='B'&&allOn?'hB-on':''}" onclick="toggleHouseAll('${key}')">全</div>` +
+    group.map(m=>`<div class="hchip${selParts.has(m)?(key==='A'?' hA-on':' hB-on'):''}" onclick="togglePart('${m}','${key}')"><i class="fa-solid fa-person"></i>${m}</div>`).join('');
 }
 
 function toggleHouseAll(key){
@@ -1596,8 +1621,11 @@ function renderEditHouse(){
 function renderEditHouseRow(elId, group, key, label){
   const el = document.getElementById(elId);
   const allOn = group.every(m=>editExpParts.has(m));
-  el.innerHTML = `<div class="hall ${key==='A'&&allOn?'hA-on':key==='B'&&allOn?'hB-on':''}" onclick="toggleEditHouseAll('${key}')">${'全'+label}</div>` +
-    group.map(m=>`<div class="hchip${editExpParts.has(m)?(key==='A'?' hA-on':' hB-on'):''}" onclick="toggleEditPart('${m}','${key}')">${m}</div>`).join('');
+  const icon = key==='A' ? 'fa-user-group' : 'fa-users';
+  const color = key==='A' ? '#3D6EA9' : '#2F8F5B';
+  el.innerHTML = `<span class="hrow-label" style="color:${color}"><i class="fa-solid ${icon}"></i></span>` +
+    `<div class="hall ${key==='A'&&allOn?'hA-on':key==='B'&&allOn?'hB-on':''}" onclick="toggleEditHouseAll('${key}')">全</div>` +
+    group.map(m=>`<div class="hchip${editExpParts.has(m)?(key==='A'?' hA-on':' hB-on'):''}" onclick="toggleEditPart('${m}','${key}')"><i class="fa-solid fa-person"></i>${m}</div>`).join('');
 }
 
 function toggleEditHouseAll(key){
@@ -2074,9 +2102,29 @@ document.addEventListener('click', e=>{
 });
 
 // ════════════════════════════════════════
+// SCROLL TO TOP
+// ════════════════════════════════════════
+window.addEventListener('scroll', ()=>{
+  const btn = document.getElementById('scrollTopBtn');
+  if(btn) btn.classList.toggle('visible', window.scrollY > 300);
+}, {passive:true});
+
+// ════════════════════════════════════════
+// AUTO-JUMP TO CURRENT DAY
+// ════════════════════════════════════════
+function autoJumpToday(){
+  const todayISO = new Date().toISOString().slice(0,10);
+  const idx = DAY_DATES_ISO.indexOf(todayISO);
+  if(idx >= 0){
+    loadDayFull(idx);
+  }
+}
+
+// ════════════════════════════════════════
 // START
 // ════════════════════════════════════════
 init();
+autoJumpToday();
 </script>
 </body>
 </html>
