@@ -507,10 +507,6 @@ body::before{content:'';position:fixed;top:0;left:0;right:0;height:env(safe-area
   </div>
   <div class="card" id="todoList"></div>
 
-  <!-- Pretrip checklist -->
-  <div class="sec mt12"><i class="fa-solid fa-clipboard-list"></i>行前準備清單</div>
-  <div class="card"><div class="cgrid" id="pretripGrid"></div></div>
-
   <!-- Packing -->
   <div class="sec mt12"><i class="fa-solid fa-suitcase"></i>個人行李清單</div>
   <div class="utabs" id="packTabs"></div>
@@ -521,6 +517,8 @@ body::before{content:'';position:fixed;top:0;left:0;right:0;height:env(safe-area
     </div>
     <div class="prog-bar"><div class="prog-fill" id="packBar" style="width:0%"></div></div>
   </div>
+  <div class="sec" style="font-size:.92rem"><i class="fa-solid fa-clipboard-check" style="color:#8B8175;font-size:.85rem"></i>行前準備</div>
+  <div class="card" style="margin-bottom:12px"><div class="cgrid" id="pretripGrid"></div></div>
   <div class="sec" style="font-size:.92rem"><i class="fa-solid fa-backpack" style="color:#8B8175;font-size:.85rem"></i>隨身行李</div>
   <div class="card"><div class="cgrid" id="carryGrid"></div></div>
   <div class="sec mt8" style="font-size:.92rem"><i class="fa-solid fa-luggage-cart" style="color:#8B8175;font-size:.85rem"></i>托運行李</div>
@@ -807,16 +805,16 @@ function renderDayFull(idx){
 
   let h = '';
 
-  // Banner — prefer user-uploaded, then static /picture/MM/DD/YYYYMMDDnnn.jpg, then gradient
-  const d_iso = DAY_DATES_ISO[idx]; // e.g. 2026-06-06
+  // Banner — prefer user-uploaded, then rotating /picture/MM-DD/YYYYMMDDnnn.jpg, then gradient
+  const d_iso = DAY_DATES_ISO[idx];
   const mm = d_iso.slice(5,7), dd = d_iso.slice(8,10), ymd = d_iso.replace(/-/g,'');
-  const picturePath = `./picture/${mm}/${dd}/${ymd}001.jpg`;
+  const firstPic = `./picture/${mm}-${dd}/${ymd}001.jpg`;
   const bgStyle = photo
-    ? `background-image:url('${photo}');background-color:${colors[0]}`
-    : `background-image:url('${picturePath}'),linear-gradient(135deg,${colors[0]},${colors[1]});background-size:cover;background-position:center`;
+    ? `background-image:url('${photo}');background-size:cover;background-position:center`
+    : `background-image:url('${firstPic}'),linear-gradient(135deg,${colors[0]},${colors[1]});background-size:cover;background-position:center`;
   const subtitle = localStorage.getItem('busan_day_subtitle_'+idx) || DAY_SUBTITLES[idx] || d.label;
   h += `<div class="day-banner" onclick="${itinEditMode?`editDaySubtitle(${idx})`:`pickBannerPhoto(${idx})`}">
-    <div class="db-bg" style="${bgStyle}"></div>
+    <div class="db-bg" id="dayBgEl_${idx}" style="${bgStyle}"></div>
     <div class="db-ov"></div>
     <div class="db-cnt">
       <div class="db-pill">Day ${idx+1}</div>
@@ -844,6 +842,51 @@ function renderDayFull(idx){
 
   document.getElementById('dayContent').innerHTML = h;
   if(weatherCache) renderWeatherStrip(idx);
+  // Start banner photo rotation (only if no user-uploaded photo)
+  if(!photo) startBannerRotation(idx);
+}
+
+// ── Banner photo rotation ──
+const _bannerRotState = {}; // idx -> {n, timer}
+
+function dayPicUrl(idx, n){
+  const d_iso = DAY_DATES_ISO[idx];
+  const mm = d_iso.slice(5,7), dd = d_iso.slice(8,10), ymd = d_iso.replace(/-/g,'');
+  return `./picture/${mm}-${dd}/${ymd}${String(n).padStart(3,'0')}.jpg`;
+}
+
+function startBannerRotation(idx){
+  if(_bannerRotState[idx]?.timer) clearInterval(_bannerRotState[idx].timer);
+  _bannerRotState[idx] = {n:1, max:1};
+  // Probe how many photos exist (up to 20), then start cycling
+  (async()=>{
+    let count = 0;
+    for(let i=1; i<=20; i++){
+      try{
+        const r = await fetch(dayPicUrl(idx,i),{method:'HEAD'});
+        if(r.ok) count=i; else break;
+      }catch{ break; }
+    }
+    _bannerRotState[idx].max = count;
+    if(count > 1){
+      _bannerRotState[idx].timer = setInterval(()=>rotateBannerPhoto(idx), 5000);
+    }
+  })();
+}
+
+function rotateBannerPhoto(idx){
+  const st = _bannerRotState[idx]; if(!st||st.max<2) return;
+  st.n = (st.n % st.max) + 1;
+  const el = document.getElementById('dayBgEl_'+idx); if(!el) return;
+  const url = dayPicUrl(idx, st.n);
+  el.style.transition = 'opacity .7s ease';
+  el.style.opacity = '0';
+  setTimeout(()=>{
+    el.style.backgroundImage = `url('${url}'),none`;
+    el.style.backgroundSize = 'cover';
+    el.style.backgroundPosition = 'center';
+    el.style.opacity = '1';
+  }, 700);
 }
 
 function renderTimeline(items, dayFile){
@@ -1987,22 +2030,49 @@ function saveTodo(){
 
 // ── Pack checklist ──
 const PRETRIP_ICONS = {
-  'eSIM / 網路方案':'fa-signal','旅平險不便險':'fa-shield-halved','韓圜兌換':'fa-money-bill-wave',
-  '信用卡海外設定 / 交易通知':'fa-credit-card','K-ETA 電子旅行許可':'fa-file-invoice',
-  'WoWopass':'fa-card-blank',
+  'eSIM / 網路方案':    'fa-wifi',              // WiFi/網路
+  '旅平險不便險':        'fa-shield-halved',     // 保險盾牌
+  '韓圜兌換':           'fa-coins',             // 硬幣/換匯
+  '信用卡海外設定 / 交易通知':'fa-credit-card',  // 信用卡
+  'K-ETA 電子旅行許可':  'fa-passport',         // 護照/入境許可
+  'WoWopass':           'fa-ticket',            // 票券/pass
 };
 const CARRY_ICONS = {
-  '護照':'fa-passport','錢包':'fa-wallet','信用卡':'fa-credit-card','手機':'fa-mobile-screen',
-  '行動電源':'fa-battery-full','耳機':'fa-headphones','充電線':'fa-plug','面紙':'fa-box-tissue',
-  '薄外套':'fa-shirt','雨傘':'fa-umbrella','墨鏡':'fa-glasses','日常藥品':'fa-kit-medical',
-  '水壺':'fa-bottle-water','鑰匙':'fa-key','牙線棒':'fa-teeth',
+  '護照':     'fa-passport',       // 護照
+  '錢包':     'fa-wallet',         // 錢包
+  '信用卡':   'fa-credit-card',    // 信用卡
+  '手機':     'fa-mobile-screen',  // 手機
+  '行動電源': 'fa-battery-full',   // 行動電源（電池滿格）
+  '耳機':     'fa-headphones',     // 耳機
+  '充電線':   'fa-plug',           // 充電插頭/線
+  '面紙':     'fa-box-tissue',     // 紙盒/面紙
+  '薄外套':   'fa-shirt',          // 衣服
+  '雨傘':     'fa-umbrella',       // 雨傘
+  '墨鏡':     'fa-glasses',        // 眼鏡
+  '日常藥品': 'fa-pills',          // 藥丸
+  '水壺':     'fa-bottle-water',   // 水瓶
+  '鑰匙':     'fa-key',            // 鑰匙
+  '牙線棒':   'fa-teeth',          // 牙齒/口腔
 };
 const CHECK_ICONS = {
-  '衣物（4天份）':'fa-shirt','內衣褲':'fa-underwear','睡衣':'fa-moon','襪子':'fa-socks',
-  '備用鞋':'fa-shoe-prints','拖鞋':'fa-shoe-prints','刮鬍刀':'fa-user',
-  '盥洗包':'fa-bag-shopping','保養品':'fa-pump-soap','防曬乳':'fa-sun','牙刷牙膏':'fa-teeth-open',
-  '充電器(線)':'fa-plug','轉接頭(220V)':'fa-plug-circle-bolt','備用藥品':'fa-pills',
-  '購物袋':'fa-bag-shopping','備用眼鏡':'fa-glasses','行李秤':'fa-scale-balanced','吹風機':'fa-wind',
+  '衣物（4天份）': 'fa-shirt',           // 衣服
+  '內衣褲':       'fa-shirt',            // 貼身衣物（FA6 無內衣 icon，用衣服代替）
+  '睡衣':         'fa-bed',              // 睡覺/睡衣
+  '襪子':         'fa-socks',            // 襪子（FA6 有 fa-socks）
+  '備用鞋':       'fa-shoe-prints',      // 鞋印/鞋子
+  '拖鞋':         'fa-shoe-prints',      // 鞋印
+  '刮鬍刀':       'fa-scissors',         // 剃/剪（FA6 無刮鬍刀，用剪刀近似）
+  '盥洗包':       'fa-briefcase',        // 包包/隨身包
+  '保養品':       'fa-pump-soap',        // 按壓瓶/乳液
+  '防曬乳':       'fa-sun',              // 太陽/防曬
+  '牙刷牙膏':     'fa-teeth-open',       // 張嘴/刷牙
+  '充電器(線)':   'fa-plug',             // 充電插頭
+  '轉接頭(220V)': 'fa-plug-circle-bolt', // 插頭+閃電=變壓轉接
+  '備用藥品':     'fa-pills',            // 藥丸
+  '購物袋':       'fa-bag-shopping',     // 購物袋
+  '備用眼鏡':     'fa-glasses',          // 眼鏡
+  '行李秤':       'fa-scale-balanced',   // 天平/秤
+  '吹風機':       'fa-wind',             // 風/吹風
 };
 
 function renderPack(){
