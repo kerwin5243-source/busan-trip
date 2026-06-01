@@ -27,7 +27,7 @@
   --mono:"Roboto Mono",monospace;
 }
 *,*::before,*::after{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html{background:#F6F3EE}
+html{background:#F6F3EE;font-size:18px}
 html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);min-height:100dvh;overscroll-behavior-y:none}
 body{padding-bottom:calc(72px + env(safe-area-inset-bottom))}
 /* Cover Dynamic Island / notch area with background color */
@@ -190,7 +190,7 @@ body::before{content:'';position:fixed;top:0;left:0;right:0;height:env(safe-area
 /* ── New Timeline ── */
 .tl2{padding:4px 0}
 .tl2-row{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px}
-.tl2-time{width:38px;flex-shrink:0;text-align:right;font-family:var(--mono);font-size:.72rem;color:var(--ink2);padding-top:10px;line-height:1.3}
+.tl2-time{width:42px;flex-shrink:0;text-align:right;font-family:var(--mono);font-size:.72rem;color:var(--ink2);padding-top:8px;line-height:1.3}
 .tl2-card{flex:1;background:rgba(255,255,255,.82);border:1px solid rgba(233,225,214,.85);border-left-width:3.5px;border-radius:16px;padding:9px 11px 9px 12px;position:relative;cursor:pointer;transition:transform .12s;overflow:hidden;box-shadow:none}
 .tl2-card:active{transform:scale(.985)}
 /* Tag accent border colors */
@@ -293,7 +293,7 @@ body::before{content:'';position:fixed;top:0;left:0;right:0;height:env(safe-area
 .add-inp{flex:1;background:rgba(242,242,247,.95);border:none;border-radius:12px;padding:10px 14px;font-size:.9rem;font-family:var(--sans);color:var(--ink);outline:none;box-sizing:border-box;width:100%}
 .add-inp::placeholder{color:var(--ink2);opacity:.6}
 /* ── Souvenir sheet photo preview ── */
-.souv-sheet-photo{width:100%;aspect-ratio:16/9;border-radius:12px;background:rgba(233,225,214,.5);display:flex;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;margin-bottom:12px;border:1.5px dashed rgba(176,138,91,.4);position:relative}
+.souv-sheet-photo{width:100%;height:100px;border-radius:12px;background:rgba(233,225,214,.5);display:flex;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;margin-bottom:12px;border:1.5px dashed rgba(176,138,91,.4);position:relative}
 .souv-sheet-photo img{width:100%;height:100%;object-fit:cover;display:block}
 .souv-sheet-photo-hint{display:flex;flex-direction:column;align-items:center;gap:5px;color:var(--ink2);font-size:.78rem;font-weight:700}
 .souv-sheet-photo-hint i{font-size:1.4rem;color:var(--acc);opacity:.7}
@@ -803,10 +803,11 @@ function renderDayFull(idx){
 
   let h = '';
 
-  // Banner
+  // Banner — prefer user-uploaded, then static /picture/date.jpg, then gradient
+  const picturePath = `./picture/${DAY_DATES_ISO[idx]}.jpg`;
   const bgStyle = photo
     ? `background-image:url('${photo}');background-color:${colors[0]}`
-    : `background:linear-gradient(135deg,${colors[0]},${colors[1]})`;
+    : `background-image:url('${picturePath}'),linear-gradient(135deg,${colors[0]},${colors[1]});background-size:cover;background-position:center`;
   const subtitle = localStorage.getItem('busan_day_subtitle_'+idx) || DAY_SUBTITLES[idx] || d.label;
   h += `<div class="day-banner" onclick="${itinEditMode?`editDaySubtitle(${idx})`:`pickBannerPhoto(${idx})`}">
     <div class="db-bg" style="${bgStyle}"></div>
@@ -848,15 +849,14 @@ function renderTimeline(items, dayFile){
       const dur = r.minutes?(r.minutes>=60?Math.floor(r.minutes/60)+'h'+(r.minutes%60?r.minutes%60+'m':''):r.minutes+'min'):(it.stay||'');
       const label = r.from&&r.to ? `${r.from} → ${r.to}` : (it.title||'');
       const price = it.price||'';
-      h += `<div class="tl2-row" style="margin-bottom:8px">
-        <div class="tl2-time" style="display:flex;flex-direction:column;align-items:flex-end;justify-content:center;gap:3px;padding-top:0">
-          ${price?`<span class="tr-price">${price}</span>`:''}
-        </div>
+      h += `<div class="tl2-row" style="margin-bottom:8px;align-items:center">
+        <div class="tl2-time" style="padding-top:0"></div>
         <div class="tl2-route" style="margin-left:0;flex:1;margin-bottom:0">
           <div class="tr-icon"><i class="fa-solid ${modeIcon}"></i></div>
           <div class="tr-body" style="overflow:hidden">
             <div class="tr-dir" style="white-space:normal;line-height:1.4">${label}</div>
           </div>
+          ${price?`<div class="tr-price">${price}</div>`:''}
           ${dur?`<div class="tr-dur">${dur}</div>`:''}
         </div>
       </div>`;
