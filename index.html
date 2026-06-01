@@ -104,7 +104,7 @@ body::before{content:'';position:fixed;top:0;left:0;right:0;height:env(safe-area
 .chips{display:flex;flex-wrap:wrap;gap:7px;margin:6px 0 10px}
 .chip{padding:7px 12px;border-radius:999px;border:1.5px solid rgba(233,225,214,.9);background:rgba(255,255,255,.8);font-weight:900;font-size:.82rem;color:var(--pri);cursor:pointer;user-select:none;transition:.15s}
 .chip.on{border-color:rgba(176,138,91,.7);background:rgba(176,138,91,.12);color:#7D5B34}
-.chip.payer{border-color:rgba(61,110,169,.6);background:rgba(61,110,169,.1);color:#2A5080}
+.chip.payer{border-color:rgba(176,138,91,.7);background:rgba(176,138,91,.15);color:#7D5B34}
 
 /* ── Household ── */
 .hrow{display:flex;align-items:center;gap:6px;margin-bottom:6px;flex-wrap:wrap}
@@ -337,8 +337,8 @@ body::before{content:'';position:fixed;top:0;left:0;right:0;height:env(safe-area
 .db-edit-btn{position:absolute;bottom:10px;right:10px;padding:4px 10px;border-radius:999px;background:rgba(0,0,0,.32);border:none;color:rgba(255,255,255,.9);font-size:.72rem;font-weight:800;cursor:pointer;font-family:var(--sans)}
 
 /* ── Modal ── */
-.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:300;align-items:flex-end}
-.overlay.open{display:flex}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:300}
+.overlay.open{display:flex;flex-direction:column;justify-content:flex-end}
 .sheet{width:100%;max-width:560px;margin:0 auto;background:var(--bg);border-radius:24px 24px 0 0;padding:14px 20px calc(env(safe-area-inset-bottom)+28px);animation:su .25s ease;max-height:88vh;overflow-y:auto;-webkit-overflow-scrolling:touch}
 @keyframes su{from{transform:translateY(100%)}to{transform:translateY(0)}}
 .handle{width:36px;height:4px;background:var(--div);border-radius:2px;margin:0 auto 16px}
@@ -389,8 +389,8 @@ body::before{content:'';position:fixed;top:0;left:0;right:0;height:env(safe-area
 .bd-name{flex:1;color:var(--ink2)}
 .bd-amt{font-family:var(--mono);font-size:.76rem;font-weight:600}
 /* ── Edit sheet ── */
-.edit-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:300;align-items:flex-end}
-.edit-overlay.open{display:flex}
+.edit-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:300}
+.edit-overlay.open{display:flex;flex-direction:column;justify-content:flex-end}
 .edit-overlay .sheet{max-height:90vh;overflow-y:auto;-webkit-overflow-scrolling:touch}
 </style>
 </head>
@@ -720,6 +720,7 @@ function showPage(id, btn){
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('on'));
   document.getElementById('pg-'+id).classList.add('on');
   btn.classList.add('on');
+  if(id==='prep'){ renderTodos(); renderPack(); }
 }
 
 // ════════════════════════════════════════
@@ -847,13 +848,17 @@ function renderTimeline(items, dayFile){
       const dur = r.minutes?(r.minutes>=60?Math.floor(r.minutes/60)+'h'+(r.minutes%60?r.minutes%60+'m':''):r.minutes+'min'):(it.stay||'');
       const label = r.from&&r.to ? `${r.from} → ${r.to}` : (it.title||'');
       const price = it.price||'';
-      h += `<div class="tl2-route">
-        <div class="tr-icon"><i class="fa-solid ${modeIcon}"></i></div>
-        <div class="tr-body" style="overflow:hidden">
-          <div class="tr-dir" style="white-space:normal;line-height:1.4">${label}</div>
+      h += `<div class="tl2-row" style="margin-bottom:8px">
+        <div class="tl2-time" style="display:flex;flex-direction:column;align-items:flex-end;justify-content:center;gap:3px;padding-top:0">
+          ${price?`<span class="tr-price">${price}</span>`:''}
         </div>
-        ${dur?`<div class="tr-dur">${dur}</div>`:''}
-        ${price?`<div class="tr-price">${price}</div>`:''}
+        <div class="tl2-route" style="margin-left:0;flex:1;margin-bottom:0">
+          <div class="tr-icon"><i class="fa-solid ${modeIcon}"></i></div>
+          <div class="tr-body" style="overflow:hidden">
+            <div class="tr-dir" style="white-space:normal;line-height:1.4">${label}</div>
+          </div>
+          ${dur?`<div class="tr-dur">${dur}</div>`:''}
+        </div>
       </div>`;
       return;
     }
@@ -863,8 +868,7 @@ function renderTimeline(items, dayFile){
     const badge = it.highlight
       ? `<span class="tl2-star">★</span>`
       : it.reserved ? `<div class="tl2-resv">預約中</div>` : '';
-    // Show only hour:min (drop leading zero for cleanliness)
-    const timeStr = it.time ? it.time.replace(/^0(\d:)/, '$1') : '';
+    const timeStr = it.time || '--';
     const cardAction = itinEditMode
       ? `openItemEdit(${JSON.stringify(it).replace(/'/g,"&#39;")}, "${dayFile||''}", ${idx})`
       : `openDetail(${JSON.stringify(it).replace(/'/g,"&#39;")})`;
@@ -877,7 +881,7 @@ function renderTimeline(items, dayFile){
           ${badge}
         </div>
         <div class="tl2-title">${it.title}</div>
-        ${it.desc?`<div class="tl2-desc">${it.desc}</div>`:''}
+        ${it.stay?`<div class="tl2-chips" style="margin-top:4px"><span class="tl2-chip"><i class="fa-regular fa-hourglass"></i>${it.stay}</span></div>`:''}
         ${itinEditMode?`<div class="tl2-edit-icon"><i class="fa-solid fa-pen"></i></div>`:''}
       </div>
     </div>`;
@@ -913,34 +917,22 @@ function renderWeatherStrip(idx){
   const rainMax = weatherCache.daily.precipitation_probability_max[di]||0;
   const district = DAY_DISTRICTS[idx]||'釜山';
 
-  // Hourly slots (6am-9pm for that date)
-  const htimes = weatherCache.hourly.time||[];
-  const slots = [];
+  // Pick representative weather code from 6–23h range
+  const htimes = weatherCache.hourly?.time||[];
+  let dayCode = 0;
   htimes.forEach((t,i)=>{
     if(!t.startsWith(targetDate)) return;
     const h = parseInt(t.split('T')[1]);
-    if(h<6||h>21) return;
-    slots.push({h, temp:Math.round(weatherCache.hourly.temperature_2m[i]), code:weatherCache.hourly.weathercode[i], rain:weatherCache.hourly.precipitation_probability[i]||0});
+    if(h===12) dayCode = weatherCache.hourly.weathercode[i];
   });
 
-  const nowH = new Date().getHours();
-  const todayISO = new Date().toISOString().slice(0,10);
-  const isToday = targetDate===todayISO;
-
   el.innerHTML = `<div class="weather-bar">
+    <span style="font-size:1.2rem;line-height:1">${wmoEmoji(dayCode)}</span>
     <span class="wb-loc">${district}</span>
     <span class="wb-temp">${minT}–${maxT}°C</span>
     <span class="wb-rain${rainMax>=50?' wet':''}">💧${rainMax}%</span>
-    ${slots.length?`<span class="wb-lbl">${wmoLabel(slots[0].code)}</span>`:''}
-  </div>
-  ${slots.length?`<div class="weather-hourly">${slots.map(s=>{
-    const isNow = isToday&&s.h===nowH;
-    return `<div class="wh${isNow?' now':''}">
-      <div class="wh-h${isNow?' now':''}">${isNow?'現在':s.h+'時'}</div>
-      <div class="wh-e">${wmoEmoji(s.code)}</div>
-      <div class="wh-t">${s.temp}°</div>
-    </div>`;
-  }).join('')}</div>`:''}`;
+    <span class="wb-lbl">${wmoLabel(dayCode)}</span>
+  </div>`;
 }
 
 // ── Banner photo ──
@@ -1220,6 +1212,7 @@ function openSouvSheet(idx){
   }
   renderSouvSheetPhoto();
   document.getElementById('souvOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
   setTimeout(()=>document.getElementById('souvNameInp').focus(),200);
 }
 
@@ -1246,7 +1239,7 @@ function pickSouvPhoto(idx){
   openSouvSheet(idx);
 }
 
-function closeSouvSheet(e){ if(e.target===document.getElementById('souvOverlay')) document.getElementById('souvOverlay').classList.remove('open'); }
+function closeSouvSheet(e){ if(e.target===document.getElementById('souvOverlay')){ document.getElementById('souvOverlay').classList.remove('open'); document.body.style.overflow=''; } }
 
 function saveSouv(){
   const name = document.getElementById('souvNameInp').value.trim();
@@ -1365,16 +1358,20 @@ function setExpType(t, el){
 }
 
 function renderPayerChips(){
-  document.getElementById('payerChips').innerHTML = MEMBERS.map(m=>
-    `<div class="chip${m===selPayer?' payer':''}" onclick="selPayer='${m}';renderPayerChips();renderPayeeChips()">${m}</div>`
-  ).join('');
+  const mkChip = (m, isSel, clickFn) =>
+    `<div class="chip${isSel?' payer':''}" onclick="${clickFn}" style="text-align:center">${m}</div>`;
+  const rowA = HOUSE_A.map(m=>mkChip(m, m===selPayer, `selPayer='${m}';renderPayerChips();renderPayeeChips()`)).join('');
+  const rowB = HOUSE_B.map(m=>mkChip(m, m===selPayer, `selPayer='${m}';renderPayerChips();renderPayeeChips()`)).join('');
+  document.getElementById('payerChips').innerHTML =
+    `<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:5px;width:100%">${rowA}</div>` +
+    `<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:5px;width:100%;margin-top:5px">${rowB}</div>`;
 }
 
 function renderPayeeChips(){
   const others = MEMBERS.filter(m=>m!==selPayer);
   if(!others.includes(selPayee)) selPayee = others[0]||'';
   document.getElementById('payeeChips').innerHTML = others.map(m=>
-    `<div class="chip${m===selPayee?' payer':''}" onclick="selPayee='${m}';renderPayeeChips()">${m}</div>`
+    `<div class="chip${m===selPayee?' payer':''}" onclick="selPayee='${m}';renderPayeeChips()" style="text-align:center">${m}</div>`
   ).join('');
 }
 
@@ -1386,9 +1383,8 @@ function renderHousePicker(){
 function renderHouseRow(elId, group, key, label){
   const el = document.getElementById(elId);
   const allOn = group.every(m=>selParts.has(m));
-  const icon = key==='A' ? 'fa-user-group' : 'fa-users';
   const color = key==='A' ? '#3D6EA9' : '#2F8F5B';
-  el.innerHTML = `<span class="hrow-label" style="color:${color}"><i class="fa-solid ${icon}"></i></span>` +
+  el.innerHTML = `<span class="hrow-label" style="color:${color}"><i class="fa-solid fa-users"></i></span>` +
     `<div class="hall ${key==='A'&&allOn?'hA-on':key==='B'&&allOn?'hB-on':''}" onclick="toggleHouseAll('${key}')">全</div>` +
     group.map(m=>`<div class="hchip${selParts.has(m)?(key==='A'?' hA-on':' hB-on'):''}" onclick="togglePart('${m}','${key}')"><i class="fa-solid fa-person"></i>${m}</div>`).join('');
 }
@@ -1451,18 +1447,28 @@ function renderBalance(){
   ['KRW','TWD'].forEach(cur=>{
     const bal = calcBalance(cur);
     const id = cur==='KRW'?'balKRW':'balTWD';
-    document.getElementById(id).innerHTML = MEMBERS.map(m=>{
+    const mkRow = (m, houseColor) => {
       const v = bal[m]||0;
       const cls = Math.abs(v)<0.5?'zero':v>0?'pos':'neg';
       const txt = Math.abs(v)<0.5?'持平':`${v>0?'+':'-'}${fmtAmt(cur,v)}`;
       const isOpen = selectedViewer===m;
       const detail = isOpen ? buildPersonalDetail(m, cur) : '';
-      return `<div class="bal-row" onclick="toggleViewer('${m}')" style="display:flex;align-items:center;padding:7px 10px;border-radius:10px;margin-bottom:3px;cursor:pointer">
-        <span class="bal-name">${m}</span><span class="badge ${cls}">${txt}</span>
-        <i class="fa-solid fa-chevron-${isOpen?'up':'down'}" style="font-size:.65rem;color:var(--ink2);margin-left:8px"></i>
+      const arrow = isOpen
+        ? `<i class="fa-solid fa-chevron-up" style="font-size:.6rem;color:var(--ink2);margin-left:6px;flex-shrink:0"></i>`
+        : `<i class="fa-solid fa-chevron-down" style="font-size:.6rem;color:var(--ink2);margin-left:6px;flex-shrink:0"></i>`;
+      return `<div class="bal-row" onclick="toggleViewer('${m}')" style="display:flex;align-items:center;padding:7px 10px;border-radius:10px;margin-bottom:3px">
+        <div style="width:26px;height:26px;border-radius:8px;background:${houseColor}22;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:900;color:${houseColor};flex-shrink:0;margin-right:8px">${m[0]}</div>
+        <span class="bal-name">${m}</span>
+        <span class="badge ${cls}" style="margin-left:auto">${txt}</span>
+        ${arrow}
       </div>
       ${isOpen?`<div class="bal-detail open">${detail}</div>`:''}`;
-    }).join('');
+    };
+    document.getElementById(id).innerHTML =
+      `<div style="font-size:.68rem;font-weight:900;color:#3D6EA9;margin-bottom:3px;padding-left:2px">甲</div>` +
+      HOUSE_A.map(m=>mkRow(m,'#3D6EA9')).join('') +
+      `<div style="font-size:.68rem;font-weight:900;color:#2F8F5B;margin-top:6px;margin-bottom:3px;padding-left:2px">乙</div>` +
+      HOUSE_B.map(m=>mkRow(m,'#2F8F5B')).join('');
   });
 }
 
@@ -1587,11 +1593,14 @@ function openEditExp(ts){
   renderEditPayer();
   renderEditHouse();
   document.getElementById('editExpOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
 }
 
 function closeEditExp(ev){
-  if(ev.target===document.getElementById('editExpOverlay'))
+  if(ev.target===document.getElementById('editExpOverlay')){
     document.getElementById('editExpOverlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
 }
 
 function setEditCur(c, el){
@@ -1608,9 +1617,13 @@ function setEditType(t, el){
 }
 
 function renderEditPayer(){
-  document.getElementById('editPayerChips').innerHTML = MEMBERS.map(m=>
-    `<div class="chip${m===editExpPayer?' payer':''}" onclick="editExpPayer='${m}';renderEditPayer()">${m}</div>`
-  ).join('');
+  const mkChip = (m) =>
+    `<div class="chip${m===editExpPayer?' payer':''}" onclick="editExpPayer='${m}';renderEditPayer()" style="text-align:center">${m}</div>`;
+  const rowA = HOUSE_A.map(mkChip).join('');
+  const rowB = HOUSE_B.map(mkChip).join('');
+  document.getElementById('editPayerChips').innerHTML =
+    `<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:5px;width:100%">${rowA}</div>` +
+    `<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:5px;width:100%;margin-top:5px">${rowB}</div>`;
 }
 
 function renderEditHouse(){
@@ -1621,9 +1634,8 @@ function renderEditHouse(){
 function renderEditHouseRow(elId, group, key, label){
   const el = document.getElementById(elId);
   const allOn = group.every(m=>editExpParts.has(m));
-  const icon = key==='A' ? 'fa-user-group' : 'fa-users';
   const color = key==='A' ? '#3D6EA9' : '#2F8F5B';
-  el.innerHTML = `<span class="hrow-label" style="color:${color}"><i class="fa-solid ${icon}"></i></span>` +
+  el.innerHTML = `<span class="hrow-label" style="color:${color}"><i class="fa-solid fa-users"></i></span>` +
     `<div class="hall ${key==='A'&&allOn?'hA-on':key==='B'&&allOn?'hB-on':''}" onclick="toggleEditHouseAll('${key}')">全</div>` +
     group.map(m=>`<div class="hchip${editExpParts.has(m)?(key==='A'?' hA-on':' hB-on'):''}" onclick="toggleEditPart('${m}','${key}')"><i class="fa-solid fa-person"></i>${m}</div>`).join('');
 }
@@ -1693,9 +1705,10 @@ function openItemEdit(item, dayFile, itemIdx){
     `<div class="chip${item.tag===t?' on':''}" onclick="this.parentNode.querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));this.classList.add('on')">${TAG_LABEL[t]||t}</div>`
   ).join('');
   document.getElementById('itemEditOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
 }
 
-function closeItemEdit(e){ if(e.target===document.getElementById('itemEditOverlay')) document.getElementById('itemEditOverlay').classList.remove('open'); }
+function closeItemEdit(e){ if(e.target===document.getElementById('itemEditOverlay')){ document.getElementById('itemEditOverlay').classList.remove('open'); document.body.style.overflow=''; } }
 
 function saveItemEdit(){
   if(!_editItem||!_editDayFile) return;
@@ -1717,6 +1730,7 @@ function saveItemEdit(){
     itin[_editDayFile] = {...itin[_editDayFile], items};
   }
   document.getElementById('itemEditOverlay').classList.remove('open');
+  document.body.style.overflow = '';
   renderDayFull(curDay);
 }
 
@@ -1880,15 +1894,15 @@ function attachSwipe(el, onDelete, onEdit){ attachSwipeReveal(el, onDelete, onEd
 // PREP
 // ════════════════════════════════════════
 async function initPrep(){
-  const data = await fetch('./data/checklists.json').then(r=>r.json());
-  checklists = data;
-
-  // Seed todos from JSON if empty
-  if(!getTodos().length){
-    const raw = await fetch('./data/todos.json').then(r=>r.json());
-    setTodos(raw.map((t,i)=>({...t,id:'seed_'+i,done:false})));
-  }
-
+  try {
+    checklists = await fetch('./data/checklists.json').then(r=>r.json());
+  } catch(e){ console.warn('checklists load failed',e); }
+  try {
+    if(!getTodos().length){
+      const raw = await fetch('./data/todos.json').then(r=>r.json());
+      setTodos(raw.map((t,i)=>({...t,id:'seed_'+i,done:false})));
+    }
+  } catch(e){ console.warn('todos seed failed',e); }
   buildPackTabs();
   renderTodos();
   renderPack();
