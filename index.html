@@ -293,7 +293,7 @@ body::before{content:'';position:fixed;top:0;left:0;right:0;height:env(safe-area
 .add-inp{flex:1;background:rgba(242,242,247,.95);border:none;border-radius:12px;padding:10px 14px;font-size:.9rem;font-family:var(--sans);color:var(--ink);outline:none;box-sizing:border-box;width:100%}
 .add-inp::placeholder{color:var(--ink2);opacity:.6}
 /* ── Souvenir sheet photo preview ── */
-.souv-sheet-photo{width:100%;height:100px;border-radius:12px;background:rgba(233,225,214,.5);display:flex;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;margin-bottom:12px;border:1.5px dashed rgba(176,138,91,.4);position:relative}
+.souv-sheet-photo{width:calc(100% - 4px);height:90px;border-radius:12px;background:rgba(233,225,214,.5);display:flex;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;margin:0 2px 12px;border:1.5px dashed rgba(176,138,91,.4);position:relative}
 .souv-sheet-photo img{width:100%;height:100%;object-fit:cover;display:block}
 .souv-sheet-photo-hint{display:flex;flex-direction:column;align-items:center;gap:5px;color:var(--ink2);font-size:.78rem;font-weight:700}
 .souv-sheet-photo-hint i{font-size:1.4rem;color:var(--acc);opacity:.7}
@@ -506,6 +506,10 @@ body::before{content:'';position:fixed;top:0;left:0;right:0;height:env(safe-area
     <button onclick="openTodoSheet()" style="padding:5px 12px;border:none;border-radius:999px;background:rgba(176,138,91,.12);color:var(--acc);font-weight:900;font-size:.82rem;font-family:var(--sans);cursor:pointer"><i class="fa-solid fa-plus"></i> 新增</button>
   </div>
   <div class="card" id="todoList"></div>
+
+  <!-- Pretrip checklist -->
+  <div class="sec mt12"><i class="fa-solid fa-clipboard-list"></i>行前準備清單</div>
+  <div class="card"><div class="cgrid" id="pretripGrid"></div></div>
 
   <!-- Packing -->
   <div class="sec mt12"><i class="fa-solid fa-suitcase"></i>個人行李清單</div>
@@ -776,7 +780,7 @@ async function loadDayFull(idx){
   const d = DAYS[idx];
   if(!itin[d.file]){
     document.getElementById('dayContent').innerHTML='<div class="empty"><i class="fa fa-spinner fa-spin"></i></div>';
-    const arr = await fetch('./data/itinerary/'+d.file).then(r=>r.json());
+    const arr = await fetch('./data/itinerary/'+d.file+'?v='+Date.now()).then(r=>r.json());
     itin[d.file] = {loc:arr[0].loc, items:applyItinEdits(d.file, arr[0].items)};
   }
   renderDayFull(idx);
@@ -803,8 +807,10 @@ function renderDayFull(idx){
 
   let h = '';
 
-  // Banner — prefer user-uploaded, then static /picture/date.jpg, then gradient
-  const picturePath = `./picture/${DAY_DATES_ISO[idx]}.jpg`;
+  // Banner — prefer user-uploaded, then static /picture/MM/DD/YYYYMMDDnnn.jpg, then gradient
+  const d_iso = DAY_DATES_ISO[idx]; // e.g. 2026-06-06
+  const mm = d_iso.slice(5,7), dd = d_iso.slice(8,10), ymd = d_iso.replace(/-/g,'');
+  const picturePath = `./picture/${mm}/${dd}/${ymd}001.jpg`;
   const bgStyle = photo
     ? `background-image:url('${photo}');background-color:${colors[0]}`
     : `background-image:url('${picturePath}'),linear-gradient(135deg,${colors[0]},${colors[1]});background-size:cover;background-position:center`;
@@ -1980,18 +1986,44 @@ function saveTodo(){
 }
 
 // ── Pack checklist ──
-const CARRY_ICONS = {'護照':'fa-passport','錢包':'fa-wallet','信用卡':'fa-credit-card','手機':'fa-mobile-screen','行動電源':'fa-battery-full','耳機':'fa-headphones','充電線':'fa-plug','口罩':'fa-head-side-mask','外套':'fa-shirt','雨傘 / 折傘':'fa-umbrella','換洗衣物（一天份）':'fa-tshirt','藥品急救包':'fa-kit-medical'};
-const CHECK_ICONS = {'衣物（4天份）':'fa-shirt','內衣褲':'fa-shirt','鞋子（備用）':'fa-shoe-prints','盥洗用品':'fa-soap','保養品':'fa-pump-soap','防曬乳':'fa-sun','洗髮潤髮':'fa-bottle-droplet','吹風機（如需）':'fa-wind','旅行插座 / 轉接頭':'fa-plug-circle-bolt','托運鎖頭':'fa-lock','空袋子（買東西用）':'fa-bag-shopping'};
+const PRETRIP_ICONS = {
+  'eSIM / 網路方案':'fa-signal','旅平險不便險':'fa-shield-halved','韓圜兌換':'fa-money-bill-wave',
+  '信用卡海外設定 / 交易通知':'fa-credit-card','K-ETA 電子旅行許可':'fa-file-invoice',
+  'WoWopass':'fa-card-blank',
+};
+const CARRY_ICONS = {
+  '護照':'fa-passport','錢包':'fa-wallet','信用卡':'fa-credit-card','手機':'fa-mobile-screen',
+  '行動電源':'fa-battery-full','耳機':'fa-headphones','充電線':'fa-plug','面紙':'fa-box-tissue',
+  '薄外套':'fa-shirt','雨傘':'fa-umbrella','墨鏡':'fa-glasses','日常藥品':'fa-kit-medical',
+  '水壺':'fa-bottle-water','鑰匙':'fa-key','牙線棒':'fa-teeth',
+};
+const CHECK_ICONS = {
+  '衣物（4天份）':'fa-shirt','內衣褲':'fa-underwear','睡衣':'fa-moon','襪子':'fa-socks',
+  '備用鞋':'fa-shoe-prints','拖鞋':'fa-shoe-prints','刮鬍刀':'fa-user',
+  '盥洗包':'fa-bag-shopping','保養品':'fa-pump-soap','防曬乳':'fa-sun','牙刷牙膏':'fa-teeth-open',
+  '充電器(線)':'fa-plug','轉接頭(220V)':'fa-plug-circle-bolt','備用藥品':'fa-pills',
+  '購物袋':'fa-bag-shopping','備用眼鏡':'fa-glasses','行李秤':'fa-scale-balanced','吹風機':'fa-wind',
+};
 
 function renderPack(){
+  const pretrip = checklists.pretrip||[];
   const carry = checklists.carry||[];
   const chk = checklists.check||[];
+  const pretripDone = new Set(LS.get('busan_pretrip_done',[]));
   const carryDone = getCarry(packUser);
   const checkDone = getCheck(packUser);
   const total = carry.length+chk.length;
   const done = carryDone.size+checkDone.size;
   document.getElementById('packProgress').textContent = `${done} / ${total}`;
   document.getElementById('packBar').style.width = total?((done/total*100)+'%'):'0%';
+  // Pretrip grid (shared, not per-person)
+  const pgEl = document.getElementById('pretripGrid');
+  if(pgEl) pgEl.innerHTML = pretrip.map(item=>`
+    <div class="ctile${pretripDone.has(item)?' done':''}" onclick="togglePretrip('${item.replace(/'/g,"\\'")}')">
+      <i class="fa-solid ${PRETRIP_ICONS[item]||'fa-circle-check'}"></i>
+      <span>${item}</span>
+    </div>
+  `).join('');
   document.getElementById('carryGrid').innerHTML = carry.map(item=>`
     <div class="ctile${carryDone.has(item)?' done':''}" onclick="toggleCarry('${item.replace(/'/g,"\\'") }')">
       <i class="fa-solid ${CARRY_ICONS[item]||'fa-check'}"></i>
@@ -2004,6 +2036,13 @@ function renderPack(){
       <span>${item}</span>
     </div>
   `).join('');
+}
+
+function togglePretrip(item){
+  const s = new Set(LS.get('busan_pretrip_done',[]));
+  s.has(item)?s.delete(item):s.add(item);
+  LS.set('busan_pretrip_done',[...s]);
+  renderPack();
 }
 
 function toggleCarry(item){
