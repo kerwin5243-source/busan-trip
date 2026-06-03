@@ -159,6 +159,7 @@ body::before{content:'';position:fixed;top:0;left:0;right:0;height:env(safe-area
 .db-title{font-family:var(--serif);font-size:1.02rem;font-weight:900;color:#fff;line-height:1.3}
 .db-hint{font-size:.7rem;color:rgba(255,255,255,.75);margin-top:4px;display:flex;align-items:center;gap:4px}
 .db-rm{position:absolute;top:8px;right:8px;width:26px;height:26px;border-radius:50%;background:rgba(0,0,0,.38);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#fff;font-size:.78rem}
+.db-loc{position:absolute;bottom:10px;right:14px;font-size:.68rem;color:rgba(255,255,255,.85);display:flex;align-items:center;gap:4px;text-shadow:0 1px 4px rgba(0,0,0,.5)}
 
 /* ── Weather ── */
 .weather-wrap{margin-bottom:8px}
@@ -339,7 +340,7 @@ body::before{content:'';position:fixed;top:0;left:0;right:0;height:env(safe-area
 /* ── Modal ── */
 .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:300}
 .overlay.open{display:flex;flex-direction:column;justify-content:flex-end}
-.sheet{width:100%;max-width:560px;margin:0 auto;background:var(--bg);border-radius:24px 24px 0 0;padding:14px 20px calc(env(safe-area-inset-bottom)+28px);animation:su .25s ease;max-height:88vh;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.sheet{width:100%;max-width:560px;margin:0 auto;background:var(--bg);border-radius:24px 24px 0 0;padding:14px 20px calc(env(safe-area-inset-bottom)+28px);animation:su .25s ease;max-height:88vh;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;box-sizing:border-box}
 @keyframes su{from{transform:translateY(100%)}to{transform:translateY(0)}}
 .handle{width:36px;height:4px;background:var(--div);border-radius:2px;margin:0 auto 16px}
 
@@ -404,7 +405,6 @@ body::before{content:'';position:fixed;top:0;left:0;right:0;height:env(safe-area
     <span class="year-pill">5天4夜</span>
     <span class="year-pill">2026</span>
   </div>
-  <button class="hdr-sync" onclick="openSyncSheet()" title="雲端同步"><i class="fa-solid fa-cloud-arrow-up" id="syncIcon"></i></button>
 </header>
 
 <!-- ══════════════ PAGES ══════════════ -->
@@ -627,46 +627,26 @@ body::before{content:'';position:fixed;top:0;left:0;right:0;height:env(safe-area
 <div class="overlay" id="syncOverlay" onclick="closeSyncSheet(event)">
   <div class="sheet" style="padding-bottom:calc(env(safe-area-inset-bottom)+32px)">
     <div class="handle"></div>
-    <div style="font-family:var(--serif);font-size:1.1rem;font-weight:900;margin-bottom:4px">☁️ 雲端同步</div>
-    <div style="font-size:.78rem;color:var(--ink2);margin-bottom:14px;line-height:1.6">透過 Google Apps Script 同步至 Google Sheet，6台裝置共用同一份資料。</div>
-
-    <div class="flabel">Apps Script 網址</div>
-    <input class="add-inp" id="syncUrl" placeholder="https://script.google.com/macros/s/…/exec" type="url" style="margin-bottom:6px;font-size:.78rem">
-    <div style="font-size:.72rem;color:var(--ink2);margin-bottom:14px">設定方式請點下方「查看教學」</div>
-
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
-      <button class="btn-add" style="background:#34C759" onclick="syncPush()"><i class="fa-solid fa-cloud-arrow-up"></i> 上傳資料</button>
-      <button class="btn-add" style="background:#007AFF" onclick="syncPull()"><i class="fa-solid fa-cloud-arrow-down"></i> 下載資料</button>
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
+      <div style="font-family:var(--serif);font-size:1.1rem;font-weight:900">☁️ 雲端即時同步</div>
+      <span id="fbDot" style="width:10px;height:10px;border-radius:50%;background:#ccc;display:inline-block;flex-shrink:0"></span>
     </div>
+    <div style="font-size:.78rem;color:var(--ink2);margin-bottom:14px;line-height:1.6">透過 Firebase Realtime Database 即時同步，所有裝置自動同步，無需手動操作。</div>
+
+    <div class="flabel">Firebase 設定（貼上 SDK config JSON）</div>
+    <textarea class="add-inp" id="fbCfgInput" rows="5" placeholder='{&#10;  "apiKey": "...",&#10;  "authDomain": "...",&#10;  "databaseURL": "...",&#10;  "projectId": "..."&#10;}' style="font-size:.72rem;font-family:var(--mono);resize:vertical;margin-bottom:8px"></textarea>
+    <button class="btn-add" style="background:var(--pri);margin-bottom:10px" onclick="fbConnect()"><i class="fa-solid fa-plug-circle-bolt"></i> 連線 Firebase</button>
     <div id="syncStatus" style="text-align:center;font-size:.78rem;color:var(--ink2);min-height:20px;margin-bottom:10px"></div>
 
-    <div style="background:rgba(242,242,247,.9);border-radius:12px;padding:10px 12px;margin-bottom:10px">
-      <div style="font-size:.76rem;font-weight:900;color:var(--pri);margin-bottom:6px">📋 查看教學</div>
-      <div style="font-size:.72rem;color:var(--ink2);line-height:1.8">
-        1. 開啟 <b>script.google.com</b>，新增專案<br>
-        2. 貼上下方程式碼，儲存<br>
-        3. 點「部署 → 新增部署」→ 類型選「網頁應用程式」<br>
-        4. 「以誰身份執行」選自己，「誰可以存取」選「任何人」<br>
-        5. 複製網址貼到上方欄位
+    <div style="background:rgba(242,242,247,.9);border-radius:12px;padding:10px 12px">
+      <div style="font-size:.76rem;font-weight:900;color:var(--pri);margin-bottom:6px">📋 設定教學</div>
+      <div style="font-size:.72rem;color:var(--ink2);line-height:1.9">
+        1. 前往 <b>console.firebase.google.com</b>，新增專案<br>
+        2. 左側選 <b>Realtime Database</b> → 建立資料庫（選測試模式）<br>
+        3. 左側 <b>專案設定 → 一般</b>，向下捲動找到「您的應用程式」<br>
+        4. 點「新增應用程式」→ Web（&lt;/&gt;），取得 firebaseConfig<br>
+        5. 將 firebaseConfig 物件（大括號內容）貼到上方欄位
       </div>
-    </div>
-    <div style="background:rgba(30,30,30,.95);border-radius:10px;padding:10px 12px;position:relative">
-      <button onclick="copySyncScript()" style="position:absolute;top:8px;right:8px;padding:3px 8px;border-radius:6px;background:rgba(255,255,255,.15);border:none;color:#fff;font-size:.68rem;font-weight:900;cursor:pointer">複製</button>
-      <pre id="syncScriptCode" style="margin:0;font-size:.62rem;color:#a8d8a8;overflow-x:auto;white-space:pre;font-family:var(--mono);line-height:1.6">const SHEET_NAME = 'busan';
-function doGet(e){
-  const ss=SpreadsheetApp.getActiveSpreadsheet();
-  let sh=ss.getSheetByName(SHEET_NAME);
-  if(!sh) return ContentService.createTextOutput('{}').setMimeType(ContentService.MimeType.JSON);
-  const data=sh.getRange(1,1).getValue();
-  return ContentService.createTextOutput(data||'{}').setMimeType(ContentService.MimeType.JSON);
-}
-function doPost(e){
-  const ss=SpreadsheetApp.getActiveSpreadsheet();
-  let sh=ss.getSheetByName(SHEET_NAME);
-  if(!sh) sh=ss.insertSheet(SHEET_NAME);
-  sh.getRange(1,1).setValue(e.postData.contents);
-  return ContentService.createTextOutput('ok').setMimeType(ContentService.MimeType.TEXT);
-}</pre>
     </div>
   </div>
 </div>
@@ -733,17 +713,17 @@ const LS = {
   set:(k,v)=>localStorage.setItem(k,JSON.stringify(v)),
 };
 function getExpenses(){ return LS.get('busan_expenses',[]) }
-function setExpenses(v){ LS.set('busan_expenses',v) }
+function setExpenses(v){ LS.set('busan_expenses',v); fbPushDebounced(); }
 function getPayments(){ return LS.get('busan_payments',[]) }
-function setPayments(v){ LS.set('busan_payments',v) }
+function setPayments(v){ LS.set('busan_payments',v); fbPushDebounced(); }
 function getTodos(){ return LS.get('busan_todos',[]) }
-function setTodos(v){ LS.set('busan_todos',v) }
+function setTodos(v){ LS.set('busan_todos',v); fbPushDebounced(); }
 function getShop(u){ return LS.get('busan_shop_'+u,[]) }
-function setShop(u,v){ LS.set('busan_shop_'+u,v) }
+function setShop(u,v){ LS.set('busan_shop_'+u,v); fbPushDebounced(); }
 function getCarry(u){ return new Set(LS.get('busan_carry_'+u,[])) }
-function setCarry(u,s){ LS.set('busan_carry_'+u,[...s]) }
+function setCarry(u,s){ LS.set('busan_carry_'+u,[...s]); fbPushDebounced(); }
 function getCheck(u){ return new Set(LS.get('busan_check_'+u,[])) }
-function setCheck(u,s){ LS.set('busan_check_'+u,[...s]) }
+function setCheck(u,s){ LS.set('busan_check_'+u,[...s]); fbPushDebounced(); }
 
 // ════════════════════════════════════════
 // INIT
@@ -813,15 +793,15 @@ function renderDayFull(idx){
     ? `background-image:url('${photo}');background-size:cover;background-position:center`
     : `background-image:url('${firstPic}'),linear-gradient(135deg,${colors[0]},${colors[1]});background-size:cover;background-position:center`;
   const subtitle = localStorage.getItem('busan_day_subtitle_'+idx) || DAY_SUBTITLES[idx] || d.label;
-  h += `<div class="day-banner" onclick="${itinEditMode?`editDaySubtitle(${idx})`:`pickBannerPhoto(${idx})`}">
+  h += `<div class="day-banner"${itinEditMode?` onclick="editDaySubtitle(${idx})"`:''}">
     <div class="db-bg" id="dayBgEl_${idx}" style="${bgStyle}"></div>
     <div class="db-ov"></div>
     <div class="db-cnt">
       <div class="db-pill">Day ${idx+1}</div>
       <div class="db-title">${subtitle}</div>
-      <div class="db-hint">${itinEditMode?`<i class="fa-solid fa-pen"></i>點此編輯標題`:`<i class="fa-regular fa-image"></i>${photo?'點此更換照片':'點此加入旅遊照片'}`}</div>
+      ${itinEditMode?`<div class="db-hint"><i class="fa-solid fa-pen"></i>點此編輯標題</div>`:''}
     </div>
-    ${!itinEditMode&&photo?`<button class="db-rm" onclick="removeBannerPhoto(event,${idx})"><i class="fa-solid fa-xmark"></i></button>`:''}
+    <div class="db-loc"><i class="fa-solid fa-location-dot"></i> ${DAY_DISTRICTS[idx]||''}</div>
   </div>`;
 
   // Weather placeholder (filled by renderWeatherStrip)
@@ -869,7 +849,7 @@ function startBannerRotation(idx){
     }
     _bannerRotState[idx].max = count;
     if(count > 1){
-      _bannerRotState[idx].timer = setInterval(()=>rotateBannerPhoto(idx), 5000);
+      _bannerRotState[idx].timer = setInterval(()=>rotateBannerPhoto(idx), 10000);
     }
   })();
 }
@@ -2116,6 +2096,7 @@ function togglePretrip(item){
   const s = new Set(LS.get('busan_pretrip_done',[]));
   s.has(item)?s.delete(item):s.add(item);
   LS.set('busan_pretrip_done',[...s]);
+  fbPushDebounced();
   renderPack();
 }
 
@@ -2132,94 +2113,105 @@ function toggleCheck(item){
 }
 
 // ════════════════════════════════════════
-// GOOGLE SHEET SYNC
+// FIREBASE REALTIME SYNC
 // ════════════════════════════════════════
-const SYNC_URL_KEY = 'busan_sync_url';
+const FB_CFG_KEY = 'busan_fb_config';
+let _fbApp=null, _fbDb=null, _fbUpdating=false, _fbPushTimer=null;
 
 function openSyncSheet(){
-  document.getElementById('syncUrl').value = localStorage.getItem(SYNC_URL_KEY)||'';
+  const saved = localStorage.getItem(FB_CFG_KEY)||'';
+  document.getElementById('fbCfgInput').value = saved;
   document.getElementById('syncStatus').textContent = '';
   document.getElementById('syncOverlay').classList.add('open');
 }
 function closeSyncSheet(e){ if(e.target===document.getElementById('syncOverlay')) document.getElementById('syncOverlay').classList.remove('open'); }
 
-function getSyncUrl(){
-  const url = document.getElementById('syncUrl').value.trim();
-  if(url) localStorage.setItem(SYNC_URL_KEY, url);
-  return url;
-}
-
 function setSyncStatus(msg, color='var(--ink2)'){
   const el = document.getElementById('syncStatus');
-  el.style.color = color;
-  el.textContent = msg;
+  if(el){ el.style.color = color; el.textContent = msg; }
 }
 
-// Collect all busan_* keys into one object (excluding large banner images to keep size down)
+function updateSyncDot(state){
+  const dot = document.getElementById('fbDot');
+  if(dot) dot.style.background = state==='on'?'#34C759':state==='err'?'#FF3B30':'#ccc';
+}
+
+// Collect all busan_* keys (excluding banner images and shop images)
 function collectLocalData(){
   const out = {};
   for(let i=0;i<localStorage.length;i++){
     const k = localStorage.key(i);
     if(!k.startsWith('busan_')) continue;
-    if(k.startsWith('busan_banner_')||k.startsWith('busan_shop_img_')) continue; // skip images
+    if(k.startsWith('busan_banner_')||k.startsWith('busan_shop_img_')) continue;
     out[k] = localStorage.getItem(k);
   }
   return out;
 }
 
-async function syncPush(){
-  const url = getSyncUrl();
-  if(!url){ setSyncStatus('請先填入 Apps Script 網址', '#FF3B30'); return; }
-  setSyncStatus('⏳ 上傳中…');
-  const icon = document.getElementById('syncIcon');
-  icon.className = 'fa-solid fa-spinner fa-spin';
+function fbConnect(){
+  const raw = document.getElementById('fbCfgInput').value.trim();
+  if(!raw){ setSyncStatus('請貼入 Firebase config JSON', '#FF3B30'); return; }
   try{
-    const data = collectLocalData();
-    const res = await fetch(url, {
-      method:'POST',
-      headers:{'Content-Type':'text/plain'},
-      body: JSON.stringify(data),
-      mode:'no-cors'
-    });
-    setSyncStatus('✅ 上傳成功！', '#34C759');
+    const cfg = JSON.parse(raw);
+    if(!cfg.databaseURL){ setSyncStatus('⚠️ 找不到 databaseURL，請確認 config', '#FF9500'); return; }
+    localStorage.setItem(FB_CFG_KEY, raw);
+    initFirebase(cfg);
+    setSyncStatus('⏳ 連線中…');
   } catch(e){
-    setSyncStatus('❌ 上傳失敗：'+e.message, '#FF3B30');
+    setSyncStatus('❌ JSON 格式錯誤：'+e.message, '#FF3B30');
   }
-  icon.className = 'fa-solid fa-cloud-arrow-up';
 }
 
-async function syncPull(){
-  const url = getSyncUrl();
-  if(!url){ setSyncStatus('請先填入 Apps Script 網址', '#FF3B30'); return; }
-  setSyncStatus('⏳ 下載中…');
-  const icon = document.getElementById('syncIcon');
-  icon.className = 'fa-solid fa-spinner fa-spin';
+function initFirebase(cfg){
   try{
-    const res = await fetch(url+'?t='+Date.now());
-    const data = await res.json();
-    if(!data||typeof data!=='object'||!Object.keys(data).length){
-      setSyncStatus('⚠️ 雲端尚無資料，請先從某台裝置上傳', '#FF9500');
-      icon.className = 'fa-solid fa-cloud-arrow-up';
-      return;
-    }
-    let count = 0;
-    Object.keys(data).forEach(k=>{
-      if(k.startsWith('busan_')){ localStorage.setItem(k, data[k]); count++; }
-    });
-    setSyncStatus(`✅ 已同步 ${count} 筆資料，即將重新載入…`, '#34C759');
-    setTimeout(()=>{ window.location.reload(); }, 1200);
+    if(_fbApp){ try{ firebase.app('busan').delete(); }catch(_){} }
+    _fbApp = firebase.initializeApp(cfg, 'busan');
+    _fbDb = firebase.database(_fbApp);
+    subscribeFirebase();
+    return true;
   } catch(e){
-    setSyncStatus('❌ 下載失敗：'+e.message, '#FF3B30');
+    console.warn('Firebase init failed', e);
+    updateSyncDot('err');
+    setSyncStatus('❌ Firebase 初始化失敗：'+e.message, '#FF3B30');
+    return false;
   }
-  icon.className = 'fa-solid fa-cloud-arrow-up';
 }
 
-function copySyncScript(){
-  const code = document.getElementById('syncScriptCode').textContent;
-  navigator.clipboard?.writeText(code);
-  event.target.textContent = '已複製！';
-  setTimeout(()=>{ event.target.textContent='複製'; }, 1500);
+function subscribeFirebase(){
+  _fbDb.ref('/data').on('value', snap=>{
+    updateSyncDot('on');
+    setSyncStatus('✅ 已連線，自動同步中', '#34C759');
+    const remote = snap.val();
+    if(!remote){ fbPushNow(); return; }
+    _fbUpdating = true;
+    Object.keys(remote).forEach(k=>{
+      if(k.startsWith('busan_')&&!k.startsWith('busan_banner_')&&!k.startsWith('busan_shop_img_'))
+        localStorage.setItem(k, remote[k]);
+    });
+    _fbUpdating = false;
+    try{ renderRecords(); }catch(_){}
+    try{ renderBalance(); }catch(_){}
+    try{ renderTodos(); }catch(_){}
+    try{ renderPack(); }catch(_){}
+    try{ renderSouvList(); }catch(_){}
+  }, err=>{
+    updateSyncDot('err');
+    setSyncStatus('❌ 同步錯誤：'+err.message, '#FF3B30');
+  });
 }
+
+function fbPushDebounced(){
+  if(_fbUpdating||!_fbDb) return;
+  clearTimeout(_fbPushTimer);
+  _fbPushTimer = setTimeout(fbPushNow, 600);
+}
+
+function fbPushNow(){
+  if(!_fbDb) return;
+  _fbDb.ref('/data').set(collectLocalData()).catch(e=>console.warn('FB push failed',e));
+}
+
+// Firebase SDK loads after this script block; auto-connect happens after SDK loads (see bottom of body)
 
 // ════════════════════════════════════════
 // KEYBOARD dismiss on tap outside input
@@ -2252,6 +2244,16 @@ function autoJumpToday(){
 // ════════════════════════════════════════
 init();
 autoJumpToday();
+</script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script>
+// Firebase auto-connect after SDK loads
+(function(){
+  const saved = localStorage.getItem('busan_fb_config');
+  if(!saved) return;
+  try{ initFirebase(JSON.parse(saved)); } catch(_){}
+})();
 </script>
 </body>
 </html>

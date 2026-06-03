@@ -125,7 +125,7 @@
       },
       {
         "id": "0606_06",
-        "time": "11:30",
+        "time": "",
         "title": "BUSAN BADA SAND 釜山伴手禮",
         "tag": "shop",
         "subtag": "伴手禮",
@@ -147,7 +147,7 @@
       },
       {
         "id": "0606_07",
-        "time": "12:00",
+        "time": "",
         "title": "古來思魚糕 구래스어묵",
         "tag": "food",
         "subtag": "小吃",
@@ -167,7 +167,7 @@
       },
       {
         "id": "0606_08",
-        "time": "12:45",
+        "time": "",
         "title": "海雲台逛街：Olive Young · 大創 · Artbox · Butter",
         "tag": "shop",
         "subtag": "購物",
@@ -249,7 +249,7 @@
       },
       {
         "id": "0606_11",
-        "time": "17:00",
+        "time": "",
         "title": "廣安里海岸散步 · 紅白雙色燈塔",
         "tag": "sight",
         "subtag": "海景",
@@ -272,7 +272,7 @@
       },
       {
         "id": "0606_12",
-        "time": "17:30",
+        "time": "",
         "title": "All Sunday 貝果 올선데이베이글",
         "tag": "food",
         "subtag": "咖啡",
@@ -293,7 +293,7 @@
       },
       {
         "id": "0606_13",
-        "time": "19:00",
+        "time": "18:30",
         "title": "晚餐：Nasari 나사리식당 廣安店",
         "tag": "food",
         "subtag": "海鮮",
