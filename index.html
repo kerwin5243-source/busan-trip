@@ -35,12 +35,13 @@ body::before{content:'';position:fixed;top:0;left:0;right:0;height:env(safe-area
 
 /* ── Header ── */
 .hdr{
-  padding:calc(env(safe-area-inset-top)+14px) 20px 10px;
+  padding:calc(env(safe-area-inset-top)+14px) 20px 12px;
   text-align:center;
-  position:sticky;top:0;z-index:100;
+  position:fixed;top:0;left:0;right:0;z-index:100;
   background:rgba(246,243,238,.97);
   backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
 }
+#hdr-spacer{height:var(--hdr-h,140px)}
 .hdr-title{font-family:var(--serif);font-size:1.28rem;font-weight:900;letter-spacing:.03em;margin:0;color:var(--pri)}
 .hdr-sub{font-size:.74rem;color:var(--ink2);font-weight:700;margin-top:3px;letter-spacing:.1em}
 .hdr-meta{display:flex;justify-content:center;gap:7px;margin-top:5px}
@@ -406,6 +407,7 @@ body::before{content:'';position:fixed;top:0;left:0;right:0;height:env(safe-area
     <span class="year-pill">2026</span>
   </div>
 </header>
+<div id="hdr-spacer"></div>
 
 <!-- ══════════════ PAGES ══════════════ -->
 
@@ -2269,10 +2271,23 @@ function autoJumpToday(){
 }
 
 // ════════════════════════════════════════
+// HEADER HEIGHT SPACER
+// ════════════════════════════════════════
+function syncHdrHeight(){
+  const h = document.querySelector('.hdr')?.offsetHeight || 0;
+  if(h > 0){
+    document.getElementById('hdr-spacer').style.height = h+'px';
+    document.documentElement.style.setProperty('--hdr-h', h+'px');
+  }
+}
+window.addEventListener('resize', syncHdrHeight);
+
+// ════════════════════════════════════════
 // START
 // ════════════════════════════════════════
 init();
 autoJumpToday();
+requestAnimationFrame(syncHdrHeight);
 </script>
 <script defer src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"
   onload="document.dispatchEvent(new Event('fbAppReady'))"></script>
