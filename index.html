@@ -2116,7 +2116,7 @@ function toggleCheck(item){
 // ════════════════════════════════════════
 // FIREBASE REALTIME SYNC
 // ════════════════════════════════════════
-let _fbApp=null, _fbDb=null, _fbUpdating=false, _fbPushTimer=null;
+let _fbApp=null, _fbDb=null, _fbUpdating=false, _fbPushTimer=null, _lastFbTs=0;
 
 function openSyncSheet(){
   document.getElementById('syncOverlay').classList.add('open');
@@ -2166,15 +2166,28 @@ function initFirebase(cfg){
 function subscribeFirebase(){
   _fbDb.ref('/data').on('value', snap=>{
     updateSyncDot('on');
-    setSyncStatus('✅ 已連線，自動同步中', '#34C759');
     const remote = snap.val();
     if(!remote){ fbPushNow(); return; }
+
+    const remoteTs = remote._ts || 0;
+
+    // Skip if remote data is not newer than what we last processed
+    if(remoteTs <= _lastFbTs){
+      setSyncStatus('✅ 已連線，自動同步中', '#34C759');
+      return;
+    }
+
+    // Remote is newer — apply it and cancel pending local push
+    _lastFbTs = remoteTs;
     _fbUpdating = true;
+    clearTimeout(_fbPushTimer);
     Object.keys(remote).forEach(k=>{
+      if(k==='_ts') return;
       if(k.startsWith('busan_')&&!k.startsWith('busan_banner_')&&!k.startsWith('busan_shop_img_'))
         localStorage.setItem(k, remote[k]);
     });
     _fbUpdating = false;
+    setSyncStatus('✅ 已連線，自動同步中', '#34C759');
     try{ renderRecords(); }catch(_){}
     try{ renderBalance(); }catch(_){}
     try{ renderTodos(); }catch(_){}
@@ -2194,8 +2207,39 @@ function fbPushDebounced(){
 
 function fbPushNow(){
   if(!_fbDb) return;
-  _fbDb.ref('/data').set(collectLocalData()).catch(e=>console.warn('FB push failed',e));
+  const data = collectLocalData();
+  const ts = Date.now();
+  data._ts = ts;
+  _fbDb.ref('/data').set(data).then(()=>{
+    _lastFbTs = ts; // Mark: this version is ours, skip echo-back
+  }).catch(e=>console.warn('FB push failed',e));
 }
+
+// Re-fetch latest data when app comes back to foreground (iOS PWA background issue)
+document.addEventListener('visibilitychange', ()=>{
+  if(document.visibilityState==='visible' && _fbDb){
+    _fbDb.ref('/data').once('value').then(snap=>{
+      const remote = snap.val();
+      if(!remote) return;
+      const remoteTs = remote._ts || 0;
+      if(remoteTs <= _lastFbTs) return;
+      _lastFbTs = remoteTs;
+      _fbUpdating = true;
+      clearTimeout(_fbPushTimer);
+      Object.keys(remote).forEach(k=>{
+        if(k==='_ts') return;
+        if(k.startsWith('busan_')&&!k.startsWith('busan_banner_')&&!k.startsWith('busan_shop_img_'))
+          localStorage.setItem(k, remote[k]);
+      });
+      _fbUpdating = false;
+      try{ renderRecords(); }catch(_){}
+      try{ renderBalance(); }catch(_){}
+      try{ renderTodos(); }catch(_){}
+      try{ renderPack(); }catch(_){}
+      try{ renderSouvList(); }catch(_){}
+    });
+  }
+});
 
 
 // ════════════════════════════════════════
