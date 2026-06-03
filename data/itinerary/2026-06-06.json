@@ -47,8 +47,8 @@
         "reservations": [],
         "route": {
           "mode": "plane",
-          "from": "台北桃園國際機場 T2",
-          "to": "釜山金海國際機場",
+          "from": "TPE T2",
+          "to": "PUS",
           "minutes": 140
         }
       },
@@ -67,7 +67,6 @@
         "price": "₩70,000（9人座接駁）",
         "stay": "30 min",
         "guide": [
-          "機場有換匯，建議換少量應急（₩30,000-50,000），市區再換",
           "T-money 交通卡在機場便利商店可購買"
         ],
         "avoid": ["行李件數確認齊全再移動"],
@@ -96,8 +95,8 @@
         "reservations": [],
         "route": {
           "mode": "car",
-          "from": "釜山金海機場 Gate 1",
-          "to": "L7 海雲台飯店",
+          "from": "PUS Gate 1",
+          "to": "L7 海雲台",
           "minutes": 50
         }
       },
@@ -168,12 +167,12 @@
       {
         "id": "0606_08",
         "time": "",
-        "title": "海雲台逛街：Olive Young · 大創 · Artbox · Butter",
+        "title": "海雲台逛逛逛",
         "tag": "shop",
         "subtag": "購物",
         "naver_url": "https://naver.me/x9BYjf19",
         "desc": "海雲台購物一條龍：Olive Young 美妝、大創韓國限定、Artbox 文具雜貨、Butter Shop 療癒風",
-        "detail": "Olive Young（10:00-23:00）：\n• 必買：COSRX 精華、Anua 魚腥草水、Mediheal 面膜\n• 滿 ₩15,000 出示護照可即時退稅\n\n大創海雲台店（10:00-22:00）：\n• 韓國限定 VT Reedle Shot 微針精華（看到就拿！）\n• 韓國傳統圖騰書籤/餐具/酒杯\n\nArtbox（11:00-22:30）：\n• 造型保溫瓶、韓文紅包袋、手機氣囊支架\n\nButter Shop（10:00-23:00）：\n• 超柔軟小熊抱枕、盲盒公仔、刺繡襪子\n\n自然鹽可頌（09:00-22:00）：\n• 固定時段出爐，每袋 4 個 ₩12,000\n• 法國奶油 × 加拿大小麥，底層極度酥脆",
+        "detail": "Olive Young：\n• 必買：COSRX 精華、Anua 魚腥草水、Mediheal 面膜\n• 滿 ₩15,000 出示護照可即時退稅\n\n大創海雲台店：\n• 韓國限定 VT Reedle Shot 微針精華（看到就拿！）\n• 韓國傳統圖騰書籤/餐具/酒杯\n\nArtbox：\n• 造型保溫瓶、韓文紅包袋、手機氣囊支架\n\nButter Shop：\n• 超柔軟小熊抱枕、盲盒公仔、刺繡襪子",
         "addr": "海雲台站周邊",
         "mapcode": "",
         "parking": "",
@@ -213,7 +212,7 @@
         "route": {
           "mode": "car",
           "from": "海雲台",
-          "to": "廣安里 水邊最高豬肉湯飯",
+          "to": "水邊豬肉湯飯",
           "minutes": 10
         }
       },
@@ -368,8 +367,8 @@
         "reservations": [],
         "route": {
           "mode": "car",
-          "from": "廣安里 Meeting Plaza",
-          "to": "L7 海雲台飯店",
+          "from": "廣安里",
+          "to": "L7 海雲台",
           "minutes": 20
         }
       }
