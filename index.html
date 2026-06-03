@@ -238,7 +238,9 @@ body{padding-bottom:calc(72px + env(safe-area-inset-bottom))}
 .detail-pills{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
 .detail-pill{display:flex;align-items:center;gap:4px;padding:3px 9px;border-radius:999px;background:#fff;border:1px solid rgba(233,225,214,.9);font-size:.74rem;font-weight:900;color:#5F5A52}
 .detail-pill i{font-size:.62rem;color:#8B8175}
-.detail-body{padding:10px 18px;overflow-y:auto}
+.detail-body{padding:10px 18px;overflow-y:auto;flex:1}
+.detail-maps-footer{padding:10px 18px;padding-bottom:calc(env(safe-area-inset-bottom,0px)+10px);border-top:1px solid rgba(233,225,214,.8);background:var(--bg);display:none}
+html.elderly{font-size:27px}
 .detail-meta{border-top:1px solid rgba(233,225,214,.8);border-bottom:1px solid rgba(233,225,214,.8);padding:5px 0;margin-bottom:10px}
 .detail-mrow{display:flex;align-items:flex-start;gap:10px;padding:5px 0;font-size:.84rem;color:var(--ink2)}
 .detail-mrow i{flex-shrink:0;width:16px;text-align:center;margin-top:2px}
@@ -534,6 +536,21 @@ body{padding-bottom:calc(72px + env(safe-area-inset-bottom))}
     </div>
     <i class="fa-solid fa-chevron-right" style="color:var(--ink2);font-size:.78rem"></i>
   </div>
+
+  <!-- Elderly mode -->
+  <div class="sec mt12"><i class="fa-solid fa-eye"></i>顯示設定</div>
+  <div class="card" style="display:flex;align-items:center;gap:14px">
+    <i class="fa-solid fa-text-height" style="font-size:1.1rem;color:var(--acc)"></i>
+    <div style="flex:1">
+      <div style="font-weight:800;font-size:.88rem">長輩模式</div>
+      <div style="font-size:.75rem;color:var(--ink2);margin-top:2px">字體與間距放大 1.5 倍</div>
+    </div>
+    <label style="position:relative;width:44px;height:26px;flex-shrink:0">
+      <input type="checkbox" id="elderlyToggle" onchange="toggleElderly(this.checked)" style="opacity:0;width:0;height:0;position:absolute">
+      <span id="elderlyTrack" style="position:absolute;inset:0;border-radius:999px;background:#ccc;cursor:pointer;transition:.2s"></span>
+      <span id="elderlyThumb" style="position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:.2s;box-shadow:0 1px 3px rgba(0,0,0,.2)"></span>
+    </label>
+  </div>
 </div>
 
 <!-- ══════════════ SCROLL TO TOP ══════════════ -->
@@ -553,7 +570,8 @@ body{padding-bottom:calc(72px + env(safe-area-inset-bottom))}
   <div id="detailSheet" style="width:100%;max-height:82vh;background:var(--bg);border-radius:24px 24px 0 0;display:flex;flex-direction:column;overflow:hidden;animation:su .25s ease;touch-action:pan-y">
     <div id="detailHandle" class="handle" style="margin-bottom:0;padding-top:10px;cursor:grab"></div>
     <div id="detailHdr" class="detail-hdr"></div>
-    <div id="detailBody" class="detail-body" style="padding-bottom:calc(env(safe-area-inset-bottom)+24px);-webkit-overflow-scrolling:touch;overscroll-behavior:contain"></div>
+    <div id="detailBody" class="detail-body" style="-webkit-overflow-scrolling:touch;overscroll-behavior:contain"></div>
+    <div id="detailMaps" class="detail-maps-footer"></div>
   </div>
 </div>
 
@@ -669,9 +687,14 @@ const DAYS = [
 const TAG_ICON = {food:'fa-utensils',sight:'fa-camera',transport:'fa-bus',hotel:'fa-hotel',route:'fa-arrow-right-long',shop:'fa-bag-shopping'};
 const TAG_LABEL = {food:'美食',sight:'景點',transport:'交通',hotel:'住宿',route:'路線',shop:'購物'};
 const TAG_DOT = {food:'#E57373',sight:'#4DB6AC',transport:'#90A4AE',hotel:'#9575CD',route:'#B0BEC5',shop:'#F48FB1'};
+function stripKorean(s){ return (s||'').replace(/[\uAC00-\uD7AF\u1100-\u11FF\u3130-\u318F]+/g,'').replace(/\s{2,}/g,' ').trim(); }
 const DAY_SUBTITLES = ['海雲台逛街 · 廣安里無人機','南浦市場 · 札嘎其 · 鑽石塔','龍宮寺 · Luge · 海岸列車 · Spa Land','甘川 · 松島纜車 · 白淺灘','離開釜山 · 平安回家'];
 const DAY_COLORS = [['#3D7BBF','#1A4A7A'],['#2F8F5B','#1A5237'],['#B08A5B','#7D5B34'],['#8B5CF6','#5B21B6'],['#E5534B','#9B1C1C']];
-const DAY_DISTRICTS = ['海雲台','南浦洞','機張','釜山西部','海雲台'];
+const DAY_DISTRICTS = ['廣安里','南浦洞','機張','釜山西部','海雲台'];
+const DAY_PHOTO_LOCS = [
+  ['海雲台','古來斯魚糕','紅白燈塔','廣安里無人機'],
+  [],[],[],[]
+];
 const DAY_HOTELS = ['海雲台 L7 飯店','海雲台 L7 飯店','海雲台 L7 飯店','海雲台 L7 飯店',null];
 const DAY_DATES_ISO = ['2026-06-06','2026-06-07','2026-06-08','2026-06-09','2026-06-10'];
 const WEEKDAY_EN = {六:'SAT',日:'SUN',一:'MON',二:'TUE',三:'WED',四:'THU',五:'FRI'};
@@ -802,7 +825,7 @@ function renderDayFull(idx){
       <div class="db-title">${subtitle}</div>
       ${itinEditMode?`<div class="db-hint"><i class="fa-solid fa-pen"></i>點此編輯標題</div>`:''}
     </div>
-    <div class="db-loc"><i class="fa-solid fa-location-dot"></i> ${DAY_DISTRICTS[idx]||''}</div>
+    <div class="db-loc" id="dbLoc_${idx}"><i class="fa-solid fa-location-dot"></i> ${(DAY_PHOTO_LOCS[idx]&&DAY_PHOTO_LOCS[idx][0])||DAY_DISTRICTS[idx]||''}</div>
   </div>`;
 
   // Weather placeholder (filled by renderWeatherStrip)
@@ -867,6 +890,10 @@ function rotateBannerPhoto(idx){
     el.style.backgroundSize = 'cover';
     el.style.backgroundPosition = 'center';
     el.style.opacity = '1';
+    const locs = DAY_PHOTO_LOCS[idx]||[];
+    const loc = locs[st.n-1]||DAY_DISTRICTS[idx]||'';
+    const locEl = document.getElementById('dbLoc_'+idx);
+    if(locEl) locEl.innerHTML = `<i class="fa-solid fa-location-dot"></i> ${loc}`;
   }, 700);
 }
 
@@ -877,7 +904,7 @@ function renderTimeline(items, dayFile){
       const r = it.route||{};
       const modeIcon = r.mode==='plane'
         ? (r.to&&(r.to.includes('釜山')||r.to.includes('PUS')||r.to.includes('金海'))?'fa-plane-arrival':'fa-plane-departure')
-        : r.mode==='transit'?'fa-train-subway':r.mode==='walk'?'fa-person-walking':r.mode==='ferry'?'fa-ship':r.mode==='bus'?'fa-bus':'fa-taxi';
+        : r.mode==='transit'?'fa-train-subway':r.mode==='walk'?'fa-person-walking':r.mode==='ferry'?'fa-ship':r.mode==='bus'?'fa-bus':r.mode==='van'?'fa-van-shuttle':'fa-taxi';
       const dur = r.minutes?(r.minutes>=60?Math.floor(r.minutes/60)+'h'+(r.minutes%60?r.minutes%60+'m':''):r.minutes+'min'):(it.stay||'');
       const label = r.from&&r.to ? `${r.from} → ${r.to}` : (it.title||'');
       const price = it.price||'';
@@ -914,7 +941,7 @@ function renderTimeline(items, dayFile){
           ${it.subtag?`<span class="tl2-sub">${it.subtag}</span>`:''}
           ${badge}
         </div>
-        <div class="tl2-title">${it.title}</div>
+        <div class="tl2-title">${stripKorean(it.title)}</div>
         ${it.stay?`<div class="tl2-chips" style="margin-top:4px"><span class="tl2-chip"><i class="fa-regular fa-hourglass"></i>${it.stay}</span></div>`:''}
         ${itinEditMode?`<div class="tl2-edit-icon"><i class="fa-solid fa-pen"></i></div>`:''}
       </div>
@@ -1014,7 +1041,6 @@ function openDetail(item){
   let b = '';
   if(hasMeta) b += `<div class="detail-meta">
     ${item.addr?`<div class="detail-mrow"><i class="fa-solid fa-location-dot"></i><span>${item.addr}</span><button class="detail-copy" onclick="copyText('${item.addr.replace(/'/g,"\\'")}')">複製</button></div>`:''}
-    ${item.hours?`<div class="detail-mrow"><i class="fa-regular fa-clock"></i><span>${item.hours}</span></div>`:''}
     ${item.parking?`<div class="detail-mrow"><i class="fa-solid fa-square-parking"></i><span>${item.parking}</span></div>`:''}
   </div>`;
   if(item.detail) b += `<div class="detail-text">${item.detail}</div>`;
@@ -1031,7 +1057,14 @@ function openDetail(item){
     ${item.avoid.map(a=>`<div class="detail-bullet"><i class="fa-solid fa-circle" style="font-size:.35rem;color:#ccc;margin-top:6px"></i>${a}</div>`).join('')}
   </div>`;
   const mapsUrl = item.naver_url || (item.addr ? naverSearchUrl(item.addr) : '');
-  if(mapsUrl) b += `<div class="detail-maps" onclick="openExternal('${mapsUrl.replace(/'/g,"\\'")}')"><i class="fa-solid fa-map-location-dot"></i>NAVER MAPS 導航</div>`;
+  const mapsFooter = document.getElementById('detailMaps');
+  if(mapsUrl){
+    mapsFooter.style.display = 'block';
+    mapsFooter.innerHTML = `<div class="detail-maps" onclick="openExternal('${mapsUrl.replace(/'/g,"\\'")}')"><i class="fa-solid fa-map-location-dot"></i>NAVER MAPS 導航</div>`;
+  } else {
+    mapsFooter.style.display = 'none';
+    mapsFooter.innerHTML = '';
+  }
   document.getElementById('detailBody').innerHTML = b;
   document.getElementById('detailBody').scrollTop = 0;
   document.getElementById('detailOverlay').classList.add('open');
@@ -2120,6 +2153,21 @@ let _fbApp=null, _fbDb=null, _fbUpdating=false, _fbPushTimer=null;
 let _lastFbTs = parseInt(localStorage.getItem('busan_last_fb_ts')||'0');
 let _localTs  = parseInt(localStorage.getItem('busan_local_ts')||'0');
 
+function toggleElderly(on){
+  document.documentElement.classList.toggle('elderly', on);
+  localStorage.setItem('busan_elderly', on?'1':'0');
+  const track = document.getElementById('elderlyTrack');
+  const thumb = document.getElementById('elderlyThumb');
+  if(track) track.style.background = on ? 'var(--acc)' : '#ccc';
+  if(thumb) thumb.style.left = on ? '21px' : '3px';
+}
+function initElderly(){
+  const on = localStorage.getItem('busan_elderly')==='1';
+  const cb = document.getElementById('elderlyToggle');
+  if(cb) cb.checked = on;
+  if(on) toggleElderly(true);
+}
+
 function openSyncSheet(){
   document.getElementById('syncOverlay').classList.add('open');
 }
@@ -2295,6 +2343,7 @@ window.addEventListener('resize', syncHdrHeight);
 // ════════════════════════════════════════
 init();
 autoJumpToday();
+initElderly();
 requestAnimationFrame(syncHdrHeight);
 </script>
 <script defer src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"

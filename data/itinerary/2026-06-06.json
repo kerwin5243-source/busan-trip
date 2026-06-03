@@ -94,7 +94,7 @@
         "menu": [],
         "reservations": [],
         "route": {
-          "mode": "car",
+          "mode": "van",
           "from": "PUS Gate 1",
           "to": "L7 海雲台",
           "minutes": 50
@@ -358,7 +358,7 @@
         "mapcode": "",
         "parking": "",
         "hours": "",
-        "price": "",
+        "price": "約 ₩8,000",
         "stay": "20 min",
         "guide": [],
         "avoid": [],
