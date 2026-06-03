@@ -638,25 +638,15 @@ body::before{content:'';position:fixed;top:0;left:0;right:0;height:env(safe-area
 <div class="overlay" id="syncOverlay" onclick="closeSyncSheet(event)">
   <div class="sheet" style="padding-bottom:calc(env(safe-area-inset-bottom)+32px)">
     <div class="handle"></div>
-    <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
       <div style="font-family:var(--serif);font-size:1.1rem;font-weight:900">☁️ 雲端即時同步</div>
       <span id="fbDot" style="width:10px;height:10px;border-radius:50%;background:#ccc;display:inline-block;flex-shrink:0"></span>
     </div>
-    <div style="font-size:.78rem;color:var(--ink2);margin-bottom:14px;line-height:1.6">透過 Firebase Realtime Database 即時同步，所有裝置自動同步，無需手動操作。</div>
-
-    <div class="flabel">Firebase 設定（貼上 SDK config JSON）</div>
-    <textarea class="add-inp" id="fbCfgInput" rows="5" placeholder='{&#10;  "apiKey": "...",&#10;  "authDomain": "...",&#10;  "databaseURL": "...",&#10;  "projectId": "..."&#10;}' style="font-size:.72rem;font-family:var(--mono);resize:vertical;margin-bottom:8px"></textarea>
-    <button class="btn-add" style="background:var(--pri);margin-bottom:10px" onclick="fbConnect()"><i class="fa-solid fa-plug-circle-bolt"></i> 連線 Firebase</button>
-    <div id="syncStatus" style="text-align:center;font-size:.78rem;color:var(--ink2);min-height:20px;margin-bottom:10px"></div>
-
-    <div style="background:rgba(242,242,247,.9);border-radius:12px;padding:10px 12px">
-      <div style="font-size:.76rem;font-weight:900;color:var(--pri);margin-bottom:6px">📋 設定教學</div>
-      <div style="font-size:.72rem;color:var(--ink2);line-height:1.9">
-        1. 前往 <b>console.firebase.google.com</b>，新增專案<br>
-        2. 左側選 <b>Realtime Database</b> → 建立資料庫（選測試模式）<br>
-        3. 左側 <b>專案設定 → 一般</b>，向下捲動找到「您的應用程式」<br>
-        4. 點「新增應用程式」→ Web（&lt;/&gt;），取得 firebaseConfig<br>
-        5. 將 firebaseConfig 物件（大括號內容）貼到上方欄位
+    <div id="syncStatus" style="text-align:center;font-size:.82rem;color:var(--ink2);min-height:24px;margin-bottom:12px"></div>
+    <div style="background:rgba(242,242,247,.9);border-radius:12px;padding:10px 14px">
+      <div style="font-size:.76rem;color:var(--ink2);line-height:1.8">
+        所有裝置開啟 App 後自動連線同步，無需任何設定。<br>
+        記帳、待辦、打包清單即時同步給全員。
       </div>
     </div>
   </div>
@@ -2126,13 +2116,9 @@ function toggleCheck(item){
 // ════════════════════════════════════════
 // FIREBASE REALTIME SYNC
 // ════════════════════════════════════════
-const FB_CFG_KEY = 'busan_fb_config';
 let _fbApp=null, _fbDb=null, _fbUpdating=false, _fbPushTimer=null;
 
 function openSyncSheet(){
-  const saved = localStorage.getItem(FB_CFG_KEY)||'';
-  document.getElementById('fbCfgInput').value = saved;
-  document.getElementById('syncStatus').textContent = '';
   document.getElementById('syncOverlay').classList.add('open');
 }
 function closeSyncSheet(e){ if(e.target===document.getElementById('syncOverlay')) document.getElementById('syncOverlay').classList.remove('open'); }
@@ -2160,20 +2146,6 @@ function collectLocalData(){
     out[k] = localStorage.getItem(k);
   }
   return out;
-}
-
-function fbConnect(){
-  const raw = document.getElementById('fbCfgInput').value.trim();
-  if(!raw){ setSyncStatus('請貼入 Firebase config JSON', '#FF3B30'); return; }
-  try{
-    const cfg = JSON.parse(raw);
-    if(!cfg.databaseURL){ setSyncStatus('⚠️ 找不到 databaseURL，請確認 config', '#FF9500'); return; }
-    localStorage.setItem(FB_CFG_KEY, raw);
-    initFirebase(cfg);
-    setSyncStatus('⏳ 連線中…');
-  } catch(e){
-    setSyncStatus('❌ JSON 格式錯誤：'+e.message, '#FF3B30');
-  }
 }
 
 function initFirebase(cfg){
@@ -2225,7 +2197,6 @@ function fbPushNow(){
   _fbDb.ref('/data').set(collectLocalData()).catch(e=>console.warn('FB push failed',e));
 }
 
-// Firebase SDK loads after this script block; auto-connect happens after SDK loads (see bottom of body)
 
 // ════════════════════════════════════════
 // KEYBOARD dismiss on tap outside input
@@ -2262,12 +2233,17 @@ autoJumpToday();
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <script>
-// Firebase auto-connect after SDK loads
-(function(){
-  const saved = localStorage.getItem('busan_fb_config');
-  if(!saved) return;
-  try{ initFirebase(JSON.parse(saved)); } catch(_){}
-})();
+// Firebase auto-connect (config hardcoded — no setup needed)
+const _FB_CFG = {
+  apiKey: "AIzaSyB27KC-9yOXXDwXNe61Oc4hxcx3GezftIA",
+  authDomain: "busan-trip-77130.firebaseapp.com",
+  databaseURL: "https://busan-trip-77130-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "busan-trip-77130",
+  storageBucket: "busan-trip-77130.firebasestorage.app",
+  messagingSenderId: "217285920451",
+  appId: "1:217285920451:web:91790e044fc3d68de14476"
+};
+initFirebase(_FB_CFG);
 </script>
 </body>
 </html>
