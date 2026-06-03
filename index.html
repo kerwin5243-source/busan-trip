@@ -523,6 +523,17 @@ body::before{content:'';position:fixed;top:0;left:0;right:0;height:env(safe-area
   <div class="card"><div class="cgrid" id="carryGrid"></div></div>
   <div class="sec mt8" style="font-size:.92rem"><i class="fa-solid fa-luggage-cart" style="color:#8B8175;font-size:.85rem"></i>托運行李</div>
   <div class="card"><div class="cgrid" id="checkGrid"></div></div>
+
+  <!-- Sync -->
+  <div class="sec mt12"><i class="fa-solid fa-cloud"></i>雲端同步</div>
+  <div class="card" style="display:flex;align-items:center;gap:14px;cursor:pointer" onclick="openSyncSheet()">
+    <span id="fbDotNav" style="width:10px;height:10px;border-radius:50%;background:#ccc;flex-shrink:0"></span>
+    <div style="flex:1">
+      <div style="font-weight:800;font-size:.88rem">Firebase 即時同步</div>
+      <div style="font-size:.75rem;color:var(--ink2);margin-top:2px">點此設定，所有裝置自動同步</div>
+    </div>
+    <i class="fa-solid fa-chevron-right" style="color:var(--ink2);font-size:.78rem"></i>
+  </div>
 </div>
 
 <!-- ══════════════ SCROLL TO TOP ══════════════ -->
@@ -2132,8 +2143,11 @@ function setSyncStatus(msg, color='var(--ink2)'){
 }
 
 function updateSyncDot(state){
+  const clr = state==='on'?'#34C759':state==='err'?'#FF3B30':'#ccc';
   const dot = document.getElementById('fbDot');
-  if(dot) dot.style.background = state==='on'?'#34C759':state==='err'?'#FF3B30':'#ccc';
+  const dotNav = document.getElementById('fbDotNav');
+  if(dot) dot.style.background = clr;
+  if(dotNav) dotNav.style.background = clr;
 }
 
 // Collect all busan_* keys (excluding banner images and shop images)
