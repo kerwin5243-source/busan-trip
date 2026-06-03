@@ -369,8 +369,8 @@ body::before{content:'';position:fixed;top:0;left:0;right:0;height:env(safe-area
 .dm-row{display:flex;align-items:center;padding:8px 12px;border-bottom:1px solid rgba(233,225,214,.6);font-size:.84rem;gap:8px}
 .dm-row:last-child{border-bottom:none}
 .dm-name{flex:1;color:var(--ink);font-weight:700}
-.dm-price{font-family:var(--mono);font-size:.78rem;color:var(--acc);font-weight:700;flex-shrink:0}
-.dm-note{font-size:.72rem;color:var(--ink2);flex-shrink:0}
+.dm-price{font-family:var(--mono);font-size:.78rem;color:var(--acc);font-weight:700;flex-shrink:0;margin-left:auto;padding-left:8px}
+.dm-note{font-size:.72rem;color:var(--ink2);flex-shrink:0;padding:2px 6px;border-radius:999px;background:rgba(176,138,91,.1);color:#7D5B34}
 /* ── Tips ── */
 .tips{margin-top:9px;display:flex;flex-direction:column;gap:5px}
 .tip{display:flex;gap:6px;font-size:.78rem;line-height:1.5;padding:5px 8px;border-radius:8px}
@@ -1035,7 +1035,7 @@ function openDetail(item){
   if(item.detail) b += `<div class="detail-text">${item.detail}</div>`;
   if((item.menu||[]).length) b += `<div class="detail-block">
     <div class="detail-btitle"><i class="fa-solid fa-utensils" style="color:#E57373"></i>菜單推薦</div>
-    <div class="detail-menu">${item.menu.map(m=>`<div class="dm-row"><span class="dm-name">${m.name}</span>${m.price?`<span class="dm-price">${m.price}</span>`:''}${m.note?`<span class="dm-note">${m.note}</span>`:''}</div>`).join('')}</div>
+    <div class="detail-menu">${item.menu.map(m=>`<div class="dm-row"><span class="dm-name">${m.name}</span>${m.note?`<span class="dm-note">${m.note}</span>`:''}${m.price?`<span class="dm-price">${m.price}</span>`:''}</div>`).join('')}</div>
   </div>`;
   if((item.guide||[]).length) b += `<div class="detail-block">
     <div class="detail-btitle"><i class="fa-solid fa-lightbulb" style="color:#8B8175"></i>導覽</div>
