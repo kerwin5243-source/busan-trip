@@ -1127,11 +1127,11 @@ function renderFlight(f){
       <span class="fbadge"><i class="fa-solid fa-suitcase" style="margin-right:3px"></i>${leg.baggage.checked} · ${leg.baggage.pieces}件</span>
     </div>`;
   document.getElementById('flightCard').innerHTML = `
-    <div class="flight-dir"><i class="fa-solid fa-plane-departure" style="margin-right:5px"></i>去程 · ${f.carrier} ${o.flight_no}</div>
-    ${leg(o,'fa-plane-departure')}
+    <div class="flight-dir"><i class="fa-solid fa-plane-arrival" style="margin-right:5px"></i>去程 · ${f.carrier} ${o.flight_no}</div>
+    ${leg(o,'fa-plane-arrival')}
     <div class="hdivider"></div>
-    <div class="flight-dir"><i class="fa-solid fa-plane-arrival" style="margin-right:5px"></i>回程 · ${f.carrier} ${i.flight_no}</div>
-    ${leg(i,'fa-plane-arrival')}
+    <div class="flight-dir"><i class="fa-solid fa-plane-departure" style="margin-right:5px"></i>回程 · ${f.carrier} ${i.flight_no}</div>
+    ${leg(i,'fa-plane-departure')}
   `;
 }
 
