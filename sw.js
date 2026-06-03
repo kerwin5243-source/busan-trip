@@ -1,11 +1,13 @@
-const CACHE = 'busan-pwa-v8';
+const CACHE = 'busan-pwa-v9';
 const PRE = [
   './', './index.html', './manifest.json',
   './data/config.json', './data/flights.json', './data/hotels.json',
   './data/souvenirs.json', './data/todos.json', './data/checklists.json',
   './data/itinerary/2026-06-06.json', './data/itinerary/2026-06-07.json',
   './data/itinerary/2026-06-08.json', './data/itinerary/2026-06-09.json',
-  './data/itinerary/2026-06-10.json'
+  './data/itinerary/2026-06-10.json',
+  'https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js',
+  'https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js'
 ];
 
 self.addEventListener('install', e => {

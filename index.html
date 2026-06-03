@@ -2230,10 +2230,12 @@ function autoJumpToday(){
 init();
 autoJumpToday();
 </script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script defer src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"
+  onload="document.dispatchEvent(new Event('fbAppReady'))"></script>
+<script defer src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"
+  onload="document.dispatchEvent(new Event('fbDbReady'))"></script>
 <script>
-// Firebase auto-connect (config hardcoded — no setup needed)
+// Firebase auto-connect after both SDKs load
 const _FB_CFG = {
   apiKey: "AIzaSyB27KC-9yOXXDwXNe61Oc4hxcx3GezftIA",
   authDomain: "busan-trip-77130.firebaseapp.com",
@@ -2243,7 +2245,10 @@ const _FB_CFG = {
   messagingSenderId: "217285920451",
   appId: "1:217285920451:web:91790e044fc3d68de14476"
 };
-initFirebase(_FB_CFG);
+let _fbAppReady=false, _fbDbReady=false;
+function _tryFbInit(){ if(_fbAppReady&&_fbDbReady) initFirebase(_FB_CFG); }
+document.addEventListener('fbAppReady',()=>{ _fbAppReady=true; _tryFbInit(); });
+document.addEventListener('fbDbReady',()=>{ _fbDbReady=true; _tryFbInit(); });
 </script>
 </body>
 </html>
