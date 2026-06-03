@@ -338,7 +338,7 @@ body{padding-bottom:calc(72px + env(safe-area-inset-bottom))}
 /* ── Modal ── */
 .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:300}
 .overlay.open{display:flex;flex-direction:column;justify-content:flex-end}
-.sheet{width:100%;max-width:560px;margin:0 auto;background:var(--bg);border-radius:24px 24px 0 0;padding:14px max(40px,env(safe-area-inset-left)+40px) calc(env(safe-area-inset-bottom)+28px) max(40px,env(safe-area-inset-left)+40px);animation:su .25s ease;max-height:88vh;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;box-sizing:border-box}
+.sheet{width:100%;max-width:560px;margin:0 auto;background:var(--bg);border-radius:24px 24px 0 0;padding:14px 40px calc(env(safe-area-inset-bottom)+28px);animation:su .25s ease;max-height:88vh;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;box-sizing:border-box}
 @keyframes su{from{transform:translateY(100%)}to{transform:translateY(0)}}
 .handle{width:36px;height:4px;background:var(--div);border-radius:2px;margin:0 auto 16px}
 
@@ -2115,7 +2115,9 @@ function toggleCheck(item){
 // ════════════════════════════════════════
 // FIREBASE REALTIME SYNC
 // ════════════════════════════════════════
-let _fbApp=null, _fbDb=null, _fbUpdating=false, _fbPushTimer=null, _lastFbTs=0;
+let _fbApp=null, _fbDb=null, _fbUpdating=false, _fbPushTimer=null;
+let _lastFbTs = parseInt(localStorage.getItem('busan_last_fb_ts')||'0');
+let _localTs  = parseInt(localStorage.getItem('busan_local_ts')||'0');
 
 function openSyncSheet(){
   document.getElementById('syncOverlay').classList.add('open');
@@ -2162,6 +2164,22 @@ function initFirebase(cfg){
   }
 }
 
+function _applyRemote(remote){
+  _fbUpdating = true;
+  clearTimeout(_fbPushTimer);
+  Object.keys(remote).forEach(k=>{
+    if(k==='_ts') return;
+    if(k.startsWith('busan_')&&!k.startsWith('busan_banner_')&&!k.startsWith('busan_shop_img_'))
+      localStorage.setItem(k, remote[k]);
+  });
+  _fbUpdating = false;
+  try{ renderRecords(); }catch(_){}
+  try{ renderBalance(); }catch(_){}
+  try{ renderTodos(); }catch(_){}
+  try{ renderPack(); }catch(_){}
+  try{ renderSouvList(); }catch(_){}
+}
+
 function subscribeFirebase(){
   _fbDb.ref('/data').on('value', snap=>{
     updateSyncDot('on');
@@ -2170,28 +2188,24 @@ function subscribeFirebase(){
 
     const remoteTs = remote._ts || 0;
 
-    // Skip if remote data is not newer than what we last processed
+    // Already processed this version
     if(remoteTs <= _lastFbTs){
       setSyncStatus('✅ 已連線，自動同步中', '#34C759');
       return;
     }
 
-    // Remote is newer — apply it and cancel pending local push
+    // User has local unsaved changes newer than last sync → push local first
+    if(_localTs > _lastFbTs && remoteTs <= _localTs){
+      fbPushNow();
+      setSyncStatus('✅ 已連線，自動同步中', '#34C759');
+      return;
+    }
+
+    // Remote is genuinely newer — apply it
     _lastFbTs = remoteTs;
-    _fbUpdating = true;
-    clearTimeout(_fbPushTimer);
-    Object.keys(remote).forEach(k=>{
-      if(k==='_ts') return;
-      if(k.startsWith('busan_')&&!k.startsWith('busan_banner_')&&!k.startsWith('busan_shop_img_'))
-        localStorage.setItem(k, remote[k]);
-    });
-    _fbUpdating = false;
+    localStorage.setItem('busan_last_fb_ts', remoteTs);
+    _applyRemote(remote);
     setSyncStatus('✅ 已連線，自動同步中', '#34C759');
-    try{ renderRecords(); }catch(_){}
-    try{ renderBalance(); }catch(_){}
-    try{ renderTodos(); }catch(_){}
-    try{ renderPack(); }catch(_){}
-    try{ renderSouvList(); }catch(_){}
   }, err=>{
     updateSyncDot('err');
     setSyncStatus('❌ 同步錯誤：'+err.message, '#FF3B30');
@@ -2200,6 +2214,9 @@ function subscribeFirebase(){
 
 function fbPushDebounced(){
   if(_fbUpdating||!_fbDb) return;
+  // Mark local change time immediately so conflict check works
+  _localTs = Date.now();
+  localStorage.setItem('busan_local_ts', _localTs);
   clearTimeout(_fbPushTimer);
   _fbPushTimer = setTimeout(fbPushNow, 600);
 }
@@ -2210,7 +2227,10 @@ function fbPushNow(){
   const ts = Date.now();
   data._ts = ts;
   _fbDb.ref('/data').set(data).then(()=>{
-    _lastFbTs = ts; // Mark: this version is ours, skip echo-back
+    _lastFbTs = ts;
+    _localTs  = ts;
+    localStorage.setItem('busan_last_fb_ts', ts);
+    localStorage.setItem('busan_local_ts',   ts);
   }).catch(e=>console.warn('FB push failed',e));
 }
 
@@ -2222,20 +2242,10 @@ document.addEventListener('visibilitychange', ()=>{
       if(!remote) return;
       const remoteTs = remote._ts || 0;
       if(remoteTs <= _lastFbTs) return;
+      if(_localTs > _lastFbTs && remoteTs <= _localTs){ fbPushNow(); return; }
       _lastFbTs = remoteTs;
-      _fbUpdating = true;
-      clearTimeout(_fbPushTimer);
-      Object.keys(remote).forEach(k=>{
-        if(k==='_ts') return;
-        if(k.startsWith('busan_')&&!k.startsWith('busan_banner_')&&!k.startsWith('busan_shop_img_'))
-          localStorage.setItem(k, remote[k]);
-      });
-      _fbUpdating = false;
-      try{ renderRecords(); }catch(_){}
-      try{ renderBalance(); }catch(_){}
-      try{ renderTodos(); }catch(_){}
-      try{ renderPack(); }catch(_){}
-      try{ renderSouvList(); }catch(_){}
+      localStorage.setItem('busan_last_fb_ts', remoteTs);
+      _applyRemote(remote);
     });
   }
 });
