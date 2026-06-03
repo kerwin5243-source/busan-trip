@@ -914,7 +914,9 @@ function renderTimeline(items, dayFile){
       return;
     }
     const dot = TAG_DOT[it.tag]||'#B0BEC5';
-    const icon = TAG_ICON[it.tag]||'fa-circle';
+    const icon = it.tag==='transport' && it.subtag==='起飛' ? 'fa-plane-departure'
+      : it.tag==='transport' && ['抵達','出境','入境','登機'].includes(it.subtag) ? 'fa-plane-arrival'
+      : TAG_ICON[it.tag]||'fa-circle';
     const pillBg = dot+'22';
     const badge = it.highlight
       ? `<span class="tl2-star">★</span>`
