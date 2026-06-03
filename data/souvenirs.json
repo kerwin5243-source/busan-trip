@@ -1,39 +1,74 @@
 [
   {
-    "region": "釜山伴手禮",
+    "region": "海雲台周邊",
     "items": [
-      { "name": "HITE 啤酒（手提箱裝）", "img": "" },
-      { "name": "韓國泡麵禮盒", "img": "" },
-      { "name": "海苔禮盒", "img": "" },
-      { "name": "韓式辣醬（CJ 고추장）", "img": "" },
-      { "name": "芝士年糕條（즉석떡볶이）", "img": "" }
+      { "name": "海鹽焦糖蜂蜜夾心餅", "img": "" },
+      { "name": "常溫密封包裝魚糕", "img": "" },
+      { "name": "自然鹽可頌麵包", "img": "" }
     ]
   },
   {
-    "region": "機場免稅",
+    "region": "廣安里周邊",
     "items": [
-      { "name": "韓國護膚品（COSRX / 一葉子）", "img": "" },
-      { "name": "樂天巧克力派禮盒", "img": "" },
-      { "name": "濟州蜂蜜柚子茶", "img": "" },
-      { "name": "人參糖禮盒", "img": "" }
+      { "name": "鹽味黃油 / 馬鈴薯貝果", "img": "" },
+      { "name": "文創插畫小物 / 杯墊", "img": "" }
     ]
   },
   {
-    "region": "Olive Young 藥妝",
+    "region": "南浦洞 / 國際市場",
     "items": [
-      { "name": "MEDIHEAL 面膜", "img": "" },
-      { "name": "ROUND LAB 防曬", "img": "" },
-      { "name": "Abib 鯊魚霜", "img": "" },
-      { "name": "VT CICA 虎克霜", "img": "" },
-      { "name": "魚腥草水噴霧", "img": "" }
+      { "name": "韓式不鏽鋼扁筷湯匙組", "img": "" },
+      { "name": "金銅色泡麵鍋", "img": "" },
+      { "name": "傳統韓國搓澡巾", "img": "" }
     ]
   },
   {
-    "region": "國際市場 / 罐頭市場",
+    "region": "札嘎其市場",
     "items": [
-      { "name": "韓國零食大禮包", "img": "" },
-      { "name": "幹明太魚（北魚乾）", "img": "" },
-      { "name": "蝦餅 / 海鮮餅乾", "img": "" }
+      { "name": "真空包裝機張海帶", "img": "" },
+      { "name": "烘乾小魚乾 / 烤魷魚絲", "img": "" }
+    ]
+  },
+  {
+    "region": "甘川文化村",
+    "items": [
+      { "name": "彩色積木房子微型磁鐵", "img": "" },
+      { "name": "手繪文青襪子", "img": "" }
+    ]
+  },
+  {
+    "region": "松島天空公園",
+    "items": [
+      { "name": "時空膠囊牆留言組", "img": "" }
+    ]
+  },
+  {
+    "region": "新世界 Spa Land",
+    "items": [
+      { "name": "韓式搓澡服務專用去角質膏", "img": "" }
+    ]
+  },
+  {
+    "region": "Olive Young 門市",
+    "items": [
+      { "name": "Torriden 玻尿酸精華液", "img": "" },
+      { "name": "Anua 魚腥草化妝水", "img": "" },
+      { "name": "UNOVE 頂級修護護髮油", "img": "" },
+      { "name": "補骨脂酚 (Bakuchiol) 抗老系列", "img": "" },
+      { "name": "Delight Project 貝果餅乾", "img": "" }
+    ]
+  },
+  {
+    "region": "大創海雲台店",
+    "items": [
+      { "name": "VT Reedle Shot (微針精華)", "img": "" },
+      { "name": "韓國傳統圖騰精緻書籤", "img": "" }
+    ]
+  },
+  {
+    "region": "樂天超市光復店",
+    "items": [
+      { "name": "HBAF 各口味杏仁果", "img": "" }
     ]
   }
 ]
