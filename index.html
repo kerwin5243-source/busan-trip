@@ -894,7 +894,9 @@ function renderTimeline(items, dayFile){
   items.forEach((it,idx)=>{
     if(it.tag==='route'){
       const r = it.route||{};
-      const modeIcon = r.mode==='plane'?'fa-plane':r.mode==='transit'?'fa-train-subway':r.mode==='walk'?'fa-person-walking':r.mode==='ferry'?'fa-ship':r.mode==='bus'?'fa-bus':'fa-taxi';
+      const modeIcon = r.mode==='plane'
+        ? (r.to&&(r.to.includes('釜山')||r.to.includes('PUS')||r.to.includes('金海'))?'fa-plane-arrival':'fa-plane-departure')
+        : r.mode==='transit'?'fa-train-subway':r.mode==='walk'?'fa-person-walking':r.mode==='ferry'?'fa-ship':r.mode==='bus'?'fa-bus':'fa-taxi';
       const dur = r.minutes?(r.minutes>=60?Math.floor(r.minutes/60)+'h'+(r.minutes%60?r.minutes%60+'m':''):r.minutes+'min'):(it.stay||'');
       const label = r.from&&r.to ? `${r.from} → ${r.to}` : (it.title||'');
       const price = it.price||'';
