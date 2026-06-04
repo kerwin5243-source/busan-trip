@@ -1346,6 +1346,8 @@ function saveSouv(){
     const uid = items[editSouvIdx]?.uid || editSouvIdx;
     items[editSouvIdx] = {...items[editSouvIdx], name, price: price?Number(price):0};
     if(_souvSheetPhoto) setSouvImg(souvUser, uid, _souvSheetPhoto);
+    // _souvSheetPhoto='' means user explicitly removed it via ✕
+    else delSouvImg(souvUser, uid);
   } else {
     const uid = Date.now().toString(36);
     items.push({name, done:false, price:price?Number(price):0, qty:1, uid});
