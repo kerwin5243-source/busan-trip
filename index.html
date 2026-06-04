@@ -1270,7 +1270,28 @@ let editSouvIdx = null;
 let _souvSheetPhoto = ''; // pending photo for current sheet
 
 function getSouvImg(u,uid){ return localStorage.getItem(`busan_shop_img_${u}_${uid}`)||''; }
-function setSouvImg(u,uid,v){ localStorage.setItem(`busan_shop_img_${u}_${uid}`,v); }
+function setSouvImg(u,uid,v){ try{ localStorage.setItem(`busan_shop_img_${u}_${uid}`,v); }catch(e){ console.warn('souv img too large',e); } }
+
+// Compress any image blob/file to a small JPEG dataURL (max 400px, quality 0.72)
+function compressToDataURL(src, cb){
+  const img = new Image();
+  img.onload = () => {
+    const MAX = 400;
+    let w = img.naturalWidth, h = img.naturalHeight;
+    if(w > MAX || h > MAX){
+      if(w > h){ h = Math.round(h * MAX / w); w = MAX; }
+      else      { w = Math.round(w * MAX / h); h = MAX; }
+    }
+    const c = document.createElement('canvas');
+    c.width = w; c.height = h;
+    c.getContext('2d').drawImage(img, 0, 0, w, h);
+    cb(c.toDataURL('image/jpeg', 0.72));
+    URL.revokeObjectURL(img.src);
+  };
+  img.onerror = () => cb('');
+  if(typeof src === 'string'){ img.src = src; }
+  else { img.src = URL.createObjectURL(src); }
+}
 function delSouvImg(u,uid){ localStorage.removeItem(`busan_shop_img_${u}_${uid}`); }
 
 function openSouvSheet(idx){
@@ -1307,9 +1328,7 @@ function renderSouvSheetPhoto(){
 function triggerSouvPhoto(){ _pickSouvIdx=null; document.getElementById('souvPhotoFilePick').click(); }
 function onSouvPhotoFile(e){
   const file = e.target.files[0]; if(!file) return;
-  const reader = new FileReader();
-  reader.onload = ev => { _souvSheetPhoto = ev.target.result; renderSouvSheetPhoto(); };
-  reader.readAsDataURL(file);
+  compressToDataURL(file, data => { _souvSheetPhoto = data; renderSouvSheetPhoto(); });
   e.target.value='';
 }
 
@@ -1321,17 +1340,15 @@ function pickSouvPhoto(idx){
 function onSouvPhotoDirectSave(e){
   if(_pickSouvIdx === null){ onSouvPhotoFile(e); return; }
   const file = e.target.files[0]; if(!file){ _pickSouvIdx=null; return; }
-  const reader = new FileReader();
-  reader.onload = ev => {
+  compressToDataURL(file, data => {
     const items = getShop(souvUser);
     const it = items[_pickSouvIdx];
     if(!it){ _pickSouvIdx=null; return; }
     const uid = it.uid || _pickSouvIdx;
-    setSouvImg(souvUser, uid, ev.target.result);
+    setSouvImg(souvUser, uid, data);
     _pickSouvIdx = null;
     renderSouvList();
-  };
-  reader.readAsDataURL(file);
+  });
   e.target.value='';
 }
 
@@ -1388,12 +1405,9 @@ function addRecToShop(name, el){
   // If the rec card has an image, save it as the item photo
   const imgSrc = el?.dataset?.img;
   if(imgSrc){
-    // Fetch as blob and store as dataURL for offline use
-    fetch(imgSrc).then(r=>r.blob()).then(b=>{
-      const reader = new FileReader();
-      reader.onload = ev => { setSouvImg(souvUser, uid, ev.target.result); renderSouvList(); };
-      reader.readAsDataURL(b);
-    }).catch(()=>{});
+    compressToDataURL(imgSrc, data => {
+      if(data) { setSouvImg(souvUser, uid, data); renderSouvList(); }
+    });
   }
   renderSouvList();
   if(el){ el.style.background='rgba(176,138,91,.2)'; setTimeout(()=>{ el.style.background=''; },400); }
