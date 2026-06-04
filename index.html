@@ -123,8 +123,8 @@ body{background:linear-gradient(135deg,#DDE4FF 0%,#EDE6FF 50%,#FCDFF8 100%) fixe
 
 /* ── Balance ── */
 .bal-cur{font-size:.78rem;font-weight:900;color:var(--ink2);margin-bottom:7px}
-.bal-row{display:flex;align-items:center;padding:7px 10px;border-radius:10px;margin-bottom:3px}
-.bal-name{font-weight:800;font-size:.93rem;flex:1}
+.bal-row{display:flex;align-items:center;padding:5px 6px;border-radius:10px;margin-bottom:2px}
+.bal-name{font-weight:800;font-size:.82rem;flex:1}
 .badge{padding:4px 10px;border-radius:999px;font-family:var(--mono);font-size:.8rem;font-weight:600}
 .badge.pos{background:rgba(52,199,89,.12);color:#2E7D32}
 .badge.neg{background:rgba(255,59,48,.1);color:#C62828}
@@ -530,11 +530,17 @@ html.elderly{font-size:27px}
   <!-- Balance -->
   <div class="sec"><i class="fa-solid fa-scale-balanced"></i>個人結算</div>
   <div class="card" id="balCard">
-    <div class="bal-cur">₩ 韓幣</div>
-    <div id="balKRW"></div>
-    <div class="divl"></div>
-    <div class="bal-cur">NT$ 台幣</div>
-    <div id="balTWD"></div>
+    <div style="display:flex;gap:10px;align-items:flex-start">
+      <div style="flex:1">
+        <div class="bal-cur">₩ 韓幣</div>
+        <div id="balKRW"></div>
+      </div>
+      <div style="width:1px;background:rgba(195,175,235,.5);align-self:stretch;margin:2px 0"></div>
+      <div style="flex:1">
+        <div class="bal-cur">NT$ 台幣</div>
+        <div id="balTWD"></div>
+      </div>
+    </div>
   </div>
 
   <!-- Records -->
@@ -1673,9 +1679,7 @@ function renderBalance(){
       ${isOpen?`<div class="bal-detail open">${detail}</div>`:''}`;
     };
     document.getElementById(id).innerHTML =
-      `<div style="font-size:.68rem;font-weight:900;color:#3D6EA9;margin-bottom:3px;padding-left:2px">甲</div>` +
       HOUSE_A.map(m=>mkRow(m,'#3D6EA9')).join('') +
-      `<div style="font-size:.68rem;font-weight:900;color:#2F8F5B;margin-top:6px;margin-bottom:3px;padding-left:2px">乙</div>` +
       HOUSE_B.map(m=>mkRow(m,'#2F8F5B')).join('');
   });
 }
