@@ -2,47 +2,47 @@
   {
     "region": "海雲台周邊",
     "items": [
-      { "name": "海鹽焦糖蜂蜜夾心餅", "img": "" },
-      { "name": "butter pei", "img": "" },
-      { "name": "Keveren House", "img": "" }
+      { "name": "海鹽焦糖蜂蜜夾心餅", "img": "picture/busan_souvenirs/sou_001.png" },
+      { "name": "butter pei", "img": "picture/busan_souvenirs/sou_002.png" },
+      { "name": "Keveren House", "img": "picture/busan_souvenirs/sou_003.jpg" }
     ]
   },
   {
     "region": "廣安里周邊",
     "items": [
-      { "name": "All Sunday 貝果", "img": "" },
-      { "name": "CHEFFLE 舒芙蕾", "img": "" },
-      { "name": "文創小物", "img": "" }
+      { "name": "All Sunday 貝果", "img": "picture/busan_souvenirs/sou_004.jpg" },
+      { "name": "CHEFFLE 舒芙蕾", "img": "picture/busan_souvenirs/sou_005.png" },
+      { "name": "文創小物", "img": "picture/busan_souvenirs/sou_006.png" }
     ]
   },
   {
     "region": "札嘎其市場",
     "items": [
-      { "name": "真空包裝機張海帶", "img": "" },
-      { "name": "烘烤魷魚絲", "img": "" },
-      { "name": "海苔脆餅", "img": "" }
+      { "name": "真空包裝機張海帶", "img": "picture/busan_souvenirs/sou_007.jpg" },
+      { "name": "烘烤魷魚絲", "img": "picture/busan_souvenirs/sou_008.jpg" },
+      { "name": "海苔脆餅", "img": "picture/busan_souvenirs/sou_009.png" }
     ]
   },
   {
     "region": "Olive Young 門市",
     "items": [
-      { "name": "ETUDE AllDay BB", "img": "" },
-      { "name": "Beauty of joseon 防曬乳", "img": "" },
-      { "name": "Mediheal 面膜", "img": "" },
-      { "name": "Torriden 玻尿酸精華液", "img": "" },
-      { "name": "Anua 魚腥草化妝水", "img": "" },
-      { "name": "UNOVE 頂級修護護髮油", "img": "" },
-      { "name": "ilso 粉刺導出液", "img": "" },
-      { "name": "Abib 魚腥草保濕棉片", "img": "" },
-      { "name": "Delight Project 貝果餅乾", "img": "" }
+      { "name": "ETUDE AllDay BB", "img": "picture/busan_souvenirs/sou_010.png" },
+      { "name": "Beauty of joseon 防曬乳", "img": "picture/busan_souvenirs/sou_011.png" },
+      { "name": "Mediheal 面膜", "img": "picture/busan_souvenirs/sou_012.png" },
+      { "name": "Torriden 玻尿酸精華液", "img": "picture/busan_souvenirs/sou_013.png" },
+      { "name": "Anua 魚腥草化妝水", "img": "picture/busan_souvenirs/sou_014.png" },
+      { "name": "UNOVE 頂級修護護髮油", "img": "picture/busan_souvenirs/sou_015.png" },
+      { "name": "ilso 粉刺導出液", "img": "picture/busan_souvenirs/sou_016.jpg" },
+      { "name": "Abib 魚腥草保濕棉片", "img": "picture/busan_souvenirs/sou_017.jpg" },
+      { "name": "Delight Project 貝果餅乾", "img": "picture/busan_souvenirs/sou_018.png" }
     ]
   },
   {
     "region": "樂天超市光復店",
     "items": [
-      { "name": "HBAF 各口味杏仁果", "img": "" },
-      { "name": "LOTTE ZERO", "img": "" },
-      { "name": "扁可頌餅乾", "img": "" }
+      { "name": "HBAF 各口味杏仁果", "img": "picture/busan_souvenirs/sou_019.png" },
+      { "name": "LOTTE ZERO", "img": "picture/busan_souvenirs/sou_020.png" },
+      { "name": "扁可頌餅乾", "img": "picture/busan_souvenirs/sou_021.png" }
     ]
   }
 ]
