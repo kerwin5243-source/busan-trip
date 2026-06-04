@@ -530,17 +530,9 @@ html.elderly{font-size:27px}
   <!-- Balance -->
   <div class="sec"><i class="fa-solid fa-scale-balanced"></i>個人結算</div>
   <div class="card" id="balCard">
-    <div style="display:flex;gap:10px;align-items:flex-start">
-      <div style="flex:1">
-        <div class="bal-cur">₩ 韓幣</div>
-        <div id="balKRW"></div>
-      </div>
-      <div style="width:1px;background:rgba(195,175,235,.5);align-self:stretch;margin:2px 0"></div>
-      <div style="flex:1">
-        <div class="bal-cur">NT$ 台幣</div>
-        <div id="balTWD"></div>
-      </div>
-    </div>
+    <div id="balList"></div>
+    <div class="divl" style="margin:10px 0 8px"></div>
+    <div id="balTotals"></div>
   </div>
 
   <!-- Records -->
@@ -1657,31 +1649,68 @@ function fmtAmt(cur, v){
 
 let selectedViewer = null;
 
+function fmtKRW(v){
+  const abs = Math.abs(v);
+  if(abs < 10000) return (v>=0?'+':'-')+'₩'+Math.round(abs).toLocaleString();
+  const man = Math.floor(abs/10000);
+  const rest = Math.round(abs%10000);
+  return (v>=0?'+':'-')+'₩'+man+'萬'+(rest>0?rest.toLocaleString():'');
+}
+function fmtTWD(v){
+  const abs = Math.abs(v);
+  return (v>=0?'+':'-')+'NT$'+Math.round(abs).toLocaleString();
+}
+
 function renderBalance(){
-  ['KRW','TWD'].forEach(cur=>{
-    const bal = calcBalance(cur);
-    const id = cur==='KRW'?'balKRW':'balTWD';
-    const showName = cur==='KRW';
-    const mkRow = (m, houseColor) => {
-      const v = bal[m]||0;
-      const cls = Math.abs(v)<0.5?'zero':v>0?'pos':'neg';
-      const txt = Math.abs(v)<0.5?'持平':`${v>0?'+':'-'}${fmtAmt(cur,v)}`;
-      const isOpen = selectedViewer===m;
-      const detail = isOpen ? buildPersonalDetail(m, cur) : '';
-      const arrow = showName?(isOpen
-        ? `<i class="fa-solid fa-chevron-up" style="font-size:.6rem;color:var(--ink2);margin-left:4px;flex-shrink:0"></i>`
-        : `<i class="fa-solid fa-chevron-down" style="font-size:.6rem;color:var(--ink2);margin-left:4px;flex-shrink:0"></i>`):'';
-      return `<div class="bal-row" onclick="toggleViewer('${m}')" style="display:flex;align-items:center;padding:5px 6px;border-radius:10px;margin-bottom:2px">
-        ${showName?`<span class="bal-name" style="color:${houseColor}">${m}</span>`:''}
-        <span class="badge ${cls}" style="margin-left:auto">${txt}</span>
-        ${arrow}
-      </div>
-      ${isOpen&&showName?`<div class="bal-detail open">${detail}</div>`:''}`;
-    };
-    document.getElementById(id).innerHTML =
-      HOUSE_A.map(m=>mkRow(m,'#3D6EA9')).join('') +
-      HOUSE_B.map(m=>mkRow(m,'#2F8F5B')).join('');
-  });
+  const balKRW = calcBalance('KRW');
+  const balTWD = calcBalance('TWD');
+
+  const mkRow = (m, houseColor) => {
+    const kv = balKRW[m]||0;
+    const tv = balTWD[m]||0;
+    const kSkip = Math.abs(kv)<0.5;
+    const tSkip = Math.abs(tv)<0.5;
+    const kCls = kv>0?'pos':'neg';
+    const tCls = tv>0?'pos':'neg';
+    const isOpen = selectedViewer===m;
+    const detail = isOpen ? buildPersonalDetail(m,'KRW') : '';
+    const arrow = isOpen
+      ? `<i class="fa-solid fa-chevron-up" style="font-size:.6rem;color:var(--ink2);margin-left:4px"></i>`
+      : `<i class="fa-solid fa-chevron-down" style="font-size:.6rem;color:var(--ink2);margin-left:4px"></i>`;
+    const amts = [
+      !kSkip?`<span class="badge ${kCls}" style="font-size:.72rem">${fmtKRW(kv)}</span>`:'',
+      !tSkip?`<span class="badge ${tCls}" style="font-size:.72rem">${fmtTWD(tv)}</span>`:'',
+    ].filter(Boolean).join('');
+    return `<div class="bal-row" onclick="toggleViewer('${m}')" style="display:flex;align-items:center;padding:6px 6px;border-radius:10px;margin-bottom:2px">
+      <span class="bal-name" style="color:${houseColor}">${m}</span>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:3px;margin-left:auto">${amts||'<span style="font-size:.72rem;color:var(--ink2)">—</span>'}</div>
+      ${arrow}
+    </div>
+    ${isOpen?`<div class="bal-detail open">${detail}</div>`:''}`;
+  };
+
+  document.getElementById('balList').innerHTML =
+    HOUSE_A.map(m=>mkRow(m,'#3D6EA9')).join('') +
+    HOUSE_B.map(m=>mkRow(m,'#2F8F5B')).join('');
+
+  // Group totals
+  const sumGroup = (group, bal) => group.reduce((s,m)=>s+(bal[m]||0),0);
+  const aKRW = sumGroup(HOUSE_A, balKRW), bKRW = sumGroup(HOUSE_B, balKRW);
+  const aTWD = sumGroup(HOUSE_A, balTWD), bTWD = sumGroup(HOUSE_B, balTWD);
+  const mkTotal = (label, color, krw, twd) => {
+    const kSkip = Math.abs(krw)<0.5, tSkip = Math.abs(twd)<0.5;
+    const amts = [
+      !kSkip?`<span class="badge ${krw>0?'pos':'neg'}" style="font-size:.72rem">${fmtKRW(krw)}</span>`:'',
+      !tSkip?`<span class="badge ${twd>0?'pos':'neg'}" style="font-size:.72rem">${fmtTWD(twd)}</span>`:'',
+    ].filter(Boolean).join('');
+    return `<div style="display:flex;align-items:center;padding:4px 6px">
+      <span style="font-size:.78rem;font-weight:900;color:${color}">${label}</span>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:3px;margin-left:auto">${amts||'<span style="font-size:.72rem;color:var(--ink2)">—</span>'}</div>
+    </div>`;
+  };
+  document.getElementById('balTotals').innerHTML =
+    mkTotal('甲 小計','#3D6EA9', aKRW, aTWD) +
+    mkTotal('乙 小計','#2F8F5B', bKRW, bTWD);
 }
 
 function toggleViewer(m){
