@@ -1593,8 +1593,7 @@ function renderHouseRow(elId, group, key, label){
   const el = document.getElementById(elId);
   const allOn = group.every(m=>selParts.has(m));
   const color = key==='A' ? '#3D6EA9' : '#2F8F5B';
-  el.innerHTML = `<span class="hrow-label" style="color:${color}"><i class="fa-solid fa-users"></i></span>` +
-    `<div class="hall ${key==='A'&&allOn?'hA-on':key==='B'&&allOn?'hB-on':''}" onclick="toggleHouseAll('${key}')">全</div>` +
+  el.innerHTML = `<span class="hrow-label" style="color:${color};cursor:pointer" onclick="toggleHouseAll('${key}')"><i class="fa-solid fa-users"></i></span>` +
     group.map(m=>`<div class="hchip${selParts.has(m)?(key==='A'?' hA-on':' hB-on'):''}" onclick="togglePart('${m}','${key}')"><i class="fa-solid fa-person"></i>${m}</div>`).join('');
 }
 
@@ -1841,8 +1840,7 @@ function renderEditHouseRow(elId, group, key, label){
   const el = document.getElementById(elId);
   const allOn = group.every(m=>editExpParts.has(m));
   const color = key==='A' ? '#3D6EA9' : '#2F8F5B';
-  el.innerHTML = `<span class="hrow-label" style="color:${color}"><i class="fa-solid fa-users"></i></span>` +
-    `<div class="hall ${key==='A'&&allOn?'hA-on':key==='B'&&allOn?'hB-on':''}" onclick="toggleEditHouseAll('${key}')">全</div>` +
+  el.innerHTML = `<span class="hrow-label" style="color:${color};cursor:pointer" onclick="toggleEditHouseAll('${key}')"><i class="fa-solid fa-users"></i></span>` +
     group.map(m=>`<div class="hchip${editExpParts.has(m)?(key==='A'?' hA-on':' hB-on'):''}" onclick="toggleEditPart('${m}','${key}')"><i class="fa-solid fa-person"></i>${m}</div>`).join('');
 }
 
