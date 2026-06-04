@@ -1661,22 +1661,22 @@ function renderBalance(){
   ['KRW','TWD'].forEach(cur=>{
     const bal = calcBalance(cur);
     const id = cur==='KRW'?'balKRW':'balTWD';
+    const showName = cur==='KRW';
     const mkRow = (m, houseColor) => {
       const v = bal[m]||0;
       const cls = Math.abs(v)<0.5?'zero':v>0?'pos':'neg';
       const txt = Math.abs(v)<0.5?'持平':`${v>0?'+':'-'}${fmtAmt(cur,v)}`;
       const isOpen = selectedViewer===m;
       const detail = isOpen ? buildPersonalDetail(m, cur) : '';
-      const arrow = isOpen
-        ? `<i class="fa-solid fa-chevron-up" style="font-size:.6rem;color:var(--ink2);margin-left:6px;flex-shrink:0"></i>`
-        : `<i class="fa-solid fa-chevron-down" style="font-size:.6rem;color:var(--ink2);margin-left:6px;flex-shrink:0"></i>`;
-      return `<div class="bal-row" onclick="toggleViewer('${m}')" style="display:flex;align-items:center;padding:7px 10px;border-radius:10px;margin-bottom:3px">
-        <div style="width:26px;height:26px;border-radius:8px;background:${houseColor}22;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:900;color:${houseColor};flex-shrink:0;margin-right:8px">${m[0]}</div>
-        <span class="bal-name">${m}</span>
+      const arrow = showName?(isOpen
+        ? `<i class="fa-solid fa-chevron-up" style="font-size:.6rem;color:var(--ink2);margin-left:4px;flex-shrink:0"></i>`
+        : `<i class="fa-solid fa-chevron-down" style="font-size:.6rem;color:var(--ink2);margin-left:4px;flex-shrink:0"></i>`):'';
+      return `<div class="bal-row" onclick="toggleViewer('${m}')" style="display:flex;align-items:center;padding:5px 6px;border-radius:10px;margin-bottom:2px">
+        ${showName?`<span class="bal-name" style="color:${houseColor}">${m}</span>`:''}
         <span class="badge ${cls}" style="margin-left:auto">${txt}</span>
         ${arrow}
       </div>
-      ${isOpen?`<div class="bal-detail open">${detail}</div>`:''}`;
+      ${isOpen&&showName?`<div class="bal-detail open">${detail}</div>`:''}`;
     };
     document.getElementById(id).innerHTML =
       HOUSE_A.map(m=>mkRow(m,'#3D6EA9')).join('') +
