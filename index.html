@@ -747,12 +747,15 @@ const TAG_ICON = {food:'fa-utensils',sight:'fa-camera',transport:'fa-bus',hotel:
 const TAG_LABEL = {food:'美食',sight:'景點',transport:'交通',hotel:'住宿',route:'路線',shop:'購物'};
 const TAG_DOT = {food:'#E57373',sight:'#4DB6AC',transport:'#90A4AE',hotel:'#9575CD',route:'#B0BEC5',shop:'#F48FB1'};
 function stripKorean(s){ return (s||'').replace(/[\uAC00-\uD7AF\u1100-\u11FF\u3130-\u318F]+/g,'').replace(/\s{2,}/g,' ').trim(); }
-const DAY_SUBTITLES = ['海雲台逛街 · 廣安里無人機','南浦市場 · 札嘎其 · 鑽石塔','龍宮寺 · Luge · 海岸列車 · Spa Land','甘川 · 松島纜車 · 白淺灘','離開釜山 · 平安回家'];
+const DAY_SUBTITLES = ['海雲台逛街 · 廣安里無人機','南浦洞商圈','海雲台 汗蒸幕','松島包車一日遊','Shopping  回家'];
 const DAY_COLORS = [['#3D7BBF','#1A4A7A'],['#2F8F5B','#1A5237'],['#8B68C8','#5E3A9E'],['#8B5CF6','#5B21B6'],['#E5534B','#9B1C1C']];
 const DAY_DISTRICTS = ['廣安里','南浦洞','機張','釜山西部','海雲台'];
 const DAY_PHOTO_LOCS = [
   ['海雲台','古來斯魚糕','紅白燈塔','廣安里無人機'],
-  [],[],[],[]
+  ['富平市場','札嘎其市場','BIFF 廣場','釜山塔夜景'],
+  ['海東龍宮寺','Skyline Luge','海岸列車','SPA LAND'],
+  ['甘川文化村','松島海上纜車','松島龍宮空中步道','白淺灘文化村','Club D Oasis Spa'],
+  ['Olive Young 美妝','Artbox 雜貨','DAISO','Butter Shop']
 ];
 const DAY_HOTELS = ['海雲台 L7 飯店','海雲台 L7 飯店','海雲台 L7 飯店','海雲台 L7 飯店',null];
 const DAY_DATES_ISO = ['2026-06-06','2026-06-07','2026-06-08','2026-06-09','2026-06-10'];
