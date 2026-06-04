@@ -8,7 +8,7 @@
     "items": [
       {
         "id": "0608_01",
-        "time": "08:00",
+        "time": "07:30",
         "title": "早餐：L7 Hotel 早餐",
         "tag": "food",
         "subtag": "早餐",
@@ -28,7 +28,7 @@
       },
       {
         "id": "0608_02",
-        "time": "09:30",
+        "time": "09:00",
         "title": "計程車 · L7 海雲台 → 海東龍宮寺",
         "tag": "route",
         "subtag": "",
@@ -54,7 +54,7 @@
       },
       {
         "id": "0608_03",
-        "time": "09:45",
+        "time": "09:00",
         "title": "海東龍宮寺 해동용궁사",
         "tag": "sight",
         "subtag": "寺廟",
@@ -78,7 +78,7 @@
       },
       {
         "id": "0608_04",
-        "time": "10:45",
+        "time": "10:00",
         "title": "計程車 · 海東龍宮寺 → Skyline Luge",
         "tag": "route",
         "subtag": "",
@@ -104,7 +104,7 @@
       },
       {
         "id": "0608_05",
-        "time": "11:00",
+        "time": "10:00",
         "title": "Skyline Luge 釜山 스카이라인 루지",
         "tag": "sight",
         "subtag": "戶外體驗",
@@ -129,7 +129,7 @@
       },
       {
         "id": "0608_06",
-        "time": "13:00",
+        "time": "12:00",
         "title": "計程車 · Skyline Luge → 松亭",
         "tag": "route",
         "subtag": "",
@@ -155,7 +155,7 @@
       },
       {
         "id": "0608_07",
-        "time": "13:10",
+        "time": "12:00",
         "title": "午餐：海雲台31cm海鮮刀切麵",
         "tag": "food",
         "subtag": "麵食",
@@ -183,7 +183,7 @@
       },
       {
         "id": "0608_08",
-        "time": "14:30",
+        "time": "13:00",
         "title": "海雲台海岸列車 블루라인파크",
         "tag": "sight",
         "subtag": "觀光列車",
@@ -209,7 +209,7 @@
       },
       {
         "id": "0608_09",
-        "time": "16:30",
+        "time": "15:00",
         "title": "計程車 · 海雲台 → Centum City",
         "tag": "route",
         "subtag": "",
@@ -235,7 +235,7 @@
       },
       {
         "id": "0608_10",
-        "time": "16:45",
+        "time": "",
         "title": "Museum One 뮤지엄원",
         "tag": "sight",
         "subtag": "數位藝術",
@@ -289,7 +289,7 @@
       },
       {
         "id": "0608_12",
-        "time": "20:30",
+        "time": "20:00",
         "title": "Spa Land Centum City 스파랜드",
         "tag": "sight",
         "subtag": "汗蒸幕",
