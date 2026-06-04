@@ -555,6 +555,14 @@ html.elderly{font-size:27px}
       <span id="elderlyThumb" style="position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:.2s;box-shadow:0 1px 3px rgba(0,0,0,.2)"></span>
     </label>
   </div>
+  <div class="card mt8" style="display:flex;align-items:center;gap:14px;cursor:pointer" onclick="clearCacheAndReload()">
+    <i class="fa-solid fa-rotate" style="font-size:1.1rem;color:#5AC8FA"></i>
+    <div style="flex:1">
+      <div style="font-weight:800;font-size:.88rem">更新到最新版本</div>
+      <div style="font-size:.75rem;color:var(--ink2);margin-top:2px" id="clearCacheStatus">清除快取並重新載入 App</div>
+    </div>
+    <i class="fa-solid fa-chevron-right" style="color:var(--ink2);font-size:.78rem"></i>
+  </div>
 </div>
 
 <!-- ══════════════ SCROLL TO TOP ══════════════ -->
@@ -2191,6 +2199,22 @@ function toggleCheck(item){
 let _fbApp=null, _fbDb=null, _fbUpdating=false, _fbPushTimer=null;
 let _lastFbTs = parseInt(localStorage.getItem('busan_last_fb_ts')||'0');
 let _localTs  = parseInt(localStorage.getItem('busan_local_ts')||'0');
+
+async function clearCacheAndReload(){
+  const el = document.getElementById('clearCacheStatus');
+  if(el) el.textContent = '清除中…';
+  try{
+    if('serviceWorker' in navigator){
+      const regs = await navigator.serviceWorker.getRegistrations();
+      await Promise.all(regs.map(r=>r.unregister()));
+    }
+    if('caches' in window){
+      const keys = await caches.keys();
+      await Promise.all(keys.map(k=>caches.delete(k)));
+    }
+  } catch(e){ console.warn(e); }
+  window.location.reload(true);
+}
 
 function toggleElderly(on){
   document.documentElement.classList.toggle('elderly', on);
