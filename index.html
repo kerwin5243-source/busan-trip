@@ -45,6 +45,11 @@ body{padding-bottom:calc(72px + env(safe-area-inset-bottom))}
 .hdr-meta{display:flex;justify-content:center;gap:7px;margin-top:5px}
 .year-pill{font-size:.67rem;font-weight:900;padding:3px 10px;border-radius:999px;border:1px solid rgba(176,138,91,.5);background:rgba(255,255,255,.65);color:#7D5B34}
 .hdr-sync{position:absolute;top:calc(env(safe-area-inset-top)+10px);right:14px;width:32px;height:32px;border-radius:50%;background:rgba(176,138,91,.12);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--acc);font-size:.88rem}
+.hdr-gear{position:absolute;top:calc(env(safe-area-inset-top)+10px);right:14px;width:32px;height:32px;border-radius:50%;background:rgba(176,138,91,.12);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--acc);font-size:.84rem}
+/* ── Settings overlay ── */
+#settingsOverlay{position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:4000;display:none;align-items:flex-end;animation:fadeIn .18s ease}
+#settingsOverlay.open{display:flex}
+#settingsSheet{width:100%;background:var(--bg);border-radius:24px 24px 0 0;padding:14px 20px 40px;padding-bottom:calc(env(safe-area-inset-bottom)+40px);box-sizing:border-box;animation:su .22s ease}
 
 /* ── Bottom Nav ── */
 .nav{
@@ -103,7 +108,7 @@ body{padding-bottom:calc(72px + env(safe-area-inset-bottom))}
 .chips{display:flex;flex-wrap:wrap;gap:7px;margin:6px 0 10px}
 .chip{padding:7px 12px;border-radius:999px;border:1.5px solid rgba(233,225,214,.9);background:rgba(255,255,255,.8);font-weight:900;font-size:.82rem;color:var(--pri);cursor:pointer;user-select:none;transition:.15s}
 .chip.on{border-color:rgba(176,138,91,.7);background:rgba(176,138,91,.12);color:#7D5B34}
-.chip.payer{border-color:rgba(176,138,91,.7);background:rgba(176,138,91,.15);color:#7D5B34}
+.chip.payer{border-color:rgba(245,124,0,.65);background:rgba(245,124,0,.13);color:#E65100}
 
 /* ── Household ── */
 .hrow{display:flex;align-items:center;gap:6px;margin-bottom:6px;flex-wrap:wrap}
@@ -411,6 +416,7 @@ html.elderly{font-size:27px}
     <span class="year-pill">5天4夜</span>
     <span class="year-pill">2026</span>
   </div>
+  <button class="hdr-gear" onclick="openSettings()"><i class="fa-solid fa-gear"></i></button>
 </header>
 <div id="hdr-spacer"></div>
 
@@ -575,32 +581,38 @@ html.elderly{font-size:27px}
     <i class="fa-solid fa-chevron-right" style="color:var(--ink2);font-size:.78rem"></i>
   </div>
 
-  <!-- Elderly mode -->
-  <div class="sec mt12"><i class="fa-solid fa-eye"></i>顯示設定</div>
-  <div class="card" style="display:flex;align-items:center;gap:14px">
-    <i class="fa-solid fa-text-height" style="font-size:1.1rem;color:var(--acc)"></i>
-    <div style="flex:1">
-      <div style="font-weight:800;font-size:.88rem">長輩模式</div>
-      <div style="font-size:.75rem;color:var(--ink2);margin-top:2px">字體與間距放大 1.5 倍</div>
-    </div>
-    <label style="position:relative;width:44px;height:26px;flex-shrink:0">
-      <input type="checkbox" id="elderlyToggle" onchange="toggleElderly(this.checked)" style="opacity:0;width:0;height:0;position:absolute">
-      <span id="elderlyTrack" style="position:absolute;inset:0;border-radius:999px;background:#ccc;cursor:pointer;transition:.2s"></span>
-      <span id="elderlyThumb" style="position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:.2s;box-shadow:0 1px 3px rgba(0,0,0,.2)"></span>
-    </label>
-  </div>
-  <div class="card mt8" style="display:flex;align-items:center;gap:14px;cursor:pointer" onclick="clearCacheAndReload()">
-    <i class="fa-solid fa-rotate" style="font-size:1.1rem;color:#5AC8FA"></i>
-    <div style="flex:1">
-      <div style="font-weight:800;font-size:.88rem">更新到最新版本</div>
-      <div style="font-size:.75rem;color:var(--ink2);margin-top:2px" id="clearCacheStatus">清除快取並重新載入 App</div>
-    </div>
-    <i class="fa-solid fa-chevron-right" style="color:var(--ink2);font-size:.78rem"></i>
-  </div>
 </div>
 
 <!-- ══════════════ SCROLL TO TOP ══════════════ -->
 <button class="scroll-top" id="scrollTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})"><i class="fa-solid fa-chevron-up"></i></button>
+
+<!-- ══════════════ SETTINGS OVERLAY ══════════════ -->
+<div id="settingsOverlay" onclick="closeSettings(event)">
+  <div id="settingsSheet">
+    <div class="handle" style="margin-bottom:8px"></div>
+    <div class="sec" style="margin-bottom:14px"><i class="fa-solid fa-gear"></i>設定</div>
+    <div class="card" style="display:flex;align-items:center;gap:14px;margin-bottom:10px">
+      <i class="fa-solid fa-text-height" style="font-size:1.1rem;color:var(--acc)"></i>
+      <div style="flex:1">
+        <div style="font-weight:800;font-size:.88rem">長輩模式</div>
+        <div style="font-size:.75rem;color:var(--ink2);margin-top:2px">字體與間距放大 1.5 倍</div>
+      </div>
+      <label style="position:relative;width:44px;height:26px;flex-shrink:0">
+        <input type="checkbox" id="elderlyToggle" onchange="toggleElderly(this.checked)" style="opacity:0;width:0;height:0;position:absolute">
+        <span id="elderlyTrack" style="position:absolute;inset:0;border-radius:999px;background:#ccc;cursor:pointer;transition:.2s"></span>
+        <span id="elderlyThumb" style="position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:.2s;box-shadow:0 1px 3px rgba(0,0,0,.2)"></span>
+      </label>
+    </div>
+    <div class="card" style="display:flex;align-items:center;gap:14px;cursor:pointer" onclick="clearCacheAndReload()">
+      <i class="fa-solid fa-rotate" style="font-size:1.1rem;color:#5AC8FA"></i>
+      <div style="flex:1">
+        <div style="font-weight:800;font-size:.88rem">更新到最新版本</div>
+        <div style="font-size:.75rem;color:var(--ink2);margin-top:2px" id="clearCacheStatus">清除快取並重新載入 App</div>
+      </div>
+      <i class="fa-solid fa-chevron-right" style="color:var(--ink2);font-size:.78rem"></i>
+    </div>
+  </div>
+</div>
 
 <!-- ══════════════ BOTTOM NAV ══════════════ -->
 <nav class="nav">
@@ -720,9 +732,9 @@ html.elderly{font-size:27px}
 // ════════════════════════════════════════
 // CONFIG
 // ════════════════════════════════════════
-const MEMBERS = ['Francesa','Latte'];
-const HOUSE_A = ['Francesa','Latte'];
-const HOUSE_B = ['Francesa','Latte'];
+const MEMBERS = ['Francesca','Latte'];
+const HOUSE_A = ['Francesca','Latte'];
+const HOUSE_B = ['Francesca','Latte'];
 const DAYS = [
   {date:'06/06',day:'六',label:'D1 海雲台',file:'2026-06-06.json'},
   {date:'06/07',day:'日',label:'D2 南浦',file:'2026-06-07.json'},
@@ -2311,6 +2323,13 @@ function initElderly(){
   const cb = document.getElementById('elderlyToggle');
   if(cb) cb.checked = on;
   if(on) toggleElderly(true);
+}
+
+function openSettings(){
+  document.getElementById('settingsOverlay').classList.add('open');
+}
+function closeSettings(e){
+  if(e.target===document.getElementById('settingsOverlay')) document.getElementById('settingsOverlay').classList.remove('open');
 }
 
 function openSyncSheet(){
