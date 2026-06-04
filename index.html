@@ -420,7 +420,7 @@ html.elderly{font-size:27px}
   <div id="dayContent"><div class="empty"><i class="fa fa-spinner fa-spin"></i> 載入中…</div></div>
 </div>
 <input type="file" id="bannerFilePick" accept="image/*" style="display:none" onchange="onBannerFile(event)">
-<input type="file" id="souvPhotoFilePick" accept="image/*" style="display:none" onchange="onSouvPhotoFile(event)">
+<input type="file" id="souvPhotoFilePick" accept="image/*" style="display:none" onchange="onSouvPhotoDirectSave(event)">
 
 <!-- 資訊 -->
 <div id="pg-info" class="page">
@@ -1292,7 +1292,7 @@ function renderSouvSheetPhoto(){
   }
 }
 
-function triggerSouvPhoto(){ document.getElementById('souvPhotoFilePick').click(); }
+function triggerSouvPhoto(){ _pickSouvIdx=null; document.getElementById('souvPhotoFilePick').click(); }
 function onSouvPhotoFile(e){
   const file = e.target.files[0]; if(!file) return;
   const reader = new FileReader();
@@ -1301,9 +1301,26 @@ function onSouvPhotoFile(e){
   e.target.value='';
 }
 
+let _pickSouvIdx = null;
 function pickSouvPhoto(idx){
-  // Direct photo pick for existing card (shortcut, opens sheet)
-  openSouvSheet(idx);
+  _pickSouvIdx = idx;
+  document.getElementById('souvPhotoFilePick').click();
+}
+function onSouvPhotoDirectSave(e){
+  if(_pickSouvIdx === null){ onSouvPhotoFile(e); return; }
+  const file = e.target.files[0]; if(!file){ _pickSouvIdx=null; return; }
+  const reader = new FileReader();
+  reader.onload = ev => {
+    const items = getShop(souvUser);
+    const it = items[_pickSouvIdx];
+    if(!it){ _pickSouvIdx=null; return; }
+    const uid = it.uid || _pickSouvIdx;
+    setSouvImg(souvUser, uid, ev.target.result);
+    _pickSouvIdx = null;
+    renderSouvList();
+  };
+  reader.readAsDataURL(file);
+  e.target.value='';
 }
 
 function closeSouvSheet(e){ if(e.target===document.getElementById('souvOverlay')){ document.getElementById('souvOverlay').classList.remove('open'); document.body.style.overflow=''; } }
