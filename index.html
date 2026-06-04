@@ -27,37 +27,37 @@
   --mono:"Roboto Mono",monospace;
 }
 *,*::before,*::after{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html{background:linear-gradient(135deg,#BFC9F9 0%,#D5C5F7 50%,#F3C4E6 100%) fixed;background-attachment:fixed;font-size:18px}
+html{background:linear-gradient(135deg,#DDE4FF 0%,#EDE6FF 50%,#FCDFF8 100%) fixed;background-attachment:fixed;font-size:18px}
 html,body{margin:0;color:var(--ink);font-family:var(--sans);min-height:100dvh;overscroll-behavior-y:none}
-body{background:linear-gradient(135deg,#BFC9F9 0%,#D5C5F7 50%,#F3C4E6 100%) fixed;background-attachment:fixed;padding-bottom:calc(72px + env(safe-area-inset-bottom))}
+body{background:linear-gradient(135deg,#DDE4FF 0%,#EDE6FF 50%,#FCDFF8 100%) fixed;background-attachment:fixed;padding-bottom:calc(72px + env(safe-area-inset-bottom))}
 /* ── Header ── */
 .hdr{
   padding:14px 20px 12px;
   padding-top:calc(env(safe-area-inset-top)+14px);
   text-align:center;
   position:fixed;top:0;left:0;right:0;z-index:9999;
-  background:rgba(195,180,250,.72);
+  background:rgba(220,210,255,.68);
   backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
 }
 #hdr-spacer{height:var(--hdr-h,140px)}
 .hdr-title{font-family:var(--serif);font-size:1.28rem;font-weight:900;letter-spacing:.03em;margin:0;color:var(--pri)}
 .hdr-sub{font-size:.74rem;color:var(--ink2);font-weight:700;margin-top:3px;letter-spacing:.1em}
 .hdr-meta{display:flex;justify-content:center;align-items:center;gap:7px;margin-top:5px}
-.year-pill{font-size:.67rem;font-weight:900;padding:3px 10px;border-radius:999px;border:1px solid rgba(139,104,200,.5);background:rgba(255,255,255,.65);color:#5E3A9E}
-.hdr-sync{position:absolute;top:calc(env(safe-area-inset-top)+10px);right:14px;width:32px;height:32px;border-radius:50%;background:rgba(139,104,200,.15);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--acc);font-size:.88rem}
-.hdr-gear{width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,.5);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--acc);font-size:.78rem;flex-shrink:0;padding:0}
+.year-pill{font-size:.67rem;font-weight:900;padding:3px 10px;border-radius:999px;border:1px solid rgba(139,104,200,.4);background:rgba(255,255,255,.7);color:#5E3A9E}
+.hdr-sync{position:absolute;top:calc(env(safe-area-inset-top)+10px);right:14px;width:32px;height:32px;border-radius:50%;background:rgba(139,104,200,.12);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--acc);font-size:.88rem}
+.hdr-gear{position:absolute;right:14px;bottom:12px;width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.55);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--acc);font-size:.8rem;padding:0}
 /* ── Settings overlay ── */
 #settingsOverlay{position:fixed;inset:0;background:rgba(42,26,80,.3);z-index:4000;display:none;align-items:flex-end;animation:fadeIn .18s ease}
 #settingsOverlay.open{display:flex}
-#settingsSheet{width:100%;background:linear-gradient(135deg,#C8D2FB 0%,#DDD0F8 60%,#F5D0EE 100%);border-radius:24px 24px 0 0;padding:14px 20px 40px;padding-bottom:calc(env(safe-area-inset-bottom)+40px);box-sizing:border-box;animation:su .22s ease}
+#settingsSheet{width:100%;background:linear-gradient(135deg,#E2E8FF 0%,#EDE6FF 60%,#FCDFF8 100%);border-radius:24px 24px 0 0;padding:14px 20px 40px;padding-bottom:calc(env(safe-area-inset-bottom)+40px);box-sizing:border-box;animation:su .22s ease}
 
 /* ── Bottom Nav ── */
 .nav{
   position:fixed;bottom:0;left:0;right:0;
   height:calc(60px + env(safe-area-inset-bottom));
   padding-bottom:env(safe-area-inset-bottom);
-  background:rgba(200,185,248,.88);backdrop-filter:blur(18px);
-  border-top:1px solid rgba(180,160,230,.6);
+  background:rgba(225,215,255,.85);backdrop-filter:blur(18px);
+  border-top:1px solid rgba(180,160,230,.4);
   display:flex;z-index:200;
 }
 .nav-btn{
@@ -81,12 +81,12 @@ body{background:linear-gradient(135deg,#BFC9F9 0%,#D5C5F7 50%,#F3C4E6 100%) fixe
 .sec i{color:#9B84C0;font-size:.9rem}
 
 /* ── Segment ── */
-.seg{display:flex;gap:5px;background:rgba(180,160,235,.55);padding:4px;border-radius:14px;margin-bottom:11px}
+.seg{display:flex;gap:5px;background:rgba(200,185,245,.4);padding:4px;border-radius:14px;margin-bottom:11px}
 .seg-btn{flex:1;text-align:center;padding:9px 0;border-radius:10px;font-weight:900;font-size:.88rem;color:var(--ink2);cursor:pointer;transition:.2s;user-select:none}
 .seg-btn.on{background:rgba(255,255,255,.9);color:var(--pri);box-shadow:0 4px 12px rgba(100,60,160,.12)}
 
 /* ── User tabs ── */
-.utabs{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:4px;background:rgba(180,160,235,.55);border-radius:14px;margin-bottom:12px}
+.utabs{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:4px;background:rgba(200,185,245,.4);border-radius:14px;margin-bottom:12px}
 .utabs::-webkit-scrollbar{display:none}
 .utab{flex:0 0 auto;padding:8px 14px;border-radius:10px;font-weight:800;font-size:.85rem;color:var(--ink2);cursor:pointer;transition:.2s;white-space:nowrap}
 .utab.on{background:rgba(255,255,255,.9);color:var(--pri);box-shadow:0 4px 12px rgba(100,60,160,.12)}
@@ -415,8 +415,8 @@ html.elderly{font-size:27px}
   <div class="hdr-meta">
     <span class="year-pill">5天4夜</span>
     <span class="year-pill">2026</span>
-    <button class="hdr-gear" onclick="openSettings()"><i class="fa-solid fa-gear"></i></button>
   </div>
+  <button class="hdr-gear" onclick="openSettings()"><i class="fa-solid fa-gear"></i></button>
 </header>
 <div id="hdr-spacer"></div>
 
@@ -732,9 +732,10 @@ html.elderly{font-size:27px}
 // ════════════════════════════════════════
 // CONFIG
 // ════════════════════════════════════════
-const MEMBERS = ['Francesca','Latte'];
-const HOUSE_A = ['Francesca','Latte'];
-const HOUSE_B = ['Francesca','Latte'];
+const MEMBERS = ['Kerwin','Francesca','Lotto','Latte','Hao','Ming'];
+const HOUSE_A = ['Kerwin','Francesca','Lotto'];
+const HOUSE_B = ['Latte','Hao','Ming'];
+const PAYERS  = ['Francesca','Latte'];
 const DAYS = [
   {date:'06/06',day:'六',label:'D1 海雲台',file:'2026-06-06.json'},
   {date:'06/07',day:'日',label:'D2 南浦',file:'2026-06-07.json'},
@@ -764,8 +765,8 @@ let curDay = 0;
 let moneyMode = 'exp';   // exp | pay
 let moneyCur = 'KRW';
 let expType = 'trip';
-let selPayer = MEMBERS[0];
-let selPayee = MEMBERS[1];
+let selPayer = PAYERS[0];
+let selPayee = PAYERS[1];
 let selParts = new Set(MEMBERS);
 let souvUser = MEMBERS[0];
 let packUser = MEMBERS[0];
@@ -1566,20 +1567,17 @@ function setExpType(t, el){
 }
 
 function renderPayerChips(){
-  const mkChip = (m, isSel, clickFn) =>
-    `<div class="chip${isSel?' payer':''}" onclick="${clickFn}" style="text-align:center">${m}</div>`;
-  const rowA = HOUSE_A.map(m=>mkChip(m, m===selPayer, `selPayer='${m}';renderPayerChips();renderPayeeChips()`)).join('');
-  const rowB = HOUSE_B.map(m=>mkChip(m, m===selPayer, `selPayer='${m}';renderPayerChips();renderPayeeChips()`)).join('');
+  const mkChip = (m, isSel) =>
+    `<div class="chip${isSel?' payer':''}" onclick="selPayer='${m}';renderPayerChips();renderPayeeChips()" style="text-align:center;flex:1">${m}</div>`;
   document.getElementById('payerChips').innerHTML =
-    `<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:5px;width:100%">${rowA}</div>` +
-    `<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:5px;width:100%;margin-top:5px">${rowB}</div>`;
+    `<div style="display:flex;gap:7px;width:100%">${PAYERS.map(m=>mkChip(m,m===selPayer)).join('')}</div>`;
 }
 
 function renderPayeeChips(){
-  const others = MEMBERS.filter(m=>m!==selPayer);
+  const others = PAYERS.filter(m=>m!==selPayer);
   if(!others.includes(selPayee)) selPayee = others[0]||'';
   document.getElementById('payeeChips').innerHTML = others.map(m=>
-    `<div class="chip${m===selPayee?' payer':''}" onclick="selPayee='${m}';renderPayeeChips()" style="text-align:center">${m}</div>`
+    `<div class="chip${m===selPayee?' payer':''}" onclick="selPayee='${m}';renderPayeeChips()" style="text-align:center;flex:1">${m}</div>`
   ).join('');
 }
 
@@ -1826,12 +1824,9 @@ function setEditType(t, el){
 
 function renderEditPayer(){
   const mkChip = (m) =>
-    `<div class="chip${m===editExpPayer?' payer':''}" onclick="editExpPayer='${m}';renderEditPayer()" style="text-align:center">${m}</div>`;
-  const rowA = HOUSE_A.map(mkChip).join('');
-  const rowB = HOUSE_B.map(mkChip).join('');
+    `<div class="chip${m===editExpPayer?' payer':''}" onclick="editExpPayer='${m}';renderEditPayer()" style="text-align:center;flex:1">${m}</div>`;
   document.getElementById('editPayerChips').innerHTML =
-    `<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:5px;width:100%">${rowA}</div>` +
-    `<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:5px;width:100%;margin-top:5px">${rowB}</div>`;
+    `<div style="display:flex;gap:7px;width:100%">${PAYERS.map(mkChip).join('')}</div>`;
 }
 
 function renderEditHouse(){
