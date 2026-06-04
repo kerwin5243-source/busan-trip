@@ -733,7 +733,7 @@ html.elderly{font-size:27px}
 const MEMBERS = ['Kerwin','Francesca','Lotto','Latte','Hao','Ming'];
 const HOUSE_A = ['Kerwin','Francesca','Lotto'];
 const HOUSE_B = ['Latte','Hao','Ming'];
-const PAYERS  = ['Francesca','Latte'];
+const PAYERS  = MEMBERS;
 const DAYS = [
   {date:'06/06',day:'六',label:'D1 海雲台',file:'2026-06-06.json'},
   {date:'06/07',day:'日',label:'D2 南浦',file:'2026-06-07.json'},
@@ -1569,17 +1569,18 @@ function setExpType(t, el){
 
 function renderPayerChips(){
   const mkChip = (m, isSel) =>
-    `<div class="chip${isSel?' payer':''}" onclick="selPayer='${m}';renderPayerChips();renderPayeeChips()" style="text-align:center;flex:1">${m}</div>`;
+    `<div class="chip${isSel?' payer':''}" onclick="selPayer='${m}';renderPayerChips();renderPayeeChips()" style="text-align:center">${m}</div>`;
   document.getElementById('payerChips').innerHTML =
-    `<div style="display:flex;gap:7px;width:100%">${PAYERS.map(m=>mkChip(m,m===selPayer)).join('')}</div>`;
+    `<div style="display:flex;flex-wrap:wrap;gap:7px">${PAYERS.map(m=>mkChip(m,m===selPayer)).join('')}</div>`;
 }
 
 function renderPayeeChips(){
   const others = PAYERS.filter(m=>m!==selPayer);
   if(!others.includes(selPayee)) selPayee = others[0]||'';
-  document.getElementById('payeeChips').innerHTML = others.map(m=>
-    `<div class="chip${m===selPayee?' payer':''}" onclick="selPayee='${m}';renderPayeeChips()" style="text-align:center;flex:1">${m}</div>`
-  ).join('');
+  document.getElementById('payeeChips').innerHTML =
+    `<div style="display:flex;flex-wrap:wrap;gap:7px">${others.map(m=>
+      `<div class="chip${m===selPayee?' payer':''}" onclick="selPayee='${m}';renderPayeeChips()" style="text-align:center">${m}</div>`
+    ).join('')}</div>`;
 }
 
 function renderHousePicker(){
@@ -1859,9 +1860,9 @@ function setEditType(t, el){
 
 function renderEditPayer(){
   const mkChip = (m) =>
-    `<div class="chip${m===editExpPayer?' payer':''}" onclick="editExpPayer='${m}';renderEditPayer()" style="text-align:center;flex:1">${m}</div>`;
+    `<div class="chip${m===editExpPayer?' payer':''}" onclick="editExpPayer='${m}';renderEditPayer()" style="text-align:center">${m}</div>`;
   document.getElementById('editPayerChips').innerHTML =
-    `<div style="display:flex;gap:7px;width:100%">${PAYERS.map(mkChip).join('')}</div>`;
+    `<div style="display:flex;flex-wrap:wrap;gap:7px">${PAYERS.map(mkChip).join('')}</div>`;
 }
 
 function renderEditHouse(){
