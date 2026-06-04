@@ -179,6 +179,7 @@ body{padding-bottom:calc(72px + env(safe-area-inset-bottom))}
 
 /* ── Hotel strip ── */
 .hotel-strip{display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:12px;background:rgba(176,138,91,.07);border:1px solid rgba(176,138,91,.2);margin-bottom:10px;font-size:.82rem}
+.info-row{display:flex;align-items:flex-start;gap:8px;margin-bottom:4px}
 .hs-name{font-weight:800;color:var(--pri);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 
 /* ── Maps button ── */
@@ -432,6 +433,39 @@ html.elderly{font-size:27px}
   <div id="flightCard" class="card"></div>
   <div class="sec mt12"><i class="fa-solid fa-hotel"></i>住宿資訊</div>
   <div id="hotelCard"></div>
+
+  <!-- 退稅須知 -->
+  <div class="sec mt12"><i class="fa-solid fa-receipt"></i>退稅須知</div>
+  <div class="card">
+    <div style="font-size:.82rem;line-height:1.8;color:var(--ink)">
+      <div style="font-weight:900;margin-bottom:6px">退稅條件</div>
+      <div class="info-row"><i class="fa-solid fa-circle" style="font-size:.3rem;color:var(--acc);margin-top:7px"></i><span>持外國護照、離境前 3 個月內消費</span></div>
+      <div class="info-row"><i class="fa-solid fa-circle" style="font-size:.3rem;color:var(--acc);margin-top:7px"></i><span>需在貼有 <b>Tax Free</b> 標誌的店家消費</span></div>
+      <div class="info-row"><i class="fa-solid fa-circle" style="font-size:.3rem;color:var(--acc);margin-top:7px"></i><span>消費時主動告知店員要 Tax Free，並取得退稅單據</span></div>
+      <div class="info-row"><i class="fa-solid fa-circle" style="font-size:.3rem;color:var(--acc);margin-top:7px"></i><span>單一店家消費超過 <b>₩30,000</b> 大部分即可退稅</span></div>
+      <div style="font-weight:900;margin-top:10px;margin-bottom:6px">退稅方式</div>
+      <div class="info-row"><i class="fa-solid fa-store" style="font-size:.72rem;color:#4DB6AC;width:14px;text-align:center"></i><span><b>市區退稅</b>（超市／百貨）：消費當場直接辦理</span></div>
+      <div class="info-row"><i class="fa-solid fa-plane" style="font-size:.72rem;color:#90A4AE;width:14px;text-align:center"></i><span><b>機場退稅</b>：₩75,000 以下可用自動退稅機；超過 ₩75,000 須人工查核，高單價商品需隨身攜帶供海關查驗</span></div>
+    </div>
+  </div>
+
+  <!-- SES自動通關 -->
+  <div class="sec mt12"><i class="fa-solid fa-passport"></i>韓國 SES 自動通關申請</div>
+  <div class="card">
+    <div style="font-size:.82rem;line-height:1.8;color:var(--ink)">
+      <div style="font-weight:900;margin-bottom:6px">申請資格</div>
+      <div class="info-row"><i class="fa-solid fa-circle" style="font-size:.3rem;color:var(--acc);margin-top:7px"></i><span>年滿 17 歲、持有效中華民國晶片護照</span></div>
+      <div class="info-row"><i class="fa-solid fa-circle" style="font-size:.3rem;color:var(--acc);margin-top:7px"></i><span>以旅遊或商務目的前往韓國、在韓無不良紀錄</span></div>
+      <div style="font-weight:900;margin-top:10px;margin-bottom:6px">申請流程</div>
+      <div style="background:rgba(176,138,91,.08);border-radius:10px;padding:8px 12px;font-size:.78rem;line-height:1.9">
+        前往 SES 註冊中心 → 提交護照 → 輸入台灣手機號碼 → 壓指紋建檔 → 拍照 → 護照貼紙
+        <div style="margin-top:4px;color:var(--ink2)">約 5 分鐘完成 · 每次可停留 90 天</div>
+      </div>
+      <div style="font-weight:900;margin-top:10px;margin-bottom:6px">申請地點</div>
+      <div class="info-row"><i class="fa-solid fa-location-dot" style="font-size:.72rem;color:#E57373;width:14px;text-align:center"></i><span>金浦國際機場 2F 國民出入境室</span></div>
+      <div class="info-row"><i class="fa-regular fa-clock" style="font-size:.72rem;color:#90A4AE;width:14px;text-align:center"></i><span>平日 09:00–18:00（午休 12:00–13:00）</span></div>
+    </div>
+  </div>
 </div>
 
 <!-- 伴手禮 -->
