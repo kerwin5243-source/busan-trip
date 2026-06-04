@@ -303,7 +303,10 @@ html.elderly{font-size:27px}
 .cat-label{font-weight:900;font-size:.87rem;color:var(--pri);margin-bottom:8px}
 .rec-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
 .rcard{background:rgba(255,255,255,.75);border:1px solid rgba(233,225,214,.9);border-radius:13px;padding:10px 6px 8px;text-align:center;cursor:pointer;transition:.15s;user-select:none;display:flex;flex-direction:column;align-items:center;gap:4px}
-.rcard.rcard-photo{padding:0;overflow:hidden;aspect-ratio:1}
+.rcard.rcard-photo{padding:0;overflow:hidden;display:flex;flex-direction:column}
+.rcard.rcard-photo .rcard-img{width:100%;aspect-ratio:1;overflow:hidden;flex-shrink:0}
+.rcard.rcard-photo .rcard-img img{width:100%;height:100%;object-fit:cover;display:block}
+.rcard.rcard-photo .rcard-name{padding:5px 5px 7px;font-size:.68rem;font-weight:800;color:var(--ink);line-height:1.3;word-break:break-all;text-align:center}
 .rcard:active{transform:scale(.96);background:rgba(176,138,91,.1);border-color:rgba(176,138,91,.4)}
 .rcard-emoji{font-size:1.55rem;line-height:1}
 .rcard-name{font-size:.72rem;font-weight:800;color:var(--ink);line-height:1.3;word-break:break-all}
@@ -1369,8 +1372,19 @@ function delShop(idx){
 function addRecToShop(name, el){
   const items = getShop(souvUser);
   if(items.find(i=>i.name===name)) return;
-  items.push({name,done:false,price:0,qty:1,uid:Date.now().toString(36)});
+  const uid = Date.now().toString(36);
+  items.push({name,done:false,price:0,qty:1,uid});
   setShop(souvUser,items);
+  // If the rec card has an image, save it as the item photo
+  const imgSrc = el?.dataset?.img;
+  if(imgSrc){
+    // Fetch as blob and store as dataURL for offline use
+    fetch(imgSrc).then(r=>r.blob()).then(b=>{
+      const reader = new FileReader();
+      reader.onload = ev => { setSouvImg(souvUser, uid, ev.target.result); renderSouvList(); };
+      reader.readAsDataURL(b);
+    }).catch(()=>{});
+  }
   renderSouvList();
   if(el){ el.style.background='rgba(176,138,91,.2)'; setTimeout(()=>{ el.style.background=''; },400); }
 }
@@ -1401,12 +1415,16 @@ function renderRecs(){
       <div class="cat-label">• ${cat.region}</div>
       <div class="rec-grid">${cat.items.map(it=>{
         const emoji = REC_EMOJI[it.name]||'🛍️';
-        const thumb = it.img
-          ? `<img src="${it.img}" alt="${it.name}" style="width:100%;height:100%;object-fit:cover;border-radius:9px 9px 0 0;display:block">`
-          : `<div class="rcard-emoji">${emoji}</div>`;
-        return `<div class="rcard${it.img?' rcard-photo':''}" onclick="addRecToShop('${it.name.replace(/'/g,"\\'")}',this)">
-          ${thumb}
-          <div class="rcard-name" style="${it.img?'padding:4px 4px 6px;':'}'}">${it.name}</div>
+        const imgAttr = it.img ? ` data-img="${it.img}"` : '';
+        if(it.img){
+          return `<div class="rcard rcard-photo" onclick="addRecToShop('${it.name.replace(/'/g,"\\'")}',this)"${imgAttr}>
+            <div class="rcard-img"><img src="${it.img}" alt="${it.name}" loading="lazy"></div>
+            <div class="rcard-name">${it.name}</div>
+          </div>`;
+        }
+        return `<div class="rcard" onclick="addRecToShop('${it.name.replace(/'/g,"\\'")}',this)">
+          <div class="rcard-emoji">${emoji}</div>
+          <div class="rcard-name">${it.name}</div>
         </div>`;
       }).join('')}</div>
     </div>
