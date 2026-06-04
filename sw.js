@@ -1,4 +1,4 @@
-const CACHE = 'busan-pwa-v16';
+const CACHE = 'busan-pwa-v17';
 const PRE = [
   './', './index.html', './manifest.json',
   './data/config.json', './data/flights.json', './data/hotels.json',
@@ -6,6 +6,17 @@ const PRE = [
   './data/itinerary/2026-06-06.json', './data/itinerary/2026-06-07.json',
   './data/itinerary/2026-06-08.json', './data/itinerary/2026-06-09.json',
   './data/itinerary/2026-06-10.json',
+  './picture/busan_souvenirs/sou_001.png','./picture/busan_souvenirs/sou_002.jpg',
+  './picture/busan_souvenirs/sou_002.png','./picture/busan_souvenirs/sou_003.jpg',
+  './picture/busan_souvenirs/sou_004.jpg','./picture/busan_souvenirs/sou_005.png',
+  './picture/busan_souvenirs/sou_006.png','./picture/busan_souvenirs/sou_007.jpg',
+  './picture/busan_souvenirs/sou_008.jpg','./picture/busan_souvenirs/sou_009.png',
+  './picture/busan_souvenirs/sou_010.png','./picture/busan_souvenirs/sou_011.png',
+  './picture/busan_souvenirs/sou_012.png','./picture/busan_souvenirs/sou_013.png',
+  './picture/busan_souvenirs/sou_014.png','./picture/busan_souvenirs/sou_015.png',
+  './picture/busan_souvenirs/sou_016.jpg','./picture/busan_souvenirs/sou_017.jpg',
+  './picture/busan_souvenirs/sou_018.png','./picture/busan_souvenirs/sou_019.png',
+  './picture/busan_souvenirs/sou_020.png','./picture/busan_souvenirs/sou_021.png',
   'https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js',
   'https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js'
 ];
