@@ -5,14 +5,9 @@
     "link": ""
   },
   {
-    "title": "K-ETA 電子旅行許可申請",
+    "title": "e-arrivalcard 電子入境卡",
     "note": "入境韓國需要，截圖備用",
-    "link": "https://www.k-eta.go.kr"
-  },
-  {
-    "title": "Q-Code 韓國入境申報",
-    "note": "入境前填寫，生成 QR Code",
-    "link": "https://qcode.go.kr"
+    "link": "https://www.e-arrivalcard.go.kr/portal/main/index.do?locale=CH"
   },
   {
     "title": "住宿預訂（4晚）",
