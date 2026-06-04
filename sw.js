@@ -1,4 +1,4 @@
-const CACHE = 'busan-pwa-v33';
+const CACHE = 'busan-pwa-v34';
 const PRE = [
   './', './index.html', './manifest.json',
   './data/config.json', './data/flights.json', './data/hotels.json',
@@ -17,6 +17,8 @@ const PRE = [
   './picture/busan_souvenirs/sou_016.jpg','./picture/busan_souvenirs/sou_017.jpg',
   './picture/busan_souvenirs/sou_018.png','./picture/busan_souvenirs/sou_019.png',
   './picture/busan_souvenirs/sou_020.png','./picture/busan_souvenirs/sou_021.png',
+  './picture/06-10/20260610001.jpg','./picture/06-10/20260610002.jpg',
+  './picture/06-10/20260610003.jpg','./picture/06-10/20260610004.jpg',
   'https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js',
   'https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js'
 ];
