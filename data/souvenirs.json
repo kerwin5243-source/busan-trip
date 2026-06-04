@@ -3,72 +3,46 @@
     "region": "海雲台周邊",
     "items": [
       { "name": "海鹽焦糖蜂蜜夾心餅", "img": "" },
-      { "name": "常溫密封包裝魚糕", "img": "" },
-      { "name": "自然鹽可頌麵包", "img": "" }
+      { "name": "butter pei", "img": "" },
+      { "name": "Keveren House", "img": "" }
     ]
   },
   {
     "region": "廣安里周邊",
     "items": [
-      { "name": "鹽味黃油 / 馬鈴薯貝果", "img": "" },
-      { "name": "文創插畫小物 / 杯墊", "img": "" }
-    ]
-  },
-  {
-    "region": "南浦洞 / 國際市場",
-    "items": [
-      { "name": "韓式不鏽鋼扁筷湯匙組", "img": "" },
-      { "name": "金銅色泡麵鍋", "img": "" },
-      { "name": "傳統韓國搓澡巾", "img": "" }
+      { "name": "All Sunday 貝果", "img": "" },
+      { "name": "CHEFFLE 舒芙蕾", "img": "" },
+      { "name": "文創小物", "img": "" }
     ]
   },
   {
     "region": "札嘎其市場",
     "items": [
       { "name": "真空包裝機張海帶", "img": "" },
-      { "name": "烘乾小魚乾 / 烤魷魚絲", "img": "" }
-    ]
-  },
-  {
-    "region": "甘川文化村",
-    "items": [
-      { "name": "彩色積木房子微型磁鐵", "img": "" },
-      { "name": "手繪文青襪子", "img": "" }
-    ]
-  },
-  {
-    "region": "松島天空公園",
-    "items": [
-      { "name": "時空膠囊牆留言組", "img": "" }
-    ]
-  },
-  {
-    "region": "新世界 Spa Land",
-    "items": [
-      { "name": "韓式搓澡服務專用去角質膏", "img": "" }
+      { "name": "烘烤魷魚絲", "img": "" },
+      { "name": "海苔脆餅", "img": "" }
     ]
   },
   {
     "region": "Olive Young 門市",
     "items": [
+      { "name": "ETUDE AllDay BB", "img": "" },
+      { "name": "Beauty of joseon 防曬乳", "img": "" },
+      { "name": "Mediheal 面膜", "img": "" },
       { "name": "Torriden 玻尿酸精華液", "img": "" },
       { "name": "Anua 魚腥草化妝水", "img": "" },
       { "name": "UNOVE 頂級修護護髮油", "img": "" },
-      { "name": "補骨脂酚 (Bakuchiol) 抗老系列", "img": "" },
+      { "name": "ilso 粉刺導出液", "img": "" },
+      { "name": "Abib 魚腥草保濕棉片", "img": "" },
       { "name": "Delight Project 貝果餅乾", "img": "" }
-    ]
-  },
-  {
-    "region": "大創海雲台店",
-    "items": [
-      { "name": "VT Reedle Shot (微針精華)", "img": "" },
-      { "name": "韓國傳統圖騰精緻書籤", "img": "" }
     ]
   },
   {
     "region": "樂天超市光復店",
     "items": [
-      { "name": "HBAF 各口味杏仁果", "img": "" }
+      { "name": "HBAF 各口味杏仁果", "img": "" },
+      { "name": "LOTTE ZERO", "img": "" },
+      { "name": "扁可頌餅乾", "img": "" }
     ]
   }
 ]
