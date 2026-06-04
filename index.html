@@ -1270,7 +1270,39 @@ let editSouvIdx = null;
 let _souvSheetPhoto = ''; // pending photo for current sheet
 
 function getSouvImg(u,uid){ return localStorage.getItem(`busan_shop_img_${u}_${uid}`)||''; }
-function setSouvImg(u,uid,v){ try{ localStorage.setItem(`busan_shop_img_${u}_${uid}`,v); }catch(e){ console.warn('souv img too large',e); } }
+function setSouvImg(u,uid,v){
+  try{
+    localStorage.setItem(`busan_shop_img_${u}_${uid}`,v);
+  } catch(e){
+    // Quota exceeded — remove the largest existing souv image and retry once
+    let bigKey='', bigSize=0;
+    for(let i=0;i<localStorage.length;i++){
+      const k=localStorage.key(i);
+      if(!k.startsWith('busan_shop_img_')) continue;
+      const s=(localStorage.getItem(k)||'').length;
+      if(s>bigSize){ bigSize=s; bigKey=k; }
+    }
+    if(bigKey){ localStorage.removeItem(bigKey); }
+    try{ localStorage.setItem(`busan_shop_img_${u}_${uid}`,v); }catch(_){}
+  }
+}
+
+// Re-compress all existing oversized souv images in localStorage (run once on init)
+function migrateSouvImgs(){
+  const keys = [];
+  for(let i=0;i<localStorage.length;i++){
+    const k=localStorage.key(i);
+    if(k.startsWith('busan_shop_img_') && (localStorage.getItem(k)||'').length > 150000) keys.push(k);
+  }
+  keys.forEach(k=>{
+    const old = localStorage.getItem(k);
+    if(!old) return;
+    compressToDataURL(old, data=>{
+      if(data) try{ localStorage.setItem(k,data); }catch(_){ localStorage.removeItem(k); }
+      else localStorage.removeItem(k);
+    });
+  });
+}
 
 // Compress any image blob/file to a small JPEG dataURL (max 400px, quality 0.72)
 function compressToDataURL(src, cb){
@@ -2423,6 +2455,7 @@ window.addEventListener('resize', syncHdrHeight);
 init();
 autoJumpToday();
 initElderly();
+migrateSouvImgs();
 requestAnimationFrame(syncHdrHeight);
 </script>
 <script defer src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"
