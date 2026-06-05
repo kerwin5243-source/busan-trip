@@ -175,8 +175,16 @@
         "avoid": [],
         "links": [],
         "menu": [
-          {"name": "해물칼국수（海鮮刀切麵）", "price": "時價", "note": "必點，31cm 巨型碗公"},
-          {"name": "해물파전（海鮮蔥煎餅）", "price": "時價", "note": "加點推薦"}
+          {
+            "name": "해물칼국수（海鮮刀切麵）",
+            "price": "時價",
+            "note": "必點，31cm 巨型碗公"
+          },
+          {
+            "name": "해물파전（海鮮蔥煎餅）",
+            "price": "時價",
+            "note": "加點推薦"
+          }
         ],
         "reservations": [],
         "highlight": true
@@ -201,7 +209,9 @@
           "青沙浦站下車拍《灌籃高手》感的平交道照片是必做事項",
           "自由票當日有效，出發前先在松亭站兌換"
         ],
-        "avoid": ["同一站不可重複上車兩次"],
+        "avoid": [
+          "同一站不可重複上車兩次"
+        ],
         "links": [],
         "menu": [],
         "reservations": [],
@@ -280,9 +290,21 @@
         "avoid": [],
         "links": [],
         "menu": [
-          {"name": "양념돼지갈비（正宗烤豬排骨）", "price": "時價", "note": "招牌必點"},
-          {"name": "고추장돼지갈비（辣椒醬烤豬肉）", "price": "時價", "note": ""},
-          {"name": "밀면（小麥冷麵）", "price": "時價", "note": "配烤肉必加"}
+          {
+            "name": "양념돼지갈비（正宗烤豬排骨）",
+            "price": "時價",
+            "note": "招牌必點"
+          },
+          {
+            "name": "고추장돼지갈비（辣椒醬烤豬肉）",
+            "price": "時價",
+            "note": ""
+          },
+          {
+            "name": "밀면（小麥冷麵）",
+            "price": "時價",
+            "note": "配烤肉必加"
+          }
         ],
         "reservations": [],
         "highlight": true
@@ -316,7 +338,7 @@
       {
         "id": "0608_13",
         "time": "22:30",
-        "title": "計程車 · Centum City → L7 海雲台飯店",
+        "title": "計程車 · Centum City → L7 해운대 바이 롯데호텔",
         "tag": "route",
         "subtag": "",
         "desc": "",
@@ -342,7 +364,7 @@
       {
         "id": "0608_14",
         "time": "22:45",
-        "title": "L7 海雲台飯店",
+        "title": "L7 해운대 바이 롯데호텔",
         "tag": "hotel",
         "subtag": "住宿",
         "naver_url": "https://naver.me/GBFHgVBy",

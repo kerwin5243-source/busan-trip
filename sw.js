@@ -1,4 +1,4 @@
-const CACHE = 'busan-pwa-v40';
+const CACHE = 'busan-pwa-v41';
 const PRE = [
   './', './index.html', './manifest.json',
   './data/config.json', './data/flights.json', './data/hotels.json',
